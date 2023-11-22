@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="horizontal" android:id="@+id/session_root_view" android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@+id/session_temp_view" android:visibility="gone" android:layout_width="match_parent" android:layout_height="match_parent">
+        <ImageView android:layout_gravity="center_vertical" android:id="@+id/image" android:visibility="gone" android:layout_width="match_parent" android:layout_height="match_parent" android:src="@drawable/welcom"/>
+    </LinearLayout>
+    <com.xiaomi.mslgrdp.presentation.ScrollView2D android:id="@+id/sessionScrollView" android:scrollbars="vertical|horizontal" android:drawingCacheQuality="low" android:layout_width="match_parent" android:layout_height="wrap_content" android:fillViewport="true" android:layout_alignParentTop="true" android:isScrollContainer="true">
+        <com.xiaomi.mslgrdp.presentation.SessionView android:id="@+id/sessionView" android:background="@android:color/transparent" android:focusable="true" android:focusableInTouchMode="true" android:visibility="gone" android:drawingCacheQuality="low" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+    </com.xiaomi.mslgrdp.presentation.ScrollView2D>
+    <com.xiaomi.mslgrdp.presentation.MslEditText android:textColor="@color/transparent" android:id="@+id/editTextInput" android:background="@color/transparent" android:focusable="true" android:focusableInTouchMode="true" android:visibility="gone" android:layout_width="1dp" android:layout_height="1dp" android:layout_marginTop="500dp" android:layout_marginBottom="165dp" android:cursorVisible="false" android:singleLine="false" android:layout_alignParentBottom="true" android:layout_marginEnd="50dp" android:layout_alignParentEnd="true"/>
+</RelativeLayout>

@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">Tapflow</string>
+    <string name="android_ver">Android 版本</string>
+    <string name="prog_ver">程序版本</string>
+    <string name="module_ver">模块版本</string>
+    <string name="device_model">机型</string>
+    <string name="rootfs_ver">rootfs版本</string>
+    <string name="is_mounted_rootfs">mslg是否启动</string>
+    <string name="root_required">需要授权ROOT权限</string>
+    <string name="mount_losetup_opt">/opt分区挂载位置</string>
+    <string name="mount_losetup_usr">/usr分区挂载位置</string>
+    <string name="mount_df_opt">/opt分区占用</string>
+    <string name="mount_df_usr">/usr分区占用</string>
+    <string name="partition_manage">分区管理</string>
+    <string name="expend_part">自定义容量</string>
+    <string name="input_expend_tip">输入容量(GB)[注意：不是扩容，是自定义整个盘面大小!]</string>
+    <string name="confirm">确认</string>
+    <string name="dismiss">取消</string>
+    <string name="help_text_title">赞助</string>
+    <string name="help_text">如果喜欢本项目的话，请去github点个star或者赞助作者</string>
+    <string name="home_view_source_code"><![CDATA[查看源码 %1$s<br/>加入 %2$s 群]]></string>
+    <string name="selinux_stat">SELinux状态</string>
+    <string name="selinux_enforcing">强制执行</string>
+    <string name="selinux_permissive">宽容模式</string>
+    <string name="start_mslg">启动mslg(测试)</string>
+
+
+    <string name="refuse_perssion">Hello</string>
+    <string name="cancek">No，Thanks</string>
+    <string name="exit_app">Press again to exit the APP</string>
+    <string name="dig_message">In order to browse and save local documents normally, please open the settings and allow APP to obtain permissions</string>
+    <string name="dig_manager_message">In order to browse and save the local document normally, please click the permission to jump to the corresponding page to allow management of all permissions</string>
+    <string name="allow_perssion">Allow</string>
+    <string name="setting">Setting</string>
+    <string name="text_exceeds_max_limit">The text exceeds the maximum character limit.</string>
+    <string name="retry_perssion">Re licensing authorization</string>
+</resources>

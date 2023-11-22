@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <uses-sdk android:minSdkVersion="33" android:targetSdkVersion="33"/>
+    <permission android:name="com.ljlvink.mslgrdp.brocast_mirdp"/>
+    <permission android:name="com.ljlvink.mslgrdp.permission.start_connect"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO"/>
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    <uses-permission android:name="android.permission.READ_CLIPBOARD_IN_BACKGROUND"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="com.ljlvink.mslgrdp.brocast_mirdp"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <supports-screens android:anyDensity="true" android:smallScreens="true" android:normalScreens="true" android:largeScreens="true" android:xlargeScreens="true"/>
+    <application
+        android:allowBackup="true"
+
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Tapflow"
+        android:name="com.xiaomi.mslgrdp.application.GlobalApp"
+        tools:targetApi="31">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Tapflow.SplashScreen"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <receiver android:name="com.xiaomi.mslgrdp.presentation.MslgOpenFileReceiver" android:enabled="true" android:exported="true">
+            <intent-filter>
+                <action android:name="com.xiaomi.action.mslgopenextenfile.Broadcast"/>
+            </intent-filter>
+        </receiver>
+        <meta-data android:name="required_permissions" android:value=";"/>
+        <meta-data android:name="miui.supportRequiredModifiable" android:value="true"/>
+        <activity android:theme="@style/ThemeMain"  android:icon="@drawable/ic_launcher_background" android:name="com.xiaomi.mslgrdp.presentation.SessionActivity"  android:exported="true" android:screenOrientation="landscape" android:configChanges="density|smallestScreenSize|screenSize|uiMode|screenLayout|orientation|navigation|keyboardHidden|keyboard" android:windowSoftInputMode="adjustResize|stateHidden" android:resizeableActivity="false">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="freerdp" android:host="*"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.xiaomi.action.mslgrdp.client"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity android:theme="@style/AppThemeWel" android:name="com.xiaomi.mslgrdp.multwindow.LinuxWindowActivity" android:screenOrientation="landscape" android:configChanges="density|smallestScreenSize|screenSize|uiMode|screenLayout|orientation|navigation|keyboardHidden|keyboard" android:windowSoftInputMode="adjustResize|stateHidden"/>
+        <service android:name="com.freerdp.freerdpcore.services.RunningStateService" android:enabled="true" android:exported="true"/>
+
+    </application>
+
+</manifest>
