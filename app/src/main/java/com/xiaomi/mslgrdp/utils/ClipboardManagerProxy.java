@@ -12,7 +12,7 @@ public abstract class ClipboardManagerProxy {
     private static final int MAX_STRING_SIZE = 819200;
     private static final String TAG = "ClipboardManagerProxy";
 
-    /* loaded from: classes5.dex */
+
     public interface OnClipboardChangedListener {
         void onClipboardChanged(String str);
     }
@@ -30,26 +30,26 @@ public abstract class ClipboardManagerProxy {
         return new HCClipboardManager(ctx);
     }
 
-    /* loaded from: classes5.dex */
+
     private static class PreHCClipboardManager extends ClipboardManagerProxy {
         public PreHCClipboardManager(Context ctx) {
         }
 
-        @Override // com.xiaomi.mslgrdp.utils.ClipboardManagerProxy
+        @Override
         public boolean setClipboardData(String data) {
             return false;
         }
 
-        @Override // com.xiaomi.mslgrdp.utils.ClipboardManagerProxy
+        @Override
         public void addClipboardChangedListener(OnClipboardChangedListener listener) {
         }
 
-        @Override // com.xiaomi.mslgrdp.utils.ClipboardManagerProxy
+        @Override
         public void removeClipboardboardChangedListener(OnClipboardChangedListener listener) {
         }
     }
 
-    /* loaded from: classes5.dex */
+
     private static class HCClipboardManager extends ClipboardManagerProxy implements ClipboardManager.OnPrimaryClipChangedListener {
         private ClipboardManager mClipboardManager;
         private OnClipboardChangedListener mListener;
@@ -58,7 +58,7 @@ public abstract class ClipboardManagerProxy {
             this.mClipboardManager = (ClipboardManager) ctx.getSystemService(Context.CLIPBOARD_SERVICE);
         }
 
-        @Override // com.xiaomi.mslgrdp.utils.ClipboardManagerProxy
+        @Override
         public boolean setClipboardData(String data) {
             boolean result = false;
             int size = data == null ? 0 : data.getBytes(StandardCharsets.UTF_8).length;
@@ -71,7 +71,7 @@ public abstract class ClipboardManagerProxy {
             return result;
         }
 
-        @Override // android.content.ClipboardManager.OnPrimaryClipChangedListener
+        @Override
         public void onPrimaryClipChanged() {
             OnClipboardChangedListener onClipboardChangedListener;
             CharSequence cs;
@@ -89,13 +89,13 @@ public abstract class ClipboardManagerProxy {
             }
         }
 
-        @Override // com.xiaomi.mslgrdp.utils.ClipboardManagerProxy
+        @Override
         public void addClipboardChangedListener(OnClipboardChangedListener listener) {
             this.mListener = listener;
             this.mClipboardManager.addPrimaryClipChangedListener(this);
         }
 
-        @Override // com.xiaomi.mslgrdp.utils.ClipboardManagerProxy
+        @Override
         public void removeClipboardboardChangedListener(OnClipboardChangedListener listener) {
             this.mListener = null;
             this.mClipboardManager.removePrimaryClipChangedListener(this);

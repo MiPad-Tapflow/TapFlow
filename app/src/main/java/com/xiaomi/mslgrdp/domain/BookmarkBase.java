@@ -7,14 +7,14 @@ import java.util.Locale;
 
 /* loaded from: classes5.dex */
 public class BookmarkBase implements Parcelable, Cloneable {
-    public static final Parcelable.Creator<BookmarkBase> CREATOR = new Parcelable.Creator<BookmarkBase>() { // from class: com.xiaomi.mslgrdp.domain.BookmarkBase.1
-        @Override // android.os.Parcelable.Creator
+    public static final Parcelable.Creator<BookmarkBase> CREATOR = new Parcelable.Creator<BookmarkBase>() { 
+        @Override
         public BookmarkBase createFromParcel(Parcel in) {
             return new BookmarkBase(in);
         }
 
-        /* JADX WARN: Can't rename method to resolve collision */
-        @Override // android.os.Parcelable.Creator
+        
+        @Override
         public BookmarkBase[] newArray(int size) {
             return new BookmarkBase[size];
         }
@@ -65,7 +65,7 @@ public class BookmarkBase implements Parcelable, Cloneable {
         this.debugSettings = new DebugSettings();
     }
 
-    /* JADX WARN: Multi-variable type inference failed */
+    
     @SuppressWarnings("unchecked") public <T extends BookmarkBase> T get()
     {
         return (T)this;
@@ -161,12 +161,12 @@ public class BookmarkBase implements Parcelable, Cloneable {
         return this.performanceFlags;
     }
 
-    @Override // android.os.Parcelable
+    @Override
     public int describeContents() {
         return 0;
     }
 
-    @Override // android.os.Parcelable
+    @Override
     public void writeToParcel(Parcel out, int flags) {
         out.writeInt(this.type);
         out.writeLong(this.id);
@@ -278,17 +278,15 @@ public class BookmarkBase implements Parcelable, Cloneable {
         }
     }
 
-    /* loaded from: classes5.dex */
+
     public static class PerformanceFlags implements Parcelable {
-        public static final Parcelable.Creator<PerformanceFlags> CREATOR = new Parcelable.Creator<PerformanceFlags>() { // from class: com.xiaomi.mslgrdp.domain.BookmarkBase.PerformanceFlags.1
-            /* JADX WARN: Can't rename method to resolve collision */
-            @Override // android.os.Parcelable.Creator
+        public static final Parcelable.Creator<PerformanceFlags> CREATOR = new Parcelable.Creator<PerformanceFlags>() { 
+            @Override
             public PerformanceFlags createFromParcel(Parcel in) {
                 return new PerformanceFlags(in);
             }
 
-            /* JADX WARN: Can't rename method to resolve collision */
-            @Override // android.os.Parcelable.Creator
+            @Override
             public PerformanceFlags[] newArray(int size) {
                 return new PerformanceFlags[size];
             }
@@ -399,12 +397,12 @@ public class BookmarkBase implements Parcelable, Cloneable {
             this.desktopComposition = desktopComposition;
         }
 
-        @Override // android.os.Parcelable
+        @Override
         public int describeContents() {
             return 0;
         }
 
-        @Override // android.os.Parcelable
+        @Override
         public void writeToParcel(Parcel out, int flags) {
             out.writeInt(this.remotefx ? 1 : 0);
             out.writeInt(this.gfx ? 1 : 0);
@@ -418,18 +416,16 @@ public class BookmarkBase implements Parcelable, Cloneable {
         }
     }
 
-    /* loaded from: classes5.dex */
+
     public static class ScreenSettings implements Parcelable {
         public static final int AUTOMATIC = -1;
-        public static final Parcelable.Creator<ScreenSettings> CREATOR = new Parcelable.Creator<ScreenSettings>() { // from class: com.xiaomi.mslgrdp.domain.BookmarkBase.ScreenSettings.1
-            /* JADX WARN: Can't rename method to resolve collision */
-            @Override // android.os.Parcelable.Creator
+        public static final Parcelable.Creator<ScreenSettings> CREATOR = new Parcelable.Creator<ScreenSettings>() { 
+            @Override
             public ScreenSettings createFromParcel(Parcel in) {
                 return new ScreenSettings(in);
             }
 
-            /* JADX WARN: Can't rename method to resolve collision */
-            @Override // android.os.Parcelable.Creator
+            @Override
             public ScreenSettings[] newArray(int size) {
                 return new ScreenSettings[size];
             }
@@ -579,12 +575,12 @@ public class BookmarkBase implements Parcelable, Cloneable {
             this.colors = colors;
         }
 
-        @Override // android.os.Parcelable
+        @Override
         public int describeContents() {
             return 0;
         }
 
-        @Override // android.os.Parcelable
+        @Override
         public void writeToParcel(Parcel out, int flags) {
             out.writeInt(this.resolution);
             out.writeInt(this.colors);
@@ -593,17 +589,15 @@ public class BookmarkBase implements Parcelable, Cloneable {
         }
     }
 
-    /* loaded from: classes5.dex */
+
     public static class DebugSettings implements Parcelable {
-        public static final Parcelable.Creator<DebugSettings> CREATOR = new Parcelable.Creator<DebugSettings>() { // from class: com.xiaomi.mslgrdp.domain.BookmarkBase.DebugSettings.1
-            /* JADX WARN: Can't rename method to resolve collision */
-            @Override // android.os.Parcelable.Creator
+        public static final Parcelable.Creator<DebugSettings> CREATOR = new Parcelable.Creator<DebugSettings>() { 
+            @Override
             public DebugSettings createFromParcel(Parcel in) {
                 return new DebugSettings(in);
             }
 
-            /* JADX WARN: Can't rename method to resolve collision */
-            @Override // android.os.Parcelable.Creator
+            @Override
             public DebugSettings[] newArray(int size) {
                 return new DebugSettings[size];
             }
@@ -677,12 +671,12 @@ public class BookmarkBase implements Parcelable, Cloneable {
             this.asyncChannel = enabled;
         }
 
-        @Override // android.os.Parcelable
+        @Override
         public int describeContents() {
             return 0;
         }
 
-        @Override // android.os.Parcelable
+        @Override
         public void writeToParcel(Parcel out, int flags) {
             out.writeInt(this.asyncChannel ? 1 : 0);
             out.writeInt(this.asyncTransport ? 1 : 0);
@@ -692,17 +686,15 @@ public class BookmarkBase implements Parcelable, Cloneable {
         }
     }
 
-    /* loaded from: classes5.dex */
+
     public static class AdvancedSettings implements Parcelable {
-        public static final Parcelable.Creator<AdvancedSettings> CREATOR = new Parcelable.Creator<AdvancedSettings>() { // from class: com.xiaomi.mslgrdp.domain.BookmarkBase.AdvancedSettings.1
-            /* JADX WARN: Can't rename method to resolve collision */
-            @Override // android.os.Parcelable.Creator
+        public static final Parcelable.Creator<AdvancedSettings> CREATOR = new Parcelable.Creator<AdvancedSettings>() { 
+            @Override
             public AdvancedSettings createFromParcel(Parcel in) {
                 return new AdvancedSettings(in);
             }
 
-            /* JADX WARN: Can't rename method to resolve collision */
-            @Override // android.os.Parcelable.Creator
+            @Override
             public AdvancedSettings[] newArray(int size) {
                 return new AdvancedSettings[size];
             }
@@ -852,12 +844,12 @@ public class BookmarkBase implements Parcelable, Cloneable {
             this.workDir = workDir;
         }
 
-        @Override // android.os.Parcelable
+        @Override
         public int describeContents() {
             return 0;
         }
 
-        @Override // android.os.Parcelable
+        @Override
         public void writeToParcel(Parcel out, int flags) {
             out.writeInt(this.enable3GSettings ? 1 : 0);
             out.writeParcelable(this.screen3G, flags);

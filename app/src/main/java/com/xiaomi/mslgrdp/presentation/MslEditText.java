@@ -29,7 +29,7 @@ public class MslEditText extends EditText {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
-    @Override // android.view.View
+    @Override
     public boolean dispatchKeyEventPreIme(KeyEvent event) {
         if (event.isCtrlPressed() && KeyboardMapperManager.getManager().getKeyboardMapper() != null) {
             return KeyboardMapperManager.getManager().getKeyboardMapper().processAndroidKeyEvent(event);
@@ -37,7 +37,7 @@ public class MslEditText extends EditText {
         return false;
     }
 
-    @Override // android.widget.TextView, android.view.View, android.view.KeyEvent.Callback
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ((keyCode == 66 || keyCode == 112 || keyCode == 19 || keyCode == 20 || keyCode == 22 || keyCode == 21) && KeyboardMapperManager.getManager().getKeyboardMapper() != null) {
             return KeyboardMapperManager.getManager().getKeyboardMapper().processAndroidKeyEvent(event);

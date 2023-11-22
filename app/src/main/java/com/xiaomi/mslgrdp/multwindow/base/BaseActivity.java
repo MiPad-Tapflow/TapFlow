@@ -18,8 +18,8 @@ public abstract class BaseActivity extends AppCompatActivity implements ISurface
     public Bitmap mBitmap;
     protected int windowId = -1;
 
-    /* JADX INFO: Access modifiers changed from: protected */
-    @Override // androidx.fragment.app.FragmentActivity, androidx.activity.ComponentActivity, androidx.core.app.ComponentActivity, android.app.Activity
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle("WPS Office");
@@ -28,22 +28,22 @@ public abstract class BaseActivity extends AppCompatActivity implements ISurface
         getWindow().addFlags(134217728);
     }
 
-    /* JADX INFO: Access modifiers changed from: protected */
-    @Override // androidx.fragment.app.FragmentActivity, android.app.Activity
+
+    @Override
     public void onResume() {
         super.onResume();
         View mDecor = getWindow().getDecorView();
         mDecor.setSystemUiVisibility(4098);
     }
 
-    @Override // androidx.appcompat.app.AppCompatActivity, androidx.fragment.app.FragmentActivity, android.app.Activity, android.content.ComponentCallbacks
+    @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         View mDecor = getWindow().getDecorView();
         mDecor.setSystemUiVisibility(4098);
     }
 
-    @Override // com.xiaomi.mslgrdp.multwindow.base.ISurface
+    @Override
     public void closeWindow(int windowId) {
         if (this instanceof LinuxWindowActivity) {
             MultiWindowManager.getManager().removeSurface(windowId);
@@ -61,8 +61,8 @@ public abstract class BaseActivity extends AppCompatActivity implements ISurface
         return null;
     }
 
-    /* JADX INFO: Access modifiers changed from: protected */
-    @Override // androidx.appcompat.app.AppCompatActivity, androidx.fragment.app.FragmentActivity, android.app.Activity
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
     }

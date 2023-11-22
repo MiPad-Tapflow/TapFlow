@@ -6,31 +6,31 @@ import android.os.Bundle;
 
 /* loaded from: classes5.dex */
 public class ActivityLifecycleCallbacksAdapter implements Application.ActivityLifecycleCallbacks {
-    @Override // android.app.Application.ActivityLifecycleCallbacks
+    @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
     }
 
-    @Override // android.app.Application.ActivityLifecycleCallbacks
+    @Override
     public void onActivityStarted(Activity activity) {
     }
 
-    @Override // android.app.Application.ActivityLifecycleCallbacks
+    @Override
     public void onActivityResumed(Activity activity) {
     }
 
-    @Override // android.app.Application.ActivityLifecycleCallbacks
+    @Override
     public void onActivityPaused(Activity activity) {
     }
 
-    @Override // android.app.Application.ActivityLifecycleCallbacks
+    @Override
     public void onActivityStopped(Activity activity) {
     }
 
-    @Override // android.app.Application.ActivityLifecycleCallbacks
+    @Override
     public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
     }
 
-    @Override // android.app.Application.ActivityLifecycleCallbacks
+    @Override
     public void onActivityDestroyed(Activity activity) {
     }
 }

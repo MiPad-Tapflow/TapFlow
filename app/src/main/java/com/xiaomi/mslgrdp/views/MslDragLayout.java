@@ -24,7 +24,7 @@ public class MslDragLayout extends FrameLayout {
     float originTop;
     private UpdateListener updateListener;
 
-    /* loaded from: classes5.dex */
+
     public interface UpdateListener {
         void onUpdate();
     }
@@ -44,7 +44,7 @@ public class MslDragLayout extends FrameLayout {
         this.isLongPress = false;
     }
 
-    @Override // android.view.View
+    @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
         this.child = getChildAt(0);
@@ -55,8 +55,7 @@ public class MslDragLayout extends FrameLayout {
         this.isFullScreen = isFullScreen;
     }
 
-    /* JADX WARN: Can't fix incorrect switch cases order, some code will duplicate */
-    @Override // android.view.View
+    @Override
     public boolean onTouchEvent(MotionEvent event) {
         UpdateListener updateListener;
         if (this.isFullScreen) {

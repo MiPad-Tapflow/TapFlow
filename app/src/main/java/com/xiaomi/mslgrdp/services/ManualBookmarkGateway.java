@@ -14,17 +14,17 @@ public class ManualBookmarkGateway extends BookmarkBaseGateway {
         super(bookmarkDB);
     }
 
-    @Override // com.xiaomi.mslgrdp.services.BookmarkBaseGateway
+    @Override
     protected BookmarkBase createBookmark() {
         return new ManualBookmark();
     }
 
-    @Override // com.xiaomi.mslgrdp.services.BookmarkBaseGateway
+    @Override
     protected String getBookmarkTableName() {
         return "tbl_manual_bookmarks";
     }
 
-    @Override // com.xiaomi.mslgrdp.services.BookmarkBaseGateway
+    @Override
     protected void addBookmarkSpecificColumns(BookmarkBase bookmark, ContentValues columns) {
         ManualBookmark bm = (ManualBookmark) bookmark;
         columns.put("hostname", bm.getHostname());
@@ -37,7 +37,7 @@ public class ManualBookmarkGateway extends BookmarkBaseGateway {
         columns.put("gateway_domain", bm.getGatewaySettings().getDomain());
     }
 
-    @Override // com.xiaomi.mslgrdp.services.BookmarkBaseGateway
+    @Override
     protected void addBookmarkSpecificColumns(ArrayList<String> columns) {
         columns.add("hostname");
         columns.add("port");
@@ -50,7 +50,7 @@ public class ManualBookmarkGateway extends BookmarkBaseGateway {
     }
 
     @SuppressLint("Range")
-    @Override // com.xiaomi.mslgrdp.services.BookmarkBaseGateway
+    @Override
     protected void readBookmarkSpecificColumns(BookmarkBase bookmark, Cursor cursor) {
         ManualBookmark bm = (ManualBookmark) bookmark;
         bm.setHostname(cursor.getString(cursor.getColumnIndex("hostname")));

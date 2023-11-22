@@ -182,7 +182,7 @@ public abstract class BookmarkBaseGateway {
         return bookmarks;
     }
 
-    /* JADX INFO: Access modifiers changed from: protected */
+
     public Cursor queryBookmarks(String whereClause, String orderBy) {
         ArrayList<String> columns = new ArrayList<>();
         addBookmarkColumns(columns);
@@ -256,7 +256,7 @@ public abstract class BookmarkBaseGateway {
         columns.add("join_performance_3g.perf_desktop_composition performanceDesktopComposition3G");
     }
 
-    /* JADX INFO: Access modifiers changed from: protected */
+
     @SuppressLint("Range")
     public BookmarkBase getBookmarkFromCursor(Cursor cursor) {
         BookmarkBase bookmark = createBookmark();

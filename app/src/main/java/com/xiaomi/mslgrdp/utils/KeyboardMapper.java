@@ -211,7 +211,7 @@ public class KeyboardMapper {
     private boolean isAltLocked = false;
     private boolean isWinLocked = false;
 
-    /* loaded from: classes5.dex */
+
     public interface KeyProcessingListener {
         void modifiersChanged();
 

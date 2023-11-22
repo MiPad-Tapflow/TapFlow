@@ -121,7 +121,7 @@ public class MslSessionActivity extends AppCompatActivity implements LibFreeRDP.
         return false;
     }
 
-    @Override // androidx.fragment.app.FragmentActivity, androidx.activity.ComponentActivity, androidx.core.app.ComponentActivity, android.app.Activity
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle("WPS Office");
@@ -139,8 +139,8 @@ public class MslSessionActivity extends AppCompatActivity implements LibFreeRDP.
         setFinishOnTouchOutside(false);
         Log.v(TAG, "Session.onCreate");
         final View activityRootView = findViewById(R.id.session_root_view);
-        activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() { // from class: com.xiaomi.mslgrdp.presentation.MslSessionActivity.1
-            @Override // android.view.ViewTreeObserver.OnGlobalLayoutListener
+        activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() { 
+            @Override
             public void onGlobalLayout() {
                 MslSessionActivity.this.screen_width = activityRootView.getWidth();
                 MslSessionActivity.this.screen_height = activityRootView.getHeight();
@@ -164,7 +164,6 @@ public class MslSessionActivity extends AppCompatActivity implements LibFreeRDP.
         View decorView = getWindow().getDecorView();
         this.mDecor = decorView;
         decorView.setSystemUiVisibility(4098);
-        //requestMyPermissions();
         HandlerThread thread = new HandlerThread("MslgRdpHandler");
         thread.start();
         thread.getLooper();
@@ -172,7 +171,6 @@ public class MslSessionActivity extends AppCompatActivity implements LibFreeRDP.
         startService(intent);
     }
 
-    /* JADX INFO: Access modifiers changed from: private */
     public void requestMyPermissions() {
         if (!Environment.isExternalStorageManager()) {
             createManagerDialogs();
@@ -188,8 +186,8 @@ public class MslSessionActivity extends AppCompatActivity implements LibFreeRDP.
         }
     }
 
-    /* JADX INFO: Access modifiers changed from: protected */
-    @Override // androidx.fragment.app.FragmentActivity, androidx.activity.ComponentActivity, android.app.Activity
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 100) {
@@ -204,7 +202,7 @@ public class MslSessionActivity extends AppCompatActivity implements LibFreeRDP.
         }
     }
 
-    @Override // androidx.fragment.app.FragmentActivity, androidx.activity.ComponentActivity, android.app.Activity
+    @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         Boolean sendDialog = false;
@@ -434,7 +432,6 @@ public class MslSessionActivity extends AppCompatActivity implements LibFreeRDP.
         return data;
     }
 
-    /* JADX WARN: Unsupported multi-entry loop pattern (BACK_EDGE: B:9:0x0020 -> B:25:0x0035). Please submit an issue!!! */
     public static String getPathFromInputStreamUri(Context context, Uri uri, String fileName) {
         InputStream inputStream = null;
         String filePath = null;
@@ -491,29 +488,29 @@ public class MslSessionActivity extends AppCompatActivity implements LibFreeRDP.
         return targetFile;
     }
 
-    /* JADX INFO: Access modifiers changed from: protected */
-    @Override // androidx.appcompat.app.AppCompatActivity, androidx.fragment.app.FragmentActivity, android.app.Activity
+
+    @Override
     public void onStart() {
         super.onStart();
         Log.v(TAG, "Session.onStart");
     }
 
-    @Override // android.app.Activity
+    @Override
     protected void onRestart() {
         super.onRestart();
         Log.v(TAG, "Session.onRestart");
     }
 
-    /* JADX INFO: Access modifiers changed from: protected */
-    @Override // androidx.fragment.app.FragmentActivity, android.app.Activity
+
+    @Override
     public void onNewIntent(Intent intent) {
         Log.v(TAG, "Session.onNewIntent");
         super.onNewIntent(intent);
         setIntent(intent);
     }
 
-    /* JADX INFO: Access modifiers changed from: protected */
-    @Override // androidx.fragment.app.FragmentActivity, android.app.Activity
+
+    @Override
     public void onResume() {
         super.onResume();
         D = Log.isLoggable("XIAOMI_MSLGRDP", Log.VERBOSE);
@@ -524,23 +521,23 @@ public class MslSessionActivity extends AppCompatActivity implements LibFreeRDP.
         isAlive = true;
     }
 
-    /* JADX INFO: Access modifiers changed from: protected */
-    @Override // androidx.fragment.app.FragmentActivity, android.app.Activity
+
+    @Override
     public void onPause() {
         super.onPause();
         Log.v(TAG, "Session.onPause");
         isExit = false;
     }
 
-    /* JADX INFO: Access modifiers changed from: protected */
-    @Override // androidx.appcompat.app.AppCompatActivity, androidx.fragment.app.FragmentActivity, android.app.Activity
+
+    @Override
     public void onStop() {
         super.onStop();
         Log.v(TAG, "Session.onStop");
     }
 
-    /* JADX INFO: Access modifiers changed from: protected */
-    @Override // androidx.appcompat.app.AppCompatActivity, androidx.fragment.app.FragmentActivity, android.app.Activity
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         Log.v(TAG, "Session.onDestroy");
@@ -559,7 +556,7 @@ public class MslSessionActivity extends AppCompatActivity implements LibFreeRDP.
         this.isOpenRequest = false;
     }
 
-    @Override // androidx.appcompat.app.AppCompatActivity, androidx.fragment.app.FragmentActivity, android.app.Activity, android.content.ComponentCallbacks
+    @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         this.mDecor.setSystemUiVisibility(4098);
@@ -651,7 +648,6 @@ public class MslSessionActivity extends AppCompatActivity implements LibFreeRDP.
         }
     }
 
-    /* JADX INFO: Access modifiers changed from: private */
     @SuppressLint("LogTagMismatch")
     public void processIntent(Intent intent) {
         Boolean isRootFs = Boolean.valueOf(intent.getBooleanExtra("StartFromMSLG", false));
@@ -679,7 +675,6 @@ public class MslSessionActivity extends AppCompatActivity implements LibFreeRDP.
         finish();
     }
 
-    /* JADX INFO: Access modifiers changed from: private */
     public void connect(int id) {
         BookmarkBase bookmark = GlobalApp.getManualBookmarkGateway().findById(id);
         BookmarkBase.AdvancedSettings advancedSettings = bookmark.getAdvancedSettings();
@@ -729,8 +724,8 @@ public class MslSessionActivity extends AppCompatActivity implements LibFreeRDP.
     private void connectWithTitle(String title) {
         Log.d(TAG, " connectWithTitle" + title);
         this.session.setUIEventListener(this);
-        Thread thread = new Thread(new Runnable() { // from class: com.xiaomi.mslgrdp.presentation.MslSessionActivity.2
-            @Override // java.lang.Runnable
+        Thread thread = new Thread(new Runnable() { 
+            @Override
             public void run() {
                 MslSessionActivity.this.session.connect(MslSessionActivity.this.getApplicationContext());
             }
@@ -738,20 +733,18 @@ public class MslSessionActivity extends AppCompatActivity implements LibFreeRDP.
         thread.start();
     }
 
-    /* JADX INFO: Access modifiers changed from: private */
     public void bindSession() {
         Log.v(TAG, "bindSession called");
         this.session.setUIEventListener(this);
         this.mDecor.setSystemUiVisibility(4098);
     }
 
-    /* JADX INFO: Access modifiers changed from: private */
     public void closeSessionActivity(int resultCode) {
         setResult(resultCode, getIntent());
         finish();
     }
 
-    @Override // com.freerdp.freerdpcore.services.LibFreeRDP.UIEventListener
+    @Override
     public void OnSettingsChanged(int width, int height, int bpp) {
         if (bpp > 16) {
             this.bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
@@ -762,7 +755,7 @@ public class MslSessionActivity extends AppCompatActivity implements LibFreeRDP.
         this.session.getBookmark();
     }
 
-    @Override // com.freerdp.freerdpcore.services.LibFreeRDP.UIEventListener
+    @Override
     public void OnGraphicsUpdate(int x, int y, int width, int height) {
         Log.v(TAG, "OnGraphicsUpdate: -----");
         this.uiHandler.sendEmptyMessage(1);
@@ -771,7 +764,7 @@ public class MslSessionActivity extends AppCompatActivity implements LibFreeRDP.
         }
     }
 
-    @Override // com.freerdp.freerdpcore.services.LibFreeRDP.UIEventListener
+    @Override
     public void OnGraphicsResize(int width, int height, int bpp) {
         if (bpp > 16) {
             this.bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
@@ -782,7 +775,7 @@ public class MslSessionActivity extends AppCompatActivity implements LibFreeRDP.
         this.uiHandler.sendEmptyMessage(6);
     }
 
-    @Override // com.freerdp.freerdpcore.services.LibFreeRDP.UIEventListener
+    @Override
     public boolean OnAuthenticate(StringBuilder username, StringBuilder domain, StringBuilder password) {
         this.callbackDialogResult = false;
         username.setLength(0);
@@ -791,7 +784,7 @@ public class MslSessionActivity extends AppCompatActivity implements LibFreeRDP.
         return this.callbackDialogResult;
     }
 
-    @Override // com.freerdp.freerdpcore.services.LibFreeRDP.UIEventListener
+    @Override
     public boolean OnGatewayAuthenticate(StringBuilder username, StringBuilder domain, StringBuilder password) {
         this.callbackDialogResult = false;
         username.setLength(0);
@@ -800,38 +793,38 @@ public class MslSessionActivity extends AppCompatActivity implements LibFreeRDP.
         return this.callbackDialogResult;
     }
 
-    @Override // com.freerdp.freerdpcore.services.LibFreeRDP.UIEventListener
+    @Override
     public int OnVerifiyCertificate(String commonName, String subject, String issuer, String fingerprint, boolean mismatch) {
         this.callbackDialogResult = false;
         return 0;
     }
 
-    @Override // com.freerdp.freerdpcore.services.LibFreeRDP.UIEventListener
+    @Override
     public int OnVerifyChangedCertificate(String commonName, String subject, String issuer, String fingerprint, String oldSubject, String oldIssuer, String oldFingerprint) {
         this.callbackDialogResult = false;
         return 0;
     }
 
-    @Override // com.freerdp.freerdpcore.services.LibFreeRDP.UIEventListener
+    @Override
     public void OnRemoteClipboardChanged(String data) {
         if (D) {
             Log.v(TAG, "OnRemoteClipboardChanged: " + data);
         }
     }
 
-    @Override // com.freerdp.freerdpcore.services.LibFreeRDP.UIEventListener
+    @Override
     public void OnRailChannelReady(boolean ready) {
         if (ready) {
             sendPath(false);
         }
     }
 
-    @Override // com.freerdp.freerdpcore.services.LibFreeRDP.UIEventListener
+    @Override
     public void OnMinimizeRequested(boolean minimized) {
         moveTaskToBack(true);
     }
 
-    @Override // com.freerdp.freerdpcore.services.LibFreeRDP.UIEventListener
+    @Override
     public void OnOpenwpsRequested(boolean openwps) {
         this.isOpenRequest = openwps;
         UIHandler uIHandler = this.uiHandler;
@@ -840,15 +833,15 @@ public class MslSessionActivity extends AppCompatActivity implements LibFreeRDP.
         }
     }
 
-    @Override // com.freerdp.freerdpcore.services.LibFreeRDP.UIEventListener
+    @Override
     public void OnGraphicsUpdateMultiWindow(long inst, int windowId, int x, int y, int width, int height, boolean isPopWindow, boolean isAlpha) {
     }
 
-    @Override // com.freerdp.freerdpcore.services.LibFreeRDP.UIEventListener
+    @Override
     public void OnUpdatePointerIcon(int width, int height, int hotSpotX, int hotSpotY) {
     }
 
-    @Override // android.app.Activity
+    @Override
     public boolean onGenericMotionEvent(MotionEvent e) {
         switch (e.getAction()) {
             case 8:
@@ -866,8 +859,7 @@ public class MslSessionActivity extends AppCompatActivity implements LibFreeRDP.
         return true;
     }
 
-    /* JADX INFO: Access modifiers changed from: private */
-    /* loaded from: classes5.dex */
+
     public class UIHandler extends Handler {
         public static final int CLEAR_TEXT = 8;
         public static final int CONNECT_RDP = 10;
@@ -881,7 +873,7 @@ public class MslSessionActivity extends AppCompatActivity implements LibFreeRDP.
         UIHandler() {
         }
 
-        @Override // android.os.Handler
+        @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 5:
@@ -917,12 +909,12 @@ public class MslSessionActivity extends AppCompatActivity implements LibFreeRDP.
         }
     }
 
-    /* loaded from: classes5.dex */
+
     private class LibFreeRDPBroadcastReceiver extends BroadcastReceiver {
         private LibFreeRDPBroadcastReceiver() {
         }
 
-        @Override // android.content.BroadcastReceiver
+        @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             if (!action.equals(GlobalApp.ACTION_EVENT_FREERDP) || MslSessionActivity.this.session == null || MslSessionActivity.this.session.getInstance() != intent.getExtras().getLong(GlobalApp.EVENT_PARAM, -1L)) {
@@ -967,7 +959,7 @@ public class MslSessionActivity extends AppCompatActivity implements LibFreeRDP.
         }
     }
 
-    @Override // android.app.Activity
+    @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == 0 && isOutOfBounds(this, event)) {
             backToHome();
@@ -1002,8 +994,8 @@ public class MslSessionActivity extends AppCompatActivity implements LibFreeRDP.
     }
 
     private void createManagerDialogs() {
-        this.dlgManagerRequset = new AlertDialog.Builder(this).setTitle(R.string.refuse_perssion).setMessage(R.string.dig_manager_message).setPositiveButton(R.string.allow_perssion, new DialogInterface.OnClickListener() { // from class: com.xiaomi.mslgrdp.presentation.MslSessionActivity.4
-            @Override // android.content.DialogInterface.OnClickListener
+        this.dlgManagerRequset = new AlertDialog.Builder(this).setTitle(R.string.refuse_perssion).setMessage(R.string.dig_manager_message).setPositiveButton(R.string.allow_perssion, new DialogInterface.OnClickListener() { 
+            @Override
             public void onClick(DialogInterface dialog, int which) {
                 synchronized (dialog) {
                     dialog.notify();
@@ -1012,8 +1004,8 @@ public class MslSessionActivity extends AppCompatActivity implements LibFreeRDP.
                     MslSessionActivity.this.startActivityForResult(intent, 100);
                 }
             }
-        }).setNegativeButton(R.string.cancek, new DialogInterface.OnClickListener() { // from class: com.xiaomi.mslgrdp.presentation.MslSessionActivity.3
-            @Override // android.content.DialogInterface.OnClickListener
+        }).setNegativeButton(R.string.cancek, new DialogInterface.OnClickListener() { 
+            @Override
             public void onClick(DialogInterface dialog, int which) {
                 synchronized (dialog) {
                     dialog.notify();
@@ -1024,8 +1016,8 @@ public class MslSessionActivity extends AppCompatActivity implements LibFreeRDP.
     }
 
     private void createDialogs() {
-        this.dlgPerssionRequsetRefuse = new AlertDialog.Builder(this).setTitle(R.string.refuse_perssion).setMessage(R.string.dig_message).setPositiveButton(R.string.setting, new DialogInterface.OnClickListener() { // from class: com.xiaomi.mslgrdp.presentation.MslSessionActivity.6
-            @Override // android.content.DialogInterface.OnClickListener
+        this.dlgPerssionRequsetRefuse = new AlertDialog.Builder(this).setTitle(R.string.refuse_perssion).setMessage(R.string.dig_message).setPositiveButton(R.string.setting, new DialogInterface.OnClickListener() { 
+            @Override
             public void onClick(DialogInterface dialog, int which) {
                 synchronized (dialog) {
                     dialog.notify();
@@ -1037,8 +1029,8 @@ public class MslSessionActivity extends AppCompatActivity implements LibFreeRDP.
                     MslSessionActivity.this.finish();
                 }
             }
-        }).setNegativeButton(R.string.cancek, new DialogInterface.OnClickListener() { // from class: com.xiaomi.mslgrdp.presentation.MslSessionActivity.5
-            @Override // android.content.DialogInterface.OnClickListener
+        }).setNegativeButton(R.string.cancek, new DialogInterface.OnClickListener() { 
+            @Override
             public void onClick(DialogInterface dialog, int which) {
                 synchronized (dialog) {
                     dialog.notify();
@@ -1046,16 +1038,16 @@ public class MslSessionActivity extends AppCompatActivity implements LibFreeRDP.
                 }
             }
         }).setCancelable(false).create();
-        this.dlgPerssionRequset = new AlertDialog.Builder(this).setTitle(R.string.refuse_perssion).setMessage(R.string.dig_message).setPositiveButton(R.string.retry_perssion, new DialogInterface.OnClickListener() { // from class: com.xiaomi.mslgrdp.presentation.MslSessionActivity.8
-            @Override // android.content.DialogInterface.OnClickListener
+        this.dlgPerssionRequset = new AlertDialog.Builder(this).setTitle(R.string.refuse_perssion).setMessage(R.string.dig_message).setPositiveButton(R.string.retry_perssion, new DialogInterface.OnClickListener() { 
+            @Override
             public void onClick(DialogInterface dialog, int which) {
                 synchronized (dialog) {
                     MslSessionActivity.this.requestMyPermissions();
                     dialog.notify();
                 }
             }
-        }).setNegativeButton(R.string.cancek, new DialogInterface.OnClickListener() { // from class: com.xiaomi.mslgrdp.presentation.MslSessionActivity.7
-            @Override // android.content.DialogInterface.OnClickListener
+        }).setNegativeButton(R.string.cancek, new DialogInterface.OnClickListener() { 
+            @Override
             public void onClick(DialogInterface dialog, int which) {
                 synchronized (dialog) {
                     dialog.notify();

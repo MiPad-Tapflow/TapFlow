@@ -35,7 +35,7 @@ public class GestureDetector {
     private boolean mStillDown;
     private int mTouchSlopSquare;
 
-    /* loaded from: classes5.dex */
+
     public interface OnDoubleTapListener {
         boolean onDoubleTap(MotionEvent motionEvent);
 
@@ -44,7 +44,7 @@ public class GestureDetector {
         boolean onSingleTapConfirmed(MotionEvent motionEvent);
     }
 
-    /* loaded from: classes5.dex */
+
     public interface OnGestureListener {
         boolean onDown(MotionEvent motionEvent);
 
@@ -269,43 +269,42 @@ public class GestureDetector {
         return false;
     }
 
-    /* JADX INFO: Access modifiers changed from: private */
     public void dispatchLongPress() {
         this.mHandler.removeMessages(3);
         this.mInLongPress = true;
         this.mListener.onLongPress(this.mCurrentDownEvent);
     }
 
-    /* loaded from: classes5.dex */
+
     public static class SimpleOnGestureListener implements OnGestureListener, OnDoubleTapListener {
-        @Override // com.xiaomi.mslgrdp.utils.GestureDetector.OnGestureListener
+        @Override
         public boolean onSingleTapUp(MotionEvent e) {
             return false;
         }
 
-        @Override // com.xiaomi.mslgrdp.utils.GestureDetector.OnGestureListener
+        @Override
         public void onLongPress(MotionEvent e) {
         }
 
-        @Override // com.xiaomi.mslgrdp.utils.GestureDetector.OnGestureListener
+        @Override
         public void onLongPressUp(MotionEvent e) {
         }
 
-        @Override // com.xiaomi.mslgrdp.utils.GestureDetector.OnGestureListener
+        @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
             return false;
         }
 
-        @Override // com.xiaomi.mslgrdp.utils.GestureDetector.OnGestureListener
+        @Override
         public void onShowPress(MotionEvent e) {
         }
 
-        @Override // com.xiaomi.mslgrdp.utils.GestureDetector.OnGestureListener
+        @Override
         public boolean onDown(MotionEvent e) {
             return false;
         }
 
-        @Override // com.xiaomi.mslgrdp.utils.GestureDetector.OnGestureListener
+        @Override
         public boolean onUp(MotionEvent e) {
             return false;
         }
@@ -314,18 +313,18 @@ public class GestureDetector {
             return false;
         }
 
-        @Override // com.xiaomi.mslgrdp.utils.GestureDetector.OnDoubleTapListener
+        @Override
         public boolean onDoubleTapEvent(MotionEvent e) {
             return false;
         }
 
-        @Override // com.xiaomi.mslgrdp.utils.GestureDetector.OnDoubleTapListener
+        @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
             return false;
         }
     }
 
-    /* loaded from: classes5.dex */
+
     private class GestureHandler extends Handler {
         GestureHandler() {
         }
@@ -334,7 +333,7 @@ public class GestureDetector {
             super(handler.getLooper());
         }
 
-        @Override // android.os.Handler
+        @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 1:

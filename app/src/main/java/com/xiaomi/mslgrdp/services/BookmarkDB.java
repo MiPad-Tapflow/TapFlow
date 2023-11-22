@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /* loaded from: classes5.dex */
@@ -66,61 +67,29 @@ public class BookmarkDB extends SQLiteOpenHelper {
         super(context, DB_NAME, (SQLiteDatabase.CursorFactory) null, 9);
     }
 
-    /* JADX WARN: Code restructure failed: missing block: B:13:0x0044, code lost:
-        if (r1 == null) goto L10;
-     */
-    /* JADX WARN: Code restructure failed: missing block: B:15:0x0047, code lost:
-        return r0;
-     */
-    /*
-        Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct code enable 'Show inconsistent code' option in preferences
-    */
-    private static java.util.List<java.lang.String> GetColumns(android.database.sqlite.SQLiteDatabase r4, java.lang.String r5) {
-        /*
-            r0 = 0
-            r1 = 0
-            java.lang.StringBuilder r2 = new java.lang.StringBuilder     // Catch: java.lang.Throwable -> L37 java.lang.Exception -> L39
-            r2.<init>()     // Catch: java.lang.Throwable -> L37 java.lang.Exception -> L39
-            java.lang.String r3 = "SELECT * FROM "
-            java.lang.StringBuilder r2 = r2.append(r3)     // Catch: java.lang.Throwable -> L37 java.lang.Exception -> L39
-            java.lang.StringBuilder r2 = r2.append(r5)     // Catch: java.lang.Throwable -> L37 java.lang.Exception -> L39
-            java.lang.String r3 = " LIMIT 1"
-            java.lang.StringBuilder r2 = r2.append(r3)     // Catch: java.lang.Throwable -> L37 java.lang.Exception -> L39
-            java.lang.String r2 = r2.toString()     // Catch: java.lang.Throwable -> L37 java.lang.Exception -> L39
-            r3 = 0
-            android.database.Cursor r2 = r4.rawQuery(r2, r3)     // Catch: java.lang.Throwable -> L37 java.lang.Exception -> L39
-            r1 = r2
-            if (r1 == 0) goto L31
-            java.util.ArrayList r2 = new java.util.ArrayList     // Catch: java.lang.Throwable -> L37 java.lang.Exception -> L39
-            java.lang.String[] r3 = r1.getColumnNames()     // Catch: java.lang.Throwable -> L37 java.lang.Exception -> L39
-            java.util.List r3 = java.util.Arrays.asList(r3)     // Catch: java.lang.Throwable -> L37 java.lang.Exception -> L39
-            r2.<init>(r3)     // Catch: java.lang.Throwable -> L37 java.lang.Exception -> L39
-            r0 = r2
-        L31:
-            if (r1 == 0) goto L47
-        L33:
-            r1.close()
-            goto L47
-        L37:
-            r2 = move-exception
-            goto L48
-        L39:
-            r2 = move-exception
-            java.lang.String r3 = r2.getMessage()     // Catch: java.lang.Throwable -> L37
-            android.util.Log.v(r5, r3, r2)     // Catch: java.lang.Throwable -> L37
-            r2.printStackTrace()     // Catch: java.lang.Throwable -> L37
-            if (r1 == 0) goto L47
-            goto L33
-        L47:
-            return r0
-        L48:
-            if (r1 == 0) goto L4d
-            r1.close()
-        L4d:
-            throw r2
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.xiaomi.mslgrdp.services.BookmarkDB.GetColumns(android.database.sqlite.SQLiteDatabase, java.lang.String):java.util.List");
+    private static List<String> GetColumns(SQLiteDatabase db, String tableName)
+    {
+        List<String> ar = null;
+        Cursor c = null;
+        try
+        {
+            c = db.rawQuery("SELECT * FROM " + tableName + " LIMIT 1", null);
+            if (c != null)
+            {
+                ar = new ArrayList<>(Arrays.asList(c.getColumnNames()));
+            }
+        }
+        catch (Exception e)
+        {
+            Log.v(tableName, e.getMessage(), e);
+            e.printStackTrace();
+        }
+        finally
+        {
+            if (c != null)
+                c.close();
+        }
+        return ar;
     }
 
     private static String joinStrings(List<String> list, String delim) {
@@ -300,7 +269,7 @@ public class BookmarkDB extends SQLiteOpenHelper {
         db.insert(DB_TABLE_BOOKMARK, null, bookmarkValues);
     }
 
-    @Override // android.database.sqlite.SQLiteOpenHelper
+    @Override
     public void onCreate(SQLiteDatabase db) {
         Log.d("BookmarkDB", " onCreate BookmarkDB ");
         createDB(db);
@@ -349,7 +318,7 @@ public class BookmarkDB extends SQLiteOpenHelper {
         }
     }
 
-    @Override // android.database.sqlite.SQLiteOpenHelper
+    @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         switch (oldVersion) {
             case 0:
@@ -370,7 +339,7 @@ public class BookmarkDB extends SQLiteOpenHelper {
         }
     }
 
-    @Override // android.database.sqlite.SQLiteOpenHelper
+    @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         downgradeDB(db);
     }

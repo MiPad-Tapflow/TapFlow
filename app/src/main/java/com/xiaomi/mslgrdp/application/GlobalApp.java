@@ -53,7 +53,7 @@ public class GlobalApp extends Application implements LibFreeRDP.EventListener {
         MultiWindowManager.getSessionManager().freeSession(instance);
     }
 
-    @Override // android.app.Application
+    @Override
     public void onCreate() {
 
         super.onCreate();
@@ -63,37 +63,37 @@ public class GlobalApp extends Application implements LibFreeRDP.EventListener {
         MultiWindowManager.getSessionManager().init(this);
     }
 
-    @Override // com.freerdp.freerdpcore.services.LibFreeRDP.EventListener
+    @Override
     public void OnPreConnect(long instance) {
         Log.v(TAG, "OnPreConnect. Init LinuxInputMethod.");
     }
 
-    @Override // com.freerdp.freerdpcore.services.LibFreeRDP.EventListener
+    @Override
     public void OnConnectionSuccess(long instance) {
         Log.v(TAG, "OnConnectionSuccess");
     }
 
-    @Override // com.freerdp.freerdpcore.services.LibFreeRDP.EventListener
+    @Override
     public void OnConnectionFailure(long instance) {
         Log.v(TAG, "OnConnectionFailure");
     }
 
-    @Override // com.freerdp.freerdpcore.services.LibFreeRDP.EventListener
+    @Override
     public void OnDisconnecting(long instance) {
         Log.v(TAG, "OnDisconnecting");
     }
 
-    @Override // com.freerdp.freerdpcore.services.LibFreeRDP.EventListener
+    @Override
     public void OnDisconnected(long instance) {
         Log.v(TAG, "OnDisconnected");
     }
 
-    /* loaded from: classes5.dex */
+
     private static class DisconnectTask extends TimerTask {
         private DisconnectTask() {
         }
 
-        @Override // java.util.TimerTask, java.lang.Runnable
+        @Override
         public void run() {
             Log.v("DisconnectTask", "Doing action");
             Collection<SessionState> sessions = GlobalApp.getSessions();
@@ -103,7 +103,7 @@ public class GlobalApp extends Application implements LibFreeRDP.EventListener {
         }
     }
 
-    @Override // android.app.Application
+    @Override
     public void onTerminate() {
         super.onTerminate();
         LinuxInputMethod.getInstance(this).dispose();

@@ -48,8 +48,8 @@ public class LinuxWindowPopWindow extends BasePopWindow {
         popWindow.setContentView(imageView);
         popWindow.init(context);
         imageView.setImageBitmap(popWindow.mBitmap);
-        popWindow.getContentView().setOnGenericMotionListener(new View.OnGenericMotionListener() { // from class: com.xiaomi.mslgrdp.multwindow.LinuxWindowPopWindow.1
-            @Override // android.view.View.OnGenericMotionListener
+        popWindow.getContentView().setOnGenericMotionListener(new View.OnGenericMotionListener() { 
+            @Override
             public boolean onGenericMotion(View v, MotionEvent event) {
                 View decorView = MultiWindowManager.getManager().getControllerDecorView();
                 if (decorView != null && event.getX() >= 0.0f && event.getY() >= 0.0f) {
@@ -70,8 +70,8 @@ public class LinuxWindowPopWindow extends BasePopWindow {
         ViewGroup decor = (ViewGroup) context.getWindow().getDecorView();
         View parent = decor.findViewById(android.R.id.content);
         popWindow.setTouchable(true);
-        popWindow.setTouchInterceptor(new View.OnTouchListener() { // from class: com.xiaomi.mslgrdp.multwindow.LinuxWindowPopWindow.2
-            @Override // android.view.View.OnTouchListener
+        popWindow.setTouchInterceptor(new View.OnTouchListener() { 
+            @Override
             public boolean onTouch(View v, MotionEvent event) {
                 View decorView = MultiWindowManager.getManager().getControllerDecorView();
                 if (decorView == null) {
@@ -89,7 +89,7 @@ public class LinuxWindowPopWindow extends BasePopWindow {
         return popWindow;
     }
 
-    @Override // com.xiaomi.mslgrdp.multwindow.base.BasePopWindow, com.xiaomi.mslgrdp.multwindow.base.ISurface
+    @Override
     public void updateWindow(int windowId, int x, int y, int width, int height) {
         if (this.surfaceInfo != null && (this.surfaceInfo.width != width || this.surfaceInfo.height != height)) {
             this.mBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
@@ -100,7 +100,7 @@ public class LinuxWindowPopWindow extends BasePopWindow {
         refreshContent();
     }
 
-    @Override // com.xiaomi.mslgrdp.multwindow.base.BasePopWindow, com.xiaomi.mslgrdp.multwindow.base.ISurface
+    @Override
     public void refreshContent() {
         ImageView imageView = (ImageView) getContentView();
         imageView.setImageBitmap(this.mBitmap);

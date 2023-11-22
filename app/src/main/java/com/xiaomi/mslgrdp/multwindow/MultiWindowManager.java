@@ -45,8 +45,8 @@ public class MultiWindowManager implements Module {
     public static final Object lock = new Object();
     private MultiWindowActivityLifecycleCallbacks activityLifecycleCallbacks = new MultiWindowActivityLifecycleCallbacks();
     private int mainWindowId = -1;
-    private Handler handler = new Handler(Looper.getMainLooper()) { // from class: com.xiaomi.mslgrdp.multwindow.MultiWindowManager.1
-        @Override // android.os.Handler
+    private Handler handler = new Handler(Looper.getMainLooper()) { 
+        @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case Constances.MSG_ADD_SURFACE_INFO /* 10000 */:
@@ -240,7 +240,6 @@ public class MultiWindowManager implements Module {
         return newBitmap;
     }
 
-    /* JADX INFO: Access modifiers changed from: private */
     public void showWindow(WeakReference<ISurface> surfaceWR, MslSurfaceInfo surfaceInfo, boolean update) {
         if (!update) {
             Log.v(TAG, "process addWindow---");
@@ -309,11 +308,11 @@ public class MultiWindowManager implements Module {
         return null;
     }
 
-    @Override // com.xiaomi.mslgrdp.multwindow.base.Module
+    @Override
     public void init() {
     }
 
-    @Override // com.xiaomi.mslgrdp.multwindow.base.Module
+    @Override
     public void destroy() {
         for (Map.Entry<String, Module> entry : modules.entrySet()) {
             entry.getValue().destroy();
@@ -323,14 +322,14 @@ public class MultiWindowManager implements Module {
         this.pendingCloseWindow.clear();
     }
 
-    /* loaded from: classes5.dex */
+
     class FreerdpUiEventListener extends FreerdpUIEventListenerAdapter {
         FreerdpUiEventListener() {
         }
     }
 
-    /* JADX INFO: Access modifiers changed from: package-private */
-    /* loaded from: classes5.dex */
+
+
     public class MultiWindowActivityLifecycleCallbacks extends ActivityLifecycleCallbacksAdapter {
         public int activityCount = 0;
         private WeakReference<Activity> mTopActivity;
@@ -342,26 +341,26 @@ public class MultiWindowManager implements Module {
             return this.mTopActivity.get();
         }
 
-        @Override // com.xiaomi.mslgrdp.multwindow.imp.ActivityLifecycleCallbacksAdapter, android.app.Application.ActivityLifecycleCallbacks
+        @Override
         public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
             this.mTopActivity = new WeakReference<>(activity);
             this.activityCount++;
         }
 
-        @Override // com.xiaomi.mslgrdp.multwindow.imp.ActivityLifecycleCallbacksAdapter, android.app.Application.ActivityLifecycleCallbacks
+        @Override
         public void onActivityResumed(Activity activity) {
             this.mTopActivity = new WeakReference<>(activity);
         }
 
-        @Override // com.xiaomi.mslgrdp.multwindow.imp.ActivityLifecycleCallbacksAdapter, android.app.Application.ActivityLifecycleCallbacks
+        @Override
         public void onActivityPaused(Activity activity) {
         }
 
-        @Override // com.xiaomi.mslgrdp.multwindow.imp.ActivityLifecycleCallbacksAdapter, android.app.Application.ActivityLifecycleCallbacks
+        @Override
         public void onActivityStopped(Activity activity) {
         }
 
-        @Override // com.xiaomi.mslgrdp.multwindow.imp.ActivityLifecycleCallbacksAdapter, android.app.Application.ActivityLifecycleCallbacks
+        @Override
         public void onActivityDestroyed(Activity activity) {
             this.activityCount--;
         }

@@ -68,7 +68,6 @@ public class SessionManager implements Module {
         this.app = new WeakReference<>(context);
     }
 
-    /* JADX INFO: Access modifiers changed from: private */
     public void sendRDPNotification(int type, long param) {
         Intent intent = new Intent(GlobalApp.ACTION_EVENT_FREERDP);
         intent.putExtra(GlobalApp.EVENT_TYPE, type);
@@ -79,11 +78,11 @@ public class SessionManager implements Module {
         }
     }
 
-    @Override // com.xiaomi.mslgrdp.multwindow.base.Module
+    @Override
     public void init() {
     }
 
-    @Override // com.xiaomi.mslgrdp.multwindow.base.Module
+    @Override
     public void destroy() {
         Collection<SessionState> sessions = GlobalApp.getSessions();
         for (SessionState session : sessions) {
@@ -93,31 +92,31 @@ public class SessionManager implements Module {
         sessions.clear();
     }
 
-    /* JADX INFO: Access modifiers changed from: package-private */
-    /* loaded from: classes5.dex */
+
+
     public class FreerdpConnectStateListener extends FreerdpEventListenerAdapter {
         FreerdpConnectStateListener() {
         }
 
-        @Override // com.xiaomi.mslgrdp.multwindow.imp.FreerdpEventListenerAdapter, com.freerdp.freerdpcore.services.LibFreeRDP.EventListener
+        @Override
         public void OnConnectionSuccess(long instance) {
             Log.v(SessionManager.TAG, "OnConnectionSuccess");
             SessionManager.this.sendRDPNotification(1, instance);
         }
 
-        @Override // com.xiaomi.mslgrdp.multwindow.imp.FreerdpEventListenerAdapter, com.freerdp.freerdpcore.services.LibFreeRDP.EventListener
+        @Override
         public void OnConnectionFailure(long instance) {
             Log.v(SessionManager.TAG, "OnConnectionFailure");
             SessionManager.this.sendRDPNotification(2, instance);
         }
 
-        @Override // com.xiaomi.mslgrdp.multwindow.imp.FreerdpEventListenerAdapter, com.freerdp.freerdpcore.services.LibFreeRDP.EventListener
+        @Override
         public void OnDisconnected(long instance) {
             Log.v(SessionManager.TAG, "OnDisconnected");
             SessionManager.this.sendRDPNotification(3, instance);
         }
 
-        @Override // com.xiaomi.mslgrdp.multwindow.imp.FreerdpEventListenerAdapter, com.freerdp.freerdpcore.services.LibFreeRDP.EventListener
+        @Override
         public void OnPreConnect(long instance) {
             super.OnPreConnect(instance);
             Log.v(SessionManager.TAG, "OnPreConnect");

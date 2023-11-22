@@ -60,12 +60,12 @@ public class KeyboardMapperManager {
         return this.keyboardMapper;
     }
 
-    /* loaded from: classes5.dex */
+
     class KeyboardProcessListener extends KeyProcessingListenerAdapter {
         KeyboardProcessListener() {
         }
 
-        @Override // com.xiaomi.mslgrdp.multwindow.imp.KeyProcessingListenerAdapter, com.xiaomi.mslgrdp.utils.KeyboardMapper.KeyProcessingListener
+        @Override
         public void processVirtualKey(int virtualKeyCode, boolean down) {
             if (MultiWindowManager.getSessionManager().getSessions().isEmpty()) {
                 return;
@@ -74,7 +74,7 @@ public class KeyboardMapperManager {
             LibFreeRDP.sendKeyEvent(session.getInstance(), virtualKeyCode, down);
         }
 
-        @Override // com.xiaomi.mslgrdp.multwindow.imp.KeyProcessingListenerAdapter, com.xiaomi.mslgrdp.utils.KeyboardMapper.KeyProcessingListener
+        @Override
         public void processUnicodeKey(int unicodeKey) {
             if (MultiWindowManager.getSessionManager().getSessions().isEmpty()) {
                 return;
@@ -84,7 +84,7 @@ public class KeyboardMapperManager {
             LibFreeRDP.sendUnicodeKeyEvent(session.getInstance(), unicodeKey, false);
         }
 
-        @Override // com.xiaomi.mslgrdp.multwindow.imp.KeyProcessingListenerAdapter, com.xiaomi.mslgrdp.utils.KeyboardMapper.KeyProcessingListener
+        @Override
         public void sendStringTo(String data) {
             if (KeyboardMapperManager.this.contextWeakReference != null && KeyboardMapperManager.this.contextWeakReference.get() != null) {
                 LinuxInputMethod.getInstance((Context) KeyboardMapperManager.this.contextWeakReference.get()).sendStringToLinux(data);
@@ -92,17 +92,17 @@ public class KeyboardMapperManager {
         }
     }
 
-    /* JADX INFO: Access modifiers changed from: package-private */
-    /* loaded from: classes5.dex */
+
+
     public class EditTextWatcher implements TextWatcher {
         EditTextWatcher() {
         }
 
-        @Override // android.text.TextWatcher
+        @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         }
 
-        @Override // android.text.TextWatcher
+        @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             int end = start + count;
             try {
@@ -136,7 +136,7 @@ public class KeyboardMapperManager {
             }
         }
 
-        @Override // android.text.TextWatcher
+        @Override
         public void afterTextChanged(Editable s) {
             if (KeyboardMapperManager.this.inputCount > 20) {
                 if (KeyboardMapperManager.this.mEditText != null) {

@@ -20,26 +20,26 @@ public class RunningStateService extends Service {
     private static final String TAG = "RunningStateService";
     private NotificationManager mNotificationManager;
 
-    @Override // android.app.Service
+    @Override
     public IBinder onBind(Intent intent) {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    @Override // android.app.Service
+    @Override
     public void onCreate() {
         super.onCreate();
         Log.d("RunningStateService", "onCreate ...");
         this.mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
     }
 
-    @Override // android.app.Service
+    @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d("RunningStateService", "startForeground ...");
         startForeground(NOTIFICATION_ID, configureNotification());
         return super.onStartCommand(intent, flags, startId);
     }
 
-    @Override // android.app.Service
+    @Override
     public void onDestroy() {
         super.onDestroy();
         Log.d("RunningStateService", "onDestroy ...");

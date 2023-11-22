@@ -24,7 +24,7 @@ public class LibFreeRDP {
     private static boolean mHasH264;
     private static final LongSparseArray<Boolean> mInstanceState = new LongSparseArray<>();
 
-    /* loaded from: classes5.dex */
+
     public interface EventListener {
         void OnConnectionFailure(long j);
 
@@ -37,7 +37,7 @@ public class LibFreeRDP {
         void OnPreConnect(long j);
     }
 
-    /* loaded from: classes5.dex */
+
     public interface UIEventListener {
         boolean OnAuthenticate(StringBuilder sb, StringBuilder sb2, StringBuilder sb3);
 
@@ -542,8 +542,8 @@ public class LibFreeRDP {
         if (s == null) {
             return;
         }
-        MultiWindowManager.getManager().runOnUiThread(new Runnable() { // from class: com.freerdp.freerdpcore.services.LibFreeRDP.1
-            @Override // java.lang.Runnable
+        MultiWindowManager.getManager().runOnUiThread(new Runnable() { 
+            @Override
             public void run() {
                 Log.v(MultiWindowManager.TAG, "onWindowClosed windowId = " + windowId);
                 MultiWindowManager.getManager().closeWindow(windowId);

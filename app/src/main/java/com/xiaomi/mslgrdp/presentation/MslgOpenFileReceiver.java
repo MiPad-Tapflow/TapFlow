@@ -8,7 +8,7 @@ import com.xiaomi.mslgrdp.multwindow.MultiWindowManager;
 
 /* loaded from: classes5.dex */
 public class MslgOpenFileReceiver extends BroadcastReceiver {
-    @Override // android.content.BroadcastReceiver
+    @Override
     public void onReceive(Context context, Intent intent) {
         Log.v("MslgOpenFileReceiver ", "onReceive -- " + intent.getAction());
         if (intent.getAction().equals("com.xiaomi.action.mslgopenextenfile.Broadcast")) {

@@ -27,7 +27,7 @@ public class DoubleGestureDetector {
     private int mScrollDetectionScore;
     private ScaleGestureDetector scaleGestureDetector;
 
-    /* loaded from: classes5.dex */
+
     public interface OnDoubleGestureListener {
         boolean onDoubleTouchDown(MotionEvent motionEvent);
 
@@ -187,8 +187,7 @@ public class DoubleGestureDetector {
         return distXSquare + distYSquare > this.mPointerDistanceSquare;
     }
 
-    /* JADX INFO: Access modifiers changed from: private */
-    /* loaded from: classes5.dex */
+
     public class GestureHandler extends Handler {
         GestureHandler() {
         }

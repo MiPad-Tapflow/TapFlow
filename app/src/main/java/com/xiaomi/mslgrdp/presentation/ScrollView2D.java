@@ -36,7 +36,7 @@ public class ScrollView2D extends FrameLayout {
     private boolean scrollEnabled;
     private ScrollView2DListener scrollView2DListener;
 
-    /* loaded from: classes5.dex */
+
     public interface ScrollView2DListener {
         void onScrollChanged(ScrollView2D scrollView2D, int i, int i2, int i3, int i4);
     }
@@ -74,7 +74,7 @@ public class ScrollView2D extends FrameLayout {
         initTwoDScrollView();
     }
 
-    @Override // android.view.View
+    @Override
     protected float getTopFadingEdgeStrength() {
         if (getChildCount() == 0) {
             return 0.0f;
@@ -86,7 +86,7 @@ public class ScrollView2D extends FrameLayout {
         return 1.0f;
     }
 
-    @Override // android.view.View
+    @Override
     protected float getBottomFadingEdgeStrength() {
         if (getChildCount() == 0) {
             return 0.0f;
@@ -100,7 +100,7 @@ public class ScrollView2D extends FrameLayout {
         return 1.0f;
     }
 
-    @Override // android.view.View
+    @Override
     protected float getLeftFadingEdgeStrength() {
         if (getChildCount() == 0) {
             return 0.0f;
@@ -112,7 +112,7 @@ public class ScrollView2D extends FrameLayout {
         return 1.0f;
     }
 
-    @Override // android.view.View
+    @Override
     protected float getRightFadingEdgeStrength() {
         if (getChildCount() == 0) {
             return 0.0f;
@@ -149,7 +149,7 @@ public class ScrollView2D extends FrameLayout {
         this.mMaximumVelocity = configuration.getScaledMaximumFlingVelocity();
     }
 
-    @Override // android.view.ViewGroup
+    @Override
     public void addView(View child) {
         if (getChildCount() > 0) {
             throw new IllegalStateException("TwoDScrollView can host only one direct child");
@@ -157,7 +157,7 @@ public class ScrollView2D extends FrameLayout {
         super.addView(child);
     }
 
-    @Override // android.view.ViewGroup
+    @Override
     public void addView(View child, int index) {
         if (getChildCount() > 0) {
             throw new IllegalStateException("TwoDScrollView can host only one direct child");
@@ -165,7 +165,7 @@ public class ScrollView2D extends FrameLayout {
         super.addView(child, index);
     }
 
-    @Override // android.view.ViewGroup, android.view.ViewManager
+    @Override
     public void addView(View child, ViewGroup.LayoutParams params) {
         if (getChildCount() > 0) {
             throw new IllegalStateException("TwoDScrollView can host only one direct child");
@@ -173,7 +173,7 @@ public class ScrollView2D extends FrameLayout {
         super.addView(child, params);
     }
 
-    @Override // android.view.ViewGroup
+    @Override
     public void addView(View child, int index, ViewGroup.LayoutParams params) {
         if (getChildCount() > 0) {
             throw new IllegalStateException("TwoDScrollView can host only one direct child");
@@ -191,7 +191,7 @@ public class ScrollView2D extends FrameLayout {
         return false;
     }
 
-    @Override // android.view.ViewGroup, android.view.View
+    @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         boolean handled = super.dispatchKeyEvent(event);
         if (handled) {
@@ -250,7 +250,7 @@ public class ScrollView2D extends FrameLayout {
         }
     }
 
-    @Override // android.view.ViewGroup
+    @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         int action = ev.getAction();
         if (action == 2 && this.mIsBeingDragged) {
@@ -284,7 +284,7 @@ public class ScrollView2D extends FrameLayout {
         return this.mIsBeingDragged;
     }
 
-    @Override // android.view.View
+    @Override
     public boolean onTouchEvent(MotionEvent ev) {
         if ((ev.getAction() != 0 || ev.getEdgeFlags() == 0) && canScroll()) {
             if (this.mVelocityTracker == null) {
@@ -546,19 +546,19 @@ public class ScrollView2D extends FrameLayout {
         smoothScrollBy(x - getScrollX(), y - getScrollY());
     }
 
-    @Override // android.view.View
+    @Override
     protected int computeVerticalScrollRange() {
         int count = getChildCount();
         return count == 0 ? getHeight() : getChildAt(0).getBottom();
     }
 
-    @Override // android.view.View
+    @Override
     protected int computeHorizontalScrollRange() {
         int count = getChildCount();
         return count == 0 ? getWidth() : getChildAt(0).getRight();
     }
 
-    @Override // android.view.ViewGroup
+    @Override
     protected void measureChild(View child, int parentWidthMeasureSpec, int parentHeightMeasureSpec) {
         ViewGroup.LayoutParams lp = child.getLayoutParams();
         int childWidthMeasureSpec = getChildMeasureSpec(parentWidthMeasureSpec, getPaddingLeft() + getPaddingRight(), lp.width);
@@ -566,7 +566,7 @@ public class ScrollView2D extends FrameLayout {
         child.measure(childWidthMeasureSpec, childHeightMeasureSpec);
     }
 
-    @Override // android.view.ViewGroup
+    @Override
     protected void measureChildWithMargins(View child, int parentWidthMeasureSpec, int widthUsed, int parentHeightMeasureSpec, int heightUsed) {
         ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
         int childWidthMeasureSpec = View.MeasureSpec.makeMeasureSpec(lp.leftMargin + lp.rightMargin, MeasureSpec.UNSPECIFIED);
@@ -574,7 +574,7 @@ public class ScrollView2D extends FrameLayout {
         child.measure(childWidthMeasureSpec, childHeightMeasureSpec);
     }
 
-    @Override // android.view.View
+    @Override
     public void computeScroll() {
         if (this.mScroller.computeScrollOffset()) {
             int oldX = getScrollX();
@@ -643,7 +643,7 @@ public class ScrollView2D extends FrameLayout {
         }
     }
 
-    @Override // android.view.ViewGroup, android.view.ViewParent
+    @Override
     public void requestChildFocus(View child, View focused) {
         if (!this.mTwoDScrollViewMovedFocus) {
             if (!this.mIsLayoutDirty) {
@@ -655,7 +655,7 @@ public class ScrollView2D extends FrameLayout {
         super.requestChildFocus(child, focused);
     }
 
-    @Override // android.view.ViewGroup
+    @Override
     protected boolean onRequestFocusInDescendants(int direction, Rect previouslyFocusedRect) {
         View nextFocus;
         if (direction == 2) {
@@ -674,19 +674,19 @@ public class ScrollView2D extends FrameLayout {
         return nextFocus.requestFocus(direction, previouslyFocusedRect);
     }
 
-    @Override // android.view.ViewGroup, android.view.ViewParent
+    @Override
     public boolean requestChildRectangleOnScreen(View child, Rect rectangle, boolean immediate) {
         rectangle.offset(child.getLeft() - child.getScrollX(), child.getTop() - child.getScrollY());
         return scrollToChildRect(rectangle, immediate);
     }
 
-    @Override // android.view.View, android.view.ViewParent
+    @Override
     public void requestLayout() {
         this.mIsLayoutDirty = true;
         super.requestLayout();
     }
 
-    @Override // android.widget.FrameLayout, android.view.ViewGroup, android.view.View
+    @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
         this.mIsLayoutDirty = false;
@@ -698,7 +698,7 @@ public class ScrollView2D extends FrameLayout {
         scrollTo(getScrollX(), getScrollY());
     }
 
-    @Override // android.view.View
+    @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         View currentFocused = findFocus();
@@ -755,7 +755,7 @@ public class ScrollView2D extends FrameLayout {
         }
     }
 
-    @Override // android.view.View
+    @Override
     public void scrollTo(int x, int y) {
         if (getChildCount() > 0) {
             View child = getChildAt(0);
@@ -781,7 +781,7 @@ public class ScrollView2D extends FrameLayout {
         this.scrollView2DListener = scrollViewListener;
     }
 
-    @Override // android.view.View
+    @Override
     protected void onScrollChanged(int x, int y, int oldx, int oldy) {
         super.onScrollChanged(x, y, oldx, oldy);
         ScrollView2DListener scrollView2DListener = this.scrollView2DListener;

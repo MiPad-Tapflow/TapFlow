@@ -9,17 +9,14 @@ import android.os.Parcelable;
 import com.freerdp.freerdpcore.services.LibFreeRDP;
 import com.xiaomi.mslgrdp.domain.BookmarkBase;
 
-/* loaded from: classes5.dex */
 public class SessionState implements Parcelable {
-    public static final Parcelable.Creator<SessionState> CREATOR = new Parcelable.Creator<SessionState>() { // from class: com.xiaomi.mslgrdp.application.SessionState.1
-        /* JADX WARN: Can't rename method to resolve collision */
-        @Override // android.os.Parcelable.Creator
+    public static final Parcelable.Creator<SessionState> CREATOR = new Parcelable.Creator<SessionState>() { 
+        @Override 
         public SessionState createFromParcel(Parcel in) {
             return new SessionState(in);
         }
 
-        /* JADX WARN: Can't rename method to resolve collision */
-        @Override // android.os.Parcelable.Creator
+        @Override 
         public SessionState[] newArray(int size) {
             return new SessionState[size];
         }
@@ -105,12 +102,12 @@ public class SessionState implements Parcelable {
         this.railChannelReady = ready;
     }
 
-    @Override // android.os.Parcelable
+    @Override
     public int describeContents() {
         return 0;
     }
 
-    @Override // android.os.Parcelable
+    @Override
     public void writeToParcel(Parcel out, int flags) {
         out.writeLong(this.instance);
         out.writeBoolean(this.railChannelReady);

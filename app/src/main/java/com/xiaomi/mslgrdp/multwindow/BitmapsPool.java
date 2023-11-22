@@ -29,11 +29,11 @@ public class BitmapsPool implements Module {
         }
     }
 
-    @Override // com.xiaomi.mslgrdp.multwindow.base.Module
+    @Override
     public void init() {
     }
 
-    @Override // com.xiaomi.mslgrdp.multwindow.base.Module
+    @Override
     public void destroy() {
         this.bitmaps.clear();
     }

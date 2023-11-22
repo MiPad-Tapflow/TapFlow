@@ -6,15 +6,15 @@ import android.os.Parcelable;
 
 /* loaded from: classes5.dex */
 public class ManualBookmark extends BookmarkBase {
-    public static final Parcelable.Creator<ManualBookmark> CREATOR = new Parcelable.Creator<ManualBookmark>() { // from class: com.xiaomi.mslgrdp.domain.ManualBookmark.1
-        /* JADX WARN: Can't rename method to resolve collision */
-        @Override // android.os.Parcelable.Creator
+    public static final Parcelable.Creator<ManualBookmark> CREATOR = new Parcelable.Creator<ManualBookmark>() { 
+        
+        @Override
         public ManualBookmark createFromParcel(Parcel in) {
             return new ManualBookmark(in);
         }
 
-        /* JADX WARN: Can't rename method to resolve collision */
-        @Override // android.os.Parcelable.Creator
+        
+        @Override
         public ManualBookmark[] newArray(int size) {
             return new ManualBookmark[size];
         }
@@ -77,12 +77,12 @@ public class ManualBookmark extends BookmarkBase {
         this.gatewaySettings = gatewaySettings;
     }
 
-    @Override // com.xiaomi.mslgrdp.domain.BookmarkBase, android.os.Parcelable
+    @Override
     public int describeContents() {
         return 0;
     }
 
-    @Override // com.xiaomi.mslgrdp.domain.BookmarkBase, android.os.Parcelable
+    @Override
     public void writeToParcel(Parcel out, int flags) {
         super.writeToParcel(out, flags);
         out.writeString(this.hostname);
@@ -91,7 +91,7 @@ public class ManualBookmark extends BookmarkBase {
         out.writeParcelable(this.gatewaySettings, flags);
     }
 
-    @Override // com.xiaomi.mslgrdp.domain.BookmarkBase
+    @Override
     public void writeToSharedPreferences(SharedPreferences sharedPrefs) {
         super.writeToSharedPreferences(sharedPrefs);
         SharedPreferences.Editor editor = sharedPrefs.edit();
@@ -106,7 +106,7 @@ public class ManualBookmark extends BookmarkBase {
         editor.commit();
     }
 
-    @Override // com.xiaomi.mslgrdp.domain.BookmarkBase
+    @Override
     public void readFromSharedPreferences(SharedPreferences sharedPrefs) {
         super.readFromSharedPreferences(sharedPrefs);
         this.hostname = sharedPrefs.getString("bookmark.hostname", "");
@@ -119,22 +119,20 @@ public class ManualBookmark extends BookmarkBase {
         this.gatewaySettings.setDomain(sharedPrefs.getString("bookmark.gateway_domain", ""));
     }
 
-    @Override // com.xiaomi.mslgrdp.domain.BookmarkBase
+    @Override
     public Object clone() {
         return super.clone();
     }
 
-    /* loaded from: classes5.dex */
+
     public static class GatewaySettings implements Parcelable {
-        public static final Parcelable.Creator<GatewaySettings> CREATOR = new Parcelable.Creator<GatewaySettings>() { // from class: com.xiaomi.mslgrdp.domain.ManualBookmark.GatewaySettings.1
-            /* JADX WARN: Can't rename method to resolve collision */
-            @Override // android.os.Parcelable.Creator
+        public static final Parcelable.Creator<GatewaySettings> CREATOR = new Parcelable.Creator<GatewaySettings>() { 
+            @Override
             public GatewaySettings createFromParcel(Parcel in) {
                 return new GatewaySettings(in);
             }
 
-            /* JADX WARN: Can't rename method to resolve collision */
-            @Override // android.os.Parcelable.Creator
+            @Override
             public GatewaySettings[] newArray(int size) {
                 return new GatewaySettings[size];
             }
@@ -201,12 +199,12 @@ public class ManualBookmark extends BookmarkBase {
             this.domain = domain;
         }
 
-        @Override // android.os.Parcelable
+        @Override
         public int describeContents() {
             return 0;
         }
 
-        @Override // android.os.Parcelable
+        @Override
         public void writeToParcel(Parcel out, int flags) {
             out.writeString(this.hostname);
             out.writeInt(this.port);

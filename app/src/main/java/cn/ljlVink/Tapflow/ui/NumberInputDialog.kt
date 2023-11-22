@@ -32,7 +32,6 @@ fun NumberInputDialog(onConfirm: (Int) ->  Unit, onDismiss: () -> Unit) {
             TextField(
                 value = inputValue,
                 onValueChange = {
-                    // 过滤非数字字符
                     inputValue = it.filter { char -> char.isDigit() }
                 },
                 keyboardOptions = KeyboardOptions.Default.copy(
@@ -46,7 +45,6 @@ fun NumberInputDialog(onConfirm: (Int) ->  Unit, onDismiss: () -> Unit) {
         confirmButton = {
             TextButton(
                 onClick = {
-                    // 确认按钮点击时，将数字传递给回调
                     if (inputValue.isNotEmpty()) {
                         onConfirm(inputValue.toInt())
                     }

@@ -154,7 +154,7 @@ public class SessionActivity extends BaseActivity implements LibFreeRDP.UIEventL
         return false;
     }
 
-    @Override // com.xiaomi.mslgrdp.multwindow.base.BaseActivity, androidx.fragment.app.FragmentActivity, androidx.activity.ComponentActivity, androidx.core.app.ComponentActivity, android.app.Activity
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (!getProperty(this.MSLGKEY).equals("1")) {
@@ -168,8 +168,8 @@ public class SessionActivity extends BaseActivity implements LibFreeRDP.UIEventL
         Log.v(TAG, "Session.onCreate");
         View findViewById = findViewById(R.id.session_root_view);
         this.activityRootView = findViewById;
-        findViewById.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() { // from class: com.xiaomi.mslgrdp.presentation.SessionActivity.1
-            @Override // android.view.ViewTreeObserver.OnGlobalLayoutListener
+        findViewById.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() { 
+            @Override
             public void onGlobalLayout() {
                 SessionActivity sessionActivity = SessionActivity.this;
                 sessionActivity.screen_width = sessionActivity.activityRootView.getWidth();
@@ -223,7 +223,7 @@ public class SessionActivity extends BaseActivity implements LibFreeRDP.UIEventL
 
     }
 
-    /* loaded from: classes5.dex */
+
     public final class MslgRdpHandler extends Handler {
         public static final int MSG_HOVER_MOVE = 100;
 
@@ -232,7 +232,7 @@ public class SessionActivity extends BaseActivity implements LibFreeRDP.UIEventL
             Log.i(SessionActivity.TAG, "MslgRdpHandler ");
         }
 
-        @Override // android.os.Handler
+        @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
@@ -255,7 +255,6 @@ public class SessionActivity extends BaseActivity implements LibFreeRDP.UIEventL
         }
     }
 
-    /* JADX INFO: Access modifiers changed from: private */
     public void requestMyPermissions() {
         this.isCheck = true;
         if (!Environment.isExternalStorageManager()) {
@@ -272,8 +271,8 @@ public class SessionActivity extends BaseActivity implements LibFreeRDP.UIEventL
         }
     }
 
-    /* JADX INFO: Access modifiers changed from: protected */
-    @Override // androidx.fragment.app.FragmentActivity, androidx.activity.ComponentActivity, android.app.Activity
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 100) {
@@ -288,7 +287,7 @@ public class SessionActivity extends BaseActivity implements LibFreeRDP.UIEventL
         }
     }
 
-    @Override // androidx.fragment.app.FragmentActivity, androidx.activity.ComponentActivity, android.app.Activity
+    @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         Boolean sendDialog = false;
@@ -564,29 +563,29 @@ public class SessionActivity extends BaseActivity implements LibFreeRDP.UIEventL
         return targetFile;
     }
 
-    /* JADX INFO: Access modifiers changed from: protected */
-    @Override // androidx.appcompat.app.AppCompatActivity, androidx.fragment.app.FragmentActivity, android.app.Activity
+
+    @Override
     public void onStart() {
         super.onStart();
         Log.v(TAG, "Session.onStart");
     }
 
-    @Override // android.app.Activity
+    @Override
     protected void onRestart() {
         super.onRestart();
         Log.v(TAG, "Session.onRestart");
     }
 
-    /* JADX INFO: Access modifiers changed from: protected */
-    @Override // androidx.fragment.app.FragmentActivity, android.app.Activity
+
+    @Override
     public void onNewIntent(Intent intent) {
         Log.v(TAG, "Session.onNewIntent");
         super.onNewIntent(intent);
         setIntent(intent);
     }
 
-    /* JADX INFO: Access modifiers changed from: protected */
-    @Override // com.xiaomi.mslgrdp.multwindow.base.BaseActivity, androidx.fragment.app.FragmentActivity, android.app.Activity
+
+    @Override
     public void onResume() {
         super.onResume();
         D = Log.isLoggable("XIAOMI_MSLGRDP", Log.VERBOSE);
@@ -612,23 +611,23 @@ public class SessionActivity extends BaseActivity implements LibFreeRDP.UIEventL
         this.activityRootView.setPointerIcon(pointerIcon);
     }
 
-    /* JADX INFO: Access modifiers changed from: protected */
-    @Override // androidx.fragment.app.FragmentActivity, android.app.Activity
+
+    @Override
     public void onPause() {
         super.onPause();
         Log.v(TAG, "Session.onPause");
         isExit = false;
     }
 
-    /* JADX INFO: Access modifiers changed from: protected */
-    @Override // androidx.appcompat.app.AppCompatActivity, androidx.fragment.app.FragmentActivity, android.app.Activity
+
+    @Override
     public void onStop() {
         super.onStop();
         Log.v(TAG, "Session.onStop");
     }
 
-    /* JADX INFO: Access modifiers changed from: protected */
-    @Override // com.xiaomi.mslgrdp.multwindow.base.BaseActivity, androidx.appcompat.app.AppCompatActivity, androidx.fragment.app.FragmentActivity, android.app.Activity
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         Log.v(TAG, "Session.onDestroy");
@@ -741,7 +740,6 @@ public class SessionActivity extends BaseActivity implements LibFreeRDP.UIEventL
         }
     }
 
-    /* JADX INFO: Access modifiers changed from: private */
     @SuppressLint("LogTagMismatch")
     public void processIntent(Intent intent) {
         Boolean isRootFs = true;
@@ -769,7 +767,6 @@ public class SessionActivity extends BaseActivity implements LibFreeRDP.UIEventL
         finish();
     }
 
-    /* JADX INFO: Access modifiers changed from: private */
     public void connect(int id) {
         BookmarkBase bookmark = GlobalApp.getManualBookmarkGateway().findById(id);
         BookmarkBase.AdvancedSettings advancedSettings = bookmark.getAdvancedSettings();
@@ -819,8 +816,8 @@ public class SessionActivity extends BaseActivity implements LibFreeRDP.UIEventL
     private void connectWithTitle(String title) {
         Log.d(TAG, " connectWithTitle" + title);
         this.session.setUIEventListener(this);
-        Thread thread = new Thread(new Runnable() { // from class: com.xiaomi.mslgrdp.presentation.SessionActivity.2
-            @Override // java.lang.Runnable
+        Thread thread = new Thread(new Runnable() { 
+            @Override
             public void run() {
                 SessionActivity.this.session.connect(SessionActivity.this.getApplicationContext());
             }
@@ -828,7 +825,6 @@ public class SessionActivity extends BaseActivity implements LibFreeRDP.UIEventL
         thread.start();
     }
 
-    /* JADX INFO: Access modifiers changed from: private */
     public void bindSession() {
         Log.v(TAG, "bindSession called");
         this.session.setUIEventListener(this);
@@ -836,7 +832,6 @@ public class SessionActivity extends BaseActivity implements LibFreeRDP.UIEventL
         this.scrollView.requestLayout();
     }
 
-    /* JADX INFO: Access modifiers changed from: private */
     public void hideSoftInput() {
         InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         if (mgr.isActive()) {
@@ -846,7 +841,6 @@ public class SessionActivity extends BaseActivity implements LibFreeRDP.UIEventL
         }
     }
 
-    /* JADX INFO: Access modifiers changed from: private */
     public void closeSessionActivity(int resultCode) {
         setResult(resultCode, getIntent());
         finish();
@@ -881,12 +875,12 @@ public class SessionActivity extends BaseActivity implements LibFreeRDP.UIEventL
         Toast.makeText(this, R.string.exit_app, Toast.LENGTH_SHORT).show();
     }
 
-    @Override // android.app.Activity, android.view.KeyEvent.Callback
+    @Override
     public boolean onKeyLongPress(int keyCode, KeyEvent event) {
         return super.onKeyLongPress(keyCode, event);
     }
 
-    @Override // androidx.appcompat.app.AppCompatActivity, android.app.Activity, android.view.KeyEvent.Callback
+    @Override
     public boolean onKeyDown(int keycode, KeyEvent event) {
         if (event.isMetaPressed()) {
             return true;
@@ -897,17 +891,17 @@ public class SessionActivity extends BaseActivity implements LibFreeRDP.UIEventL
         return this.keyboardMapper.processAndroidKeyEvent(event);
     }
 
-    @Override // android.app.Activity, android.view.KeyEvent.Callback
+    @Override
     public boolean onKeyUp(int keycode, KeyEvent event) {
         return this.keyboardMapper.processAndroidKeyEvent(event);
     }
 
-    @Override // android.app.Activity, android.view.KeyEvent.Callback
+    @Override
     public boolean onKeyMultiple(int keyCode, int repeatCount, KeyEvent event) {
         return this.keyboardMapper.processAndroidKeyEvent(event);
     }
 
-    @Override // com.freerdp.freerdpcore.services.LibFreeRDP.UIEventListener
+    @Override
     public void OnSettingsChanged(int width, int height, int bpp) {
         Log.v(TAG, "OnSettingsChanged --- ");
         if (bpp > 16) {
@@ -919,7 +913,7 @@ public class SessionActivity extends BaseActivity implements LibFreeRDP.UIEventL
         this.session.getBookmark();
     }
 
-    @Override // com.freerdp.freerdpcore.services.LibFreeRDP.UIEventListener
+    @Override
     public void OnGraphicsUpdate(int x, int y, int width, int height) {
     }
 
@@ -941,7 +935,7 @@ public class SessionActivity extends BaseActivity implements LibFreeRDP.UIEventL
         }
     }
 
-    @Override // com.freerdp.freerdpcore.services.LibFreeRDP.UIEventListener
+    @Override
     public void OnGraphicsUpdateMultiWindow(long inst, int windowId, int x, int y, int width, int height, boolean isPopWindow, boolean isAlpha) {
         if (windowId == 1) {
             return;
@@ -966,7 +960,7 @@ public class SessionActivity extends BaseActivity implements LibFreeRDP.UIEventL
         }
     }
 
-    @Override // com.freerdp.freerdpcore.services.LibFreeRDP.UIEventListener
+    @Override
     public void OnGraphicsResize(int width, int height, int bpp) {
         Log.v(TAG, "OnGraphicsResize --- ");
         if (bpp > 16) {
@@ -978,7 +972,7 @@ public class SessionActivity extends BaseActivity implements LibFreeRDP.UIEventL
         this.uiHandler.sendEmptyMessage(6);
     }
 
-    @Override // com.freerdp.freerdpcore.services.LibFreeRDP.UIEventListener
+    @Override
     public void OnUpdatePointerIcon(int width, int height, int hotSpotX, int hotSpotY) {
         PointerIcon pointerIcon;
         PointerIcon pointerIcon2;
@@ -1011,7 +1005,7 @@ public class SessionActivity extends BaseActivity implements LibFreeRDP.UIEventL
         this.uiHandler.sendMessage(Message.obtain(null, 11, pointerIcon));
     }
 
-    @Override // com.freerdp.freerdpcore.services.LibFreeRDP.UIEventListener
+    @Override
     public boolean OnAuthenticate(StringBuilder username, StringBuilder domain, StringBuilder password) {
         this.callbackDialogResult = false;
         username.setLength(0);
@@ -1020,7 +1014,7 @@ public class SessionActivity extends BaseActivity implements LibFreeRDP.UIEventL
         return this.callbackDialogResult;
     }
 
-    @Override // com.freerdp.freerdpcore.services.LibFreeRDP.UIEventListener
+    @Override
     public boolean OnGatewayAuthenticate(StringBuilder username, StringBuilder domain, StringBuilder password) {
         this.callbackDialogResult = false;
         username.setLength(0);
@@ -1029,19 +1023,19 @@ public class SessionActivity extends BaseActivity implements LibFreeRDP.UIEventL
         return this.callbackDialogResult;
     }
 
-    @Override // com.freerdp.freerdpcore.services.LibFreeRDP.UIEventListener
+    @Override
     public int OnVerifiyCertificate(String commonName, String subject, String issuer, String fingerprint, boolean mismatch) {
         this.callbackDialogResult = false;
         return 0;
     }
 
-    @Override // com.freerdp.freerdpcore.services.LibFreeRDP.UIEventListener
+    @Override
     public int OnVerifyChangedCertificate(String commonName, String subject, String issuer, String fingerprint, String oldSubject, String oldIssuer, String oldFingerprint) {
         this.callbackDialogResult = false;
         return 0;
     }
 
-    @Override // com.freerdp.freerdpcore.services.LibFreeRDP.UIEventListener
+    @Override
     public void OnRemoteClipboardChanged(String data) {
         UIHandler uIHandler;
         if (D) {
@@ -1053,19 +1047,19 @@ public class SessionActivity extends BaseActivity implements LibFreeRDP.UIEventL
         }
     }
 
-    @Override // com.freerdp.freerdpcore.services.LibFreeRDP.UIEventListener
+    @Override
     public void OnRailChannelReady(boolean ready) {
         if (ready) {
             sendPath(false, this.fileurl, this, this.session);
         }
     }
 
-    @Override // com.freerdp.freerdpcore.services.LibFreeRDP.UIEventListener
+    @Override
     public void OnMinimizeRequested(boolean minimized) {
         moveTaskToBack(true);
     }
 
-    @Override // com.freerdp.freerdpcore.services.LibFreeRDP.UIEventListener
+    @Override
     public void OnOpenwpsRequested(boolean openwps) {
         this.isOpenRequest = openwps;
         UIHandler uIHandler = this.uiHandler;
@@ -1074,21 +1068,21 @@ public class SessionActivity extends BaseActivity implements LibFreeRDP.UIEventL
         }
     }
 
-    @Override // com.xiaomi.mslgrdp.presentation.ScrollView2D.ScrollView2DListener
+    @Override
     public void onScrollChanged(ScrollView2D scrollView, int x, int y, int oldx, int oldy) {
     }
 
-    @Override // com.xiaomi.mslgrdp.presentation.SessionView.SessionViewListener
+    @Override
     public void onSessionViewBeginTouch() {
         this.scrollView.setScrollEnabled(false);
     }
 
-    @Override // com.xiaomi.mslgrdp.presentation.SessionView.SessionViewListener
+    @Override
     public void onSessionViewEndTouch() {
         this.scrollView.setScrollEnabled(true);
     }
 
-    @Override // com.xiaomi.mslgrdp.presentation.SessionView.SessionViewListener
+    @Override
     public void onSessionViewLeftTouch(int x, int y, boolean down) {
         if (!down) {
             cancelDelayedMoveEvent();
@@ -1103,29 +1097,28 @@ public class SessionActivity extends BaseActivity implements LibFreeRDP.UIEventL
         }
     }
 
-    @Override // com.xiaomi.mslgrdp.presentation.SessionView.SessionViewListener
+    @Override
     public void onSessionViewRightTouch(int x, int y, boolean down) {
         if (!down) {
             this.toggleMouseButtons = !this.toggleMouseButtons;
         }
     }
 
-    @Override // com.xiaomi.mslgrdp.presentation.SessionView.SessionViewListener
+    @Override
     public void onSessionViewMove(int x, int y) {
         sendDelayedMoveEvent(x, y);
     }
 
-    @Override // com.xiaomi.mslgrdp.presentation.SessionView.SessionViewListener
+    @Override
     public void onSessionViewScroll(boolean down, int touch_x, int touch_y, float y) {
         LibFreeRDP.sendCursorEvent(this.session.getInstance(), touch_x, touch_y, Mouse.getScrollEvent(this, down, y));
     }
 
-    @Override // com.xiaomi.mslgrdp.presentation.SessionView.SessionViewListener
+    @Override
     public void onSessionViewHScroll(boolean down, int touch_x, int touch_y, float x) {
         LibFreeRDP.sendCursorEvent(this.session.getInstance(), touch_x, touch_y, Mouse.getScrollEventH(this, down, x));
     }
 
-    /* JADX INFO: Access modifiers changed from: private */
     public Point mapScreenCoordToSessionCoord(int x, int y) {
         int mappedX = (int) ((this.scrollView.getScrollX() + x) / this.sessionView.getZoom());
         int mappedY = (int) ((this.scrollView.getScrollY() + y) / this.sessionView.getZoom());
@@ -1141,7 +1134,7 @@ public class SessionActivity extends BaseActivity implements LibFreeRDP.UIEventL
         return new Point(mappedX, mappedY);
     }
 
-    @Override // android.app.Activity
+    @Override
     public boolean onGenericMotionEvent(MotionEvent e) {
         switch (e.getAction()) {
             case 7:
@@ -1168,7 +1161,7 @@ public class SessionActivity extends BaseActivity implements LibFreeRDP.UIEventL
         return true;
     }
 
-    @Override // com.xiaomi.mslgrdp.utils.ClipboardManagerProxy.OnClipboardChangedListener
+    @Override
     public void onClipboardChanged(String data) {
         if (D) {
             Log.v(TAG, "onClipboardChanged: " + data);
@@ -1176,8 +1169,7 @@ public class SessionActivity extends BaseActivity implements LibFreeRDP.UIEventL
         LibFreeRDP.sendClipboardData(this.session.getInstance(), data);
     }
 
-    /* JADX INFO: Access modifiers changed from: private */
-    /* loaded from: classes5.dex */
+
     public class UIHandler extends Handler {
         public static final int CLEAR_TEXT = 8;
         public static final int CONNECT_RDP = 10;
@@ -1192,7 +1184,7 @@ public class SessionActivity extends BaseActivity implements LibFreeRDP.UIEventL
         UIHandler() {
         }
 
-        @Override // android.os.Handler
+        @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 1:
@@ -1257,7 +1249,7 @@ public class SessionActivity extends BaseActivity implements LibFreeRDP.UIEventL
         }
     }
 
-    /* loaded from: classes5.dex */
+
     private class PinchZoomListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
         private float scaleFactor;
 
@@ -1265,13 +1257,13 @@ public class SessionActivity extends BaseActivity implements LibFreeRDP.UIEventL
             this.scaleFactor = 1.0f;
         }
 
-        @Override // android.view.ScaleGestureDetector.SimpleOnScaleGestureListener, android.view.ScaleGestureDetector.OnScaleGestureListener
+        @Override
         public boolean onScaleBegin(ScaleGestureDetector detector) {
             SessionActivity.this.scrollView.setScrollEnabled(false);
             return true;
         }
 
-        @Override // android.view.ScaleGestureDetector.SimpleOnScaleGestureListener, android.view.ScaleGestureDetector.OnScaleGestureListener
+        @Override
         public boolean onScale(ScaleGestureDetector detector) {
             float scaleFactor = this.scaleFactor * detector.getScaleFactor();
             this.scaleFactor = scaleFactor;
@@ -1287,13 +1279,12 @@ public class SessionActivity extends BaseActivity implements LibFreeRDP.UIEventL
             return true;
         }
 
-        @Override // android.view.ScaleGestureDetector.SimpleOnScaleGestureListener, android.view.ScaleGestureDetector.OnScaleGestureListener
+        @Override
         public void onScaleEnd(ScaleGestureDetector de) {
             SessionActivity.this.scrollView.setScrollEnabled(true);
         }
     }
 
-    /* JADX INFO: Access modifiers changed from: private */
     public boolean isInputMethodShowing() {
         int screenHeight = getWindow().getDecorView().getHeight();
         Rect rect = new Rect();
@@ -1313,12 +1304,12 @@ public class SessionActivity extends BaseActivity implements LibFreeRDP.UIEventL
         return 0;
     }
 
-    /* loaded from: classes5.dex */
+
     private class LibFreeRDPBroadcastReceiver extends BroadcastReceiver {
         private LibFreeRDPBroadcastReceiver() {
         }
 
-        @Override // android.content.BroadcastReceiver
+        @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             if (action.equals(GlobalApp.ACTION_EVENT_FREERDP)) {
@@ -1379,7 +1370,7 @@ public class SessionActivity extends BaseActivity implements LibFreeRDP.UIEventL
         }
     }
 
-    @Override // android.app.Activity
+    @Override
     public boolean onTouchEvent(MotionEvent event) {
         return super.onTouchEvent(event);
     }
@@ -1394,8 +1385,8 @@ public class SessionActivity extends BaseActivity implements LibFreeRDP.UIEventL
     }
 
     private void createManagerDialogs() {
-        this.dlgManagerRequset = new AlertDialog.Builder(this).setTitle(R.string.refuse_perssion).setMessage(R.string.dig_manager_message).setPositiveButton(R.string.allow_perssion, new DialogInterface.OnClickListener() { // from class: com.xiaomi.mslgrdp.presentation.SessionActivity.4
-            @Override // android.content.DialogInterface.OnClickListener
+        this.dlgManagerRequset = new AlertDialog.Builder(this).setTitle(R.string.refuse_perssion).setMessage(R.string.dig_manager_message).setPositiveButton(R.string.allow_perssion, new DialogInterface.OnClickListener() { 
+            @Override
             public void onClick(DialogInterface dialog, int which) {
                 synchronized (dialog) {
                     dialog.notify();
@@ -1404,8 +1395,8 @@ public class SessionActivity extends BaseActivity implements LibFreeRDP.UIEventL
                     SessionActivity.this.startActivityForResult(intent, 100);
                 }
             }
-        }).setNegativeButton(R.string.cancek, new DialogInterface.OnClickListener() { // from class: com.xiaomi.mslgrdp.presentation.SessionActivity.3
-            @Override // android.content.DialogInterface.OnClickListener
+        }).setNegativeButton(R.string.cancek, new DialogInterface.OnClickListener() { 
+            @Override
             public void onClick(DialogInterface dialog, int which) {
                 synchronized (dialog) {
                     dialog.notify();
@@ -1416,8 +1407,8 @@ public class SessionActivity extends BaseActivity implements LibFreeRDP.UIEventL
     }
 
     private void createDialogs() {
-        this.dlgPerssionRequsetRefuse = new AlertDialog.Builder(this).setTitle(R.string.refuse_perssion).setMessage(R.string.dig_message).setPositiveButton(R.string.setting, new DialogInterface.OnClickListener() { // from class: com.xiaomi.mslgrdp.presentation.SessionActivity.6
-            @Override // android.content.DialogInterface.OnClickListener
+        this.dlgPerssionRequsetRefuse = new AlertDialog.Builder(this).setTitle(R.string.refuse_perssion).setMessage(R.string.dig_message).setPositiveButton(R.string.setting, new DialogInterface.OnClickListener() { 
+            @Override
             public void onClick(DialogInterface dialog, int which) {
                 synchronized (dialog) {
                     dialog.notify();
@@ -1429,8 +1420,8 @@ public class SessionActivity extends BaseActivity implements LibFreeRDP.UIEventL
                     SessionActivity.this.finish();
                 }
             }
-        }).setNegativeButton(R.string.cancek, new DialogInterface.OnClickListener() { // from class: com.xiaomi.mslgrdp.presentation.SessionActivity.5
-            @Override // android.content.DialogInterface.OnClickListener
+        }).setNegativeButton(R.string.cancek, new DialogInterface.OnClickListener() { 
+            @Override
             public void onClick(DialogInterface dialog, int which) {
                 synchronized (dialog) {
                     dialog.notify();
@@ -1438,16 +1429,16 @@ public class SessionActivity extends BaseActivity implements LibFreeRDP.UIEventL
                 }
             }
         }).setCancelable(false).create();
-        this.dlgPerssionRequset = new AlertDialog.Builder(this).setTitle(R.string.refuse_perssion).setMessage(R.string.dig_message).setPositiveButton(R.string.retry_perssion, new DialogInterface.OnClickListener() { // from class: com.xiaomi.mslgrdp.presentation.SessionActivity.8
-            @Override // android.content.DialogInterface.OnClickListener
+        this.dlgPerssionRequset = new AlertDialog.Builder(this).setTitle(R.string.refuse_perssion).setMessage(R.string.dig_message).setPositiveButton(R.string.retry_perssion, new DialogInterface.OnClickListener() { 
+            @Override
             public void onClick(DialogInterface dialog, int which) {
                 synchronized (dialog) {
                     SessionActivity.this.requestMyPermissions();
                     dialog.notify();
                 }
             }
-        }).setNegativeButton(R.string.cancek, new DialogInterface.OnClickListener() { // from class: com.xiaomi.mslgrdp.presentation.SessionActivity.7
-            @Override // android.content.DialogInterface.OnClickListener
+        }).setNegativeButton(R.string.cancek, new DialogInterface.OnClickListener() { 
+            @Override
             public void onClick(DialogInterface dialog, int which) {
                 synchronized (dialog) {
                     dialog.notify();

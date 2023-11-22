@@ -33,7 +33,7 @@ public class BasePopWindow extends PopupWindow implements ISurface {
         super(contentView, width, height, focusable);
     }
 
-    @Override // com.xiaomi.mslgrdp.multwindow.base.ISurface
+    @Override
     public void closeWindow(int windowId) {
         Log.v(MultiWindowManager.TAG, "popupWindow closeWindow windowId = " + windowId);
         dismiss();
@@ -46,7 +46,7 @@ public class BasePopWindow extends PopupWindow implements ISurface {
     public void refreshContent() {
     }
 
-    @Override // com.xiaomi.mslgrdp.multwindow.base.ISurface
+    @Override
     public Rect getRegion() {
         return null;
     }

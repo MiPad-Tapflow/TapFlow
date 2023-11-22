@@ -50,7 +50,7 @@ public class SessionView extends View {
     private int touchPointerPaddingWidth;
     private int width;
 
-    /* loaded from: classes5.dex */
+
     public interface SessionViewListener {
         void onSessionViewBeginTouch();
 
@@ -213,13 +213,13 @@ public class SessionView extends View {
         return this.touchPointerPaddingHeight;
     }
 
-    @Override // android.view.View
+    @Override
     public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         float f = this.scaleFactor;
         setMeasuredDimension(((int) (this.width * f)) + this.touchPointerPaddingWidth, ((int) (this.height * f)) + this.touchPointerPaddingHeight);
     }
 
-    @Override // android.view.View
+    @Override
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         canvas.save();
@@ -229,12 +229,11 @@ public class SessionView extends View {
         canvas.restore();
     }
 
-    @Override // android.view.View
+    @Override
     public boolean dispatchKeyEventPreIme(KeyEvent event) {
         return super.dispatchKeyEventPreIme(event);
     }
 
-    /* JADX INFO: Access modifiers changed from: private */
     public MotionEvent mapTouchEvent(MotionEvent event) {
         MotionEvent mappedEvent = MotionEvent.obtain(event);
         float[] coordinates = {mappedEvent.getX(), mappedEvent.getY()};
@@ -243,7 +242,6 @@ public class SessionView extends View {
         return mappedEvent;
     }
 
-    /* JADX INFO: Access modifiers changed from: private */
     public MotionEvent mapDoubleTouchEvent(MotionEvent event) {
         MotionEvent mappedEvent = MotionEvent.obtain(event);
         float[] coordinates = {(mappedEvent.getX(0) + mappedEvent.getX(1)) / 2.0f, (mappedEvent.getY(0) + mappedEvent.getY(1)) / 2.0f};
@@ -252,15 +250,14 @@ public class SessionView extends View {
         return mappedEvent;
     }
 
-    @Override // android.view.View
+    @Override
     public boolean onTouchEvent(MotionEvent event) {
         SessionActivity.isExit = false;
         boolean res = this.gestureDetector.onTouchEvent(event);
         return res | this.doubleGestureDetector.onTouchEvent(event);
     }
 
-    /* JADX INFO: Access modifiers changed from: private */
-    /* loaded from: classes5.dex */
+
     public class SessionGestureListener extends GestureDetector.SimpleOnGestureListener {
         boolean longPressInProgress;
         boolean mouseCliack;
@@ -270,7 +267,7 @@ public class SessionView extends View {
             this.mouseCliack = false;
         }
 
-        @Override // com.xiaomi.mslgrdp.utils.GestureDetector.SimpleOnGestureListener, com.xiaomi.mslgrdp.utils.GestureDetector.OnGestureListener
+        @Override
         public boolean onDown(MotionEvent e) {
             if (this.mouseCliack) {
                 this.mouseCliack = false;
@@ -284,7 +281,7 @@ public class SessionView extends View {
             return true;
         }
 
-        @Override // com.xiaomi.mslgrdp.utils.GestureDetector.SimpleOnGestureListener, com.xiaomi.mslgrdp.utils.GestureDetector.OnGestureListener
+        @Override
         public boolean onUp(MotionEvent e) {
             MotionEvent mappedEvent = SessionView.this.mapTouchEvent(e);
             if (SessionView.this.isLeftDown) {
@@ -306,7 +303,7 @@ public class SessionView extends View {
             return true;
         }
 
-        @Override // com.xiaomi.mslgrdp.utils.GestureDetector.SimpleOnGestureListener, com.xiaomi.mslgrdp.utils.GestureDetector.OnGestureListener
+        @Override
         public void onLongPress(MotionEvent e) {
             SessionView.this.mapTouchEvent(e);
             SessionView.this.sessionViewListener.onSessionViewBeginTouch();
@@ -314,7 +311,7 @@ public class SessionView extends View {
             this.longPressInProgress = true;
         }
 
-        @Override // com.xiaomi.mslgrdp.utils.GestureDetector.SimpleOnGestureListener, com.xiaomi.mslgrdp.utils.GestureDetector.OnGestureListener
+        @Override
         public void onLongPressUp(MotionEvent e) {
             MotionEvent mappedEvent = SessionView.this.mapTouchEvent(e);
             if (SessionView.this.isLeftDown) {
@@ -330,7 +327,7 @@ public class SessionView extends View {
             SessionView.this.sessionViewListener.onSessionViewEndTouch();
         }
 
-        @Override // com.xiaomi.mslgrdp.utils.GestureDetector.SimpleOnGestureListener, com.xiaomi.mslgrdp.utils.GestureDetector.OnGestureListener
+        @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
             if (!this.longPressInProgress) {
                 if (e1.getPointerCount() <= 0 || e1.getToolType(e1.getActionIndex()) != MotionEvent.TOOL_TYPE_MOUSE || e1.getButtonState() != 1) {
@@ -384,7 +381,7 @@ public class SessionView extends View {
             return false;
         }
 
-        @Override // com.xiaomi.mslgrdp.utils.GestureDetector.SimpleOnGestureListener, com.xiaomi.mslgrdp.utils.GestureDetector.OnDoubleTapListener
+        @Override
         public boolean onDoubleTap(MotionEvent e) {
             if (LinuxInputMethod.mInputActivate) {
                 InputMethodManager mgr = (InputMethodManager) SessionView.this.mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -399,7 +396,7 @@ public class SessionView extends View {
             return true;
         }
 
-        @Override // com.xiaomi.mslgrdp.utils.GestureDetector.SimpleOnGestureListener, com.xiaomi.mslgrdp.utils.GestureDetector.OnGestureListener
+        @Override
         public boolean onSingleTapUp(MotionEvent e) {
             MotionEvent mappedEvent = SessionView.this.mapTouchEvent(e);
             SessionView.this.sessionViewListener.onSessionViewBeginTouch();
@@ -418,8 +415,7 @@ public class SessionView extends View {
         }
     }
 
-    /* JADX INFO: Access modifiers changed from: private */
-    /* loaded from: classes5.dex */
+
     public class SessionDoubleGestureListener implements DoubleGestureDetector.OnDoubleGestureListener {
         private MotionEvent prevEvent;
 
@@ -427,14 +423,14 @@ public class SessionView extends View {
             this.prevEvent = null;
         }
 
-        @Override // com.xiaomi.mslgrdp.utils.DoubleGestureDetector.OnDoubleGestureListener
+        @Override
         public boolean onDoubleTouchDown(MotionEvent e) {
             SessionView.this.sessionViewListener.onSessionViewBeginTouch();
             this.prevEvent = MotionEvent.obtain(e);
             return true;
         }
 
-        @Override // com.xiaomi.mslgrdp.utils.DoubleGestureDetector.OnDoubleGestureListener
+        @Override
         public boolean onDoubleTouchUp(MotionEvent e) {
             MotionEvent motionEvent = this.prevEvent;
             if (motionEvent != null) {
@@ -445,7 +441,7 @@ public class SessionView extends View {
             return true;
         }
 
-        @Override // com.xiaomi.mslgrdp.utils.DoubleGestureDetector.OnDoubleGestureListener
+        @Override
         public boolean onDoubleTouchScroll(MotionEvent e1, MotionEvent e2) {
             float deltaY = e2.getY() - this.prevEvent.getY();
             float deltaX = e2.getX() - this.prevEvent.getX();
@@ -471,7 +467,7 @@ public class SessionView extends View {
             return true;
         }
 
-        @Override // com.xiaomi.mslgrdp.utils.DoubleGestureDetector.OnDoubleGestureListener
+        @Override
         public boolean onDoubleTouchSingleTap(MotionEvent e) {
             MotionEvent mappedEvent = SessionView.this.mapDoubleTouchEvent(e);
             SessionView.this.sessionViewListener.onSessionViewLeftTouch((int) mappedEvent.getX(), (int) mappedEvent.getY(), true);

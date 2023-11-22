@@ -28,8 +28,8 @@ public class LinuxWindowActivity extends BaseActivity {
     int windowId = -1;
     boolean isFullScreen = false;
 
-    /* JADX INFO: Access modifiers changed from: protected */
-    @Override // com.xiaomi.mslgrdp.multwindow.base.BaseActivity, androidx.fragment.app.FragmentActivity, androidx.activity.ComponentActivity, androidx.core.app.ComponentActivity, android.app.Activity
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.linux_window_layout);
@@ -66,8 +66,8 @@ public class LinuxWindowActivity extends BaseActivity {
             refreshContent();
             this.isFullScreen = Math.abs(this.surfaceInfo.width - Constances.SCREEN_WIDTH) < 10;
             this.container_layout.setFullScreen(this.isFullScreen);
-            this.container_layout.setUpdateLocationListener(new MslDragLayout.UpdateListener() { // from class: com.xiaomi.mslgrdp.multwindow.LinuxWindowActivity.1
-                @Override // com.xiaomi.mslgrdp.views.MslDragLayout.UpdateListener
+            this.container_layout.setUpdateLocationListener(new MslDragLayout.UpdateListener() { 
+                @Override
                 public void onUpdate() {
                     FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) LinuxWindowActivity.this.iv_content.getLayoutParams();
                     LinuxWindowActivity.this.left = params.leftMargin;
@@ -77,7 +77,7 @@ public class LinuxWindowActivity extends BaseActivity {
         }
     }
 
-    @Override // com.xiaomi.mslgrdp.multwindow.base.BaseActivity, com.xiaomi.mslgrdp.multwindow.base.ISurface
+    @Override
     public void refreshContent() {
         Log.v(MultiWindowManager.TAG, "refreshContent windowid = " + this.windowId + " surfaceInfo " + this.surfaceInfo);
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) this.iv_content.getLayoutParams();
@@ -95,7 +95,7 @@ public class LinuxWindowActivity extends BaseActivity {
         region.set(x, y, x + width, y + height);
     }
 
-    @Override // com.xiaomi.mslgrdp.multwindow.base.BaseActivity, com.xiaomi.mslgrdp.multwindow.base.ISurface
+    @Override
     public void updateWindow(int windowId, int x, int y, int width, int height) {
         MslSurfaceInfo mslSurfaceInfo = this.surfaceInfo;
         if (mslSurfaceInfo != null) {
@@ -114,12 +114,12 @@ public class LinuxWindowActivity extends BaseActivity {
         }
     }
 
-    @Override // com.xiaomi.mslgrdp.multwindow.base.BaseActivity, com.xiaomi.mslgrdp.multwindow.base.ISurface
+    @Override
     public Rect getRegion() {
         return region;
     }
 
-    @Override // android.app.Activity, android.view.Window.Callback
+    @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         boolean result = super.dispatchTouchEvent(ev);
         if (MultiWindowManager.isDragging.get()) {
@@ -158,18 +158,18 @@ public class LinuxWindowActivity extends BaseActivity {
         return false;
     }
 
-    @Override // android.app.Activity
+    @Override
     public boolean onTouchEvent(MotionEvent event) {
         return super.onTouchEvent(event);
     }
 
-    @Override // androidx.appcompat.app.AppCompatActivity, androidx.core.app.ComponentActivity, android.app.Activity, android.view.Window.Callback
+    @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         View decorView = MultiWindowManager.getManager().getControllerDecorView();
         return decorView == null ? super.dispatchKeyEvent(event) : decorView.dispatchKeyEvent(event);
     }
 
-    @Override // android.app.Activity, android.view.Window.Callback
+    @Override
     public boolean dispatchGenericMotionEvent(MotionEvent ev) {
         View decorView = MultiWindowManager.getManager().getControllerDecorView();
         if (decorView != null && ev.getX() >= 0.0f && ev.getY() >= 0.0f) {
