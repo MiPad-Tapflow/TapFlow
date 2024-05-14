@@ -3,7 +3,6 @@ package cn.ljlVink.Tapflow.util
 import android.content.Context
 import android.content.pm.PackageManager
 import android.util.Log
-import androidx.compose.runtime.Composable
 import cn.ljlVink.Tapflow.FileSystemInfo
 import com.hjq.permissions.OnPermissionCallback
 import com.hjq.permissions.Permission
@@ -49,36 +48,6 @@ class utils {
         }else{
             "未安装"
         }
-    }
-    fun parseFileSystemInfo(part: String): FileSystemInfo? {
-        if(part==""){
-            return null
-        }
-        Log.e("sf",part)
-        val result = Shell.cmd("df -h "+part).exec()
-        val code = result.getCode()
-        var detailed =""
-        if (code == 0) {
-            val outarray = result.getOut()
-            for (values in outarray){
-                detailed+=values
-            }
-        }else{
-            return null
-        }
-        Log.e("sf",detailed)
-        val parts = detailed.split(Regex("\\s+"))
-        if (parts.size >= 7) {
-            val part=parts[6].substringAfter("on")
-            val size = parts[7]
-            val used = parts[8]
-            val avail = parts[9]
-            val usePercentage = parts[10].removeSuffix("%").toFloatOrNull() ?: 0f
-            val use = usePercentage / 100f
-            val usestr=parts[10]
-            return FileSystemInfo(part,size, used, avail, use,usestr)
-        }
-        return null
     }
     fun getState(): Int {
         val result = Shell.cmd("cat /dev/Tapflow/current").exec()

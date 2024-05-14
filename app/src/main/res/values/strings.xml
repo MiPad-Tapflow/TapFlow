@@ -7,8 +7,6 @@
     <string name="rootfs_ver">rootfs版本</string>
     <string name="is_mounted_rootfs">mslg是否启动</string>
     <string name="root_required">需要授权ROOT权限</string>
-    <string name="mount_losetup_opt">/opt分区挂载位置</string>
-    <string name="mount_losetup_usr">/usr分区挂载位置</string>
     <string name="mount_df_opt">/opt分区占用</string>
     <string name="mount_df_usr">/usr分区占用</string>
     <string name="partition_manage">分区管理</string>
@@ -23,7 +21,7 @@
     <string name="selinux_enforcing">强制执行</string>
     <string name="selinux_permissive">宽容模式</string>
     <string name="start_mslg">启动mslg(测试)</string>
-
+    <string name="start_prop">手动修改prop为启动</string>
 
     <string name="refuse_perssion">Hello</string>
     <string name="cancek">No，Thanks</string>
