@@ -94,11 +94,11 @@ public class MultiWindowManager implements Module, ClipboardManagerProxy.OnClipb
                 default:
                     return;
                 case Constances.MSG_LONG_PRESS /* 10005 */:
-                    MslgLogger.LOGD("MslDragLayout", "long press true", false);
+                    MslgLogger.LOGD("MslDragLayout.smali", "long press true", false);
                     MultiWindowManager.isDragging.set(true);
                     return;
                 case Constances.MSG_UOPDATE_MOUSE_ICON /* 10006 */:
-                    MslgLogger.LOGD("MslDragLayout", "MSG_UOPDATE_MOUSE_ICON" + (MultiWindowManager.this.pointerIcon == null), false);
+                    MslgLogger.LOGD("MslDragLayout.smali", "MSG_UOPDATE_MOUSE_ICON" + (MultiWindowManager.this.pointerIcon == null), false);
                     Activity top = MultiWindowManager.this.activityLifecycleCallbacks.getTopActivity();
                     LinuxVirtualActivity linuxVirtualActivity = (LinuxVirtualActivity) top;
                     linuxVirtualActivity.setPointerIcon(MultiWindowManager.this.pointerIcon);

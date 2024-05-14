@@ -214,7 +214,7 @@ public class LinuxVirtualActivity extends BaseActivity implements SessionView.Se
                 this.container_layout.setDragView(this.iv_content, this.surfaceInfo);
                 this.container_layout.setFullScreen(isFullScreen);
                 this.container_layout.setUpdateLocationListener(new MslDragLayout.UpdateListener() { // from class: com.xiaomi.mslgrdp.presentation.LinuxVirtualActivity.1
-                    @Override // com.xiaomi.mslgrdp.views.MslDragLayout.UpdateListener
+                    @Override // com.xiaomi.mslgrdp.views.MslDragLayout.smali.UpdateListener
                     public void onUpdate() {
                         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) LinuxVirtualActivity.this.iv_content.getLayoutParams();
                         LinuxVirtualActivity.this.left = params.leftMargin;

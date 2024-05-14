@@ -72,7 +72,7 @@
             android:windowSoftInputMode="adjustResize|stateHidden"
             android:resizeableActivity="false"/>
         <activity
-            android:theme="@style/Theme.Tapflow"
+            android:theme="@style/ThemeMainTransparent"
             android:label="@string/caj_app_name"
             android:icon="@drawable/ic_launcher_foreground"
             android:name="com.xiaomi.mslgrdp.presentation.CAJSplashActivity"
@@ -117,7 +117,7 @@
             android:windowSoftInputMode="adjustResize|stateHidden"
             android:resizeableActivity="false"/>
         <activity
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:theme="@style/ThemeMainTransparent"
             android:label="WPS splash activity"
             android:icon="@drawable/ic_launcher_foreground"
             android:name="com.xiaomi.mslgrdp.presentation.WPSSplashActivity"
@@ -142,7 +142,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:theme="@style/ThemeMainTransparent"
             android:label="WPSDialogActivity"
             android:icon="@drawable/ic_launcher_foreground"
             android:name="com.xiaomi.mslgrdp.presentation.WPSDialogActivity"
@@ -154,7 +154,7 @@
             android:windowSoftInputMode="adjustResize|stateHidden"
             android:resizeableActivity="false"/>
         <activity
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:theme="@style/ThemeMainTransparent"
             android:label="@string/caj_app_name"
             android:icon="@drawable/ic_launcher_foreground"
             android:name="com.xiaomi.mslgrdp.presentation.CajDialogActivity"

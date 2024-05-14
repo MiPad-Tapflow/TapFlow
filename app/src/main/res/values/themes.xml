@@ -28,5 +28,15 @@
         <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
         <item name="android:actionBarSize">80px</item>
     </style>
-
+    <style name="ThemeMainTransparent" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:actionBarSize">80px</item>
+        <item name="colorAccent">@color/translucent</item>
+        <item name="colorPrimary">@color/transparent</item>
+        <item name="colorPrimaryDark">@color/transparent</item>
+    </style>
 </resources>

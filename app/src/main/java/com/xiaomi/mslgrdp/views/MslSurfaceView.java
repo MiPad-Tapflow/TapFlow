@@ -50,7 +50,7 @@ public class MslSurfaceView extends SurfaceView implements SurfaceHolder.Callbac
         }
     }
 
-    @Override // android.view.SurfaceHolder.Callback
+    @Override
     public void surfaceCreated(SurfaceHolder holder) {
         MslgLogger.LOGD(TAG, "surfaceCreated---", false);
         this.holder = holder;
@@ -61,8 +61,8 @@ public class MslSurfaceView extends SurfaceView implements SurfaceHolder.Callbac
     private void drawBuffer(final SurfaceHolder holder) {
         SurfaceHandlerThread surfaceHandlerThread = this.handlerThread;
         if (surfaceHandlerThread != null) {
-            surfaceHandlerThread.post(new Runnable() { // from class: com.xiaomi.mslgrdp.views.MslSurfaceView.1
-                @Override // java.lang.Runnable
+            surfaceHandlerThread.post(new Runnable() {
+                @Override
                 public void run() {
                     MslSurfaceView.this.drawImage(holder);
                 }
@@ -70,7 +70,7 @@ public class MslSurfaceView extends SurfaceView implements SurfaceHolder.Callbac
         }
     }
 
-    @Override // android.view.SurfaceView, android.view.View
+    @Override
     protected void onDetachedFromWindow() {
         SurfaceHandlerThread surfaceHandlerThread = this.handlerThread;
         if (surfaceHandlerThread != null && surfaceHandlerThread.isAlive()) {
@@ -84,7 +84,6 @@ public class MslSurfaceView extends SurfaceView implements SurfaceHolder.Callbac
         super.onDetachedFromWindow();
     }
 
-    /* JADX INFO: Access modifiers changed from: private */
     public void drawImage(SurfaceHolder holder) {
         Canvas canvas;
         if (this.mBitmap != null && holder != null && (canvas = holder.lockHardwareCanvas()) != null) {
@@ -93,12 +92,12 @@ public class MslSurfaceView extends SurfaceView implements SurfaceHolder.Callbac
         }
     }
 
-    @Override // android.view.SurfaceHolder.Callback
+    @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
         MslgLogger.LOGD(TAG, "surfaceChanged---", false);
     }
 
-    @Override // android.view.SurfaceHolder.Callback
+    @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         MslgLogger.LOGD(TAG, "surfaceDestroyed---", false);
         this.isSurfaceCreated = false;
