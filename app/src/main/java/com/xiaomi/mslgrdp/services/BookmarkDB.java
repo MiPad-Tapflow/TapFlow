@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/* loaded from: classes5.dex */
 public class BookmarkDB extends SQLiteOpenHelper {
     private static final String DB_BACKUP_PREFIX = "temp_";
     static final String DB_KEY_BOOKMARK_3G_ENABLE = "enable_3g_settings";
@@ -105,7 +104,6 @@ public class BookmarkDB extends SQLiteOpenHelper {
     }
 
     private void backupTables(SQLiteDatabase db) {
-        String[] strArr;
         for (String table : DB_TABLES) {
             String tmpTable = DB_BACKUP_PREFIX + table;
             String query = "ALTER TABLE '" + table + "' RENAME TO '" + tmpTable + "'";
@@ -117,7 +115,6 @@ public class BookmarkDB extends SQLiteOpenHelper {
     }
 
     private void dropOldTables(SQLiteDatabase db) {
-        String[] strArr;
         for (String table : DB_TABLES) {
             String tmpTable = DB_BACKUP_PREFIX + table;
             String query = "DROP TABLE IF EXISTS '" + tmpTable + "'";
@@ -133,7 +130,6 @@ public class BookmarkDB extends SQLiteOpenHelper {
     }
 
     private void upgradeTables(SQLiteDatabase db) {
-        String[] strArr;
         for (String table : DB_TABLES) {
             String tmpTable = DB_BACKUP_PREFIX + table;
             List<String> newColumns = GetColumns(db, table);
@@ -148,7 +144,6 @@ public class BookmarkDB extends SQLiteOpenHelper {
     }
 
     private void downgradeTables(SQLiteDatabase db) {
-        String[] strArr;
         for (String table : DB_TABLES) {
             String tmpTable = DB_BACKUP_PREFIX + table;
             List<String> oldColumns = GetColumns(db, table);

@@ -1,6 +1,7 @@
 package cn.ljlVink.Tapflow
 
 import android.app.Application
+import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -43,18 +44,15 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import cn.ljlVink.Tapflow.cards.SupportCard
 import cn.ljlVink.Tapflow.cards.StatusCard
-
+import cn.ljlVink.Tapflow.cards.SupportCard
 import cn.ljlVink.Tapflow.pages.ErrorScreen
 import cn.ljlVink.Tapflow.ui.TitleBar
 import cn.ljlVink.Tapflow.ui.theme.TapflowTheme
 import cn.ljlVink.Tapflow.util.utils
 import com.topjohnwu.superuser.Shell
 import com.xiaomi.mslgrdp.application.GlobalApp
-import com.xiaomi.mslgrdp.presentation.SessionActivity
 import es.dmoral.toasty.Toasty
-import kotlin.String
 
 
 class MainActivity : ComponentActivity() {
@@ -212,7 +210,20 @@ class MainActivity : ComponentActivity() {
             }
             Button(
                 onClick = {
-                    val intent = Intent(context,SessionActivity::class.java)
+                    val intent = Intent("com.xiaomi.action.mslgrdp.client.cajviewer")
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    intent.setPackage(packageName)
+                    intent.putExtra("StartFromMSLG", true)
+                    intent.putExtra("StarMslgApp", "cajviewer")
+                    startActivity(intent)
+                    val intent2 = Intent()
+                    intent2.setComponent(
+                        ComponentName(
+                            packageName,
+                            "com.xiaomi.mslgrdp.multwindow.MultiWindowService"
+                        )
+                    )
+                    startForegroundService(intent2)
                     launcher.launch(intent)
                 }
             ) {

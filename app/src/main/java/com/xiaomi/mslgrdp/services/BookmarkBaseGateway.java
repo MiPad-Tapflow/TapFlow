@@ -11,7 +11,6 @@ import android.util.Log;
 import com.xiaomi.mslgrdp.domain.BookmarkBase;
 import java.util.ArrayList;
 
-/* loaded from: classes5.dex */
 public abstract class BookmarkBaseGateway {
     private static final String JOIN_PREFIX = "join_";
     private static final String KEY_BOOKMARK_ID = "bookmarkId";

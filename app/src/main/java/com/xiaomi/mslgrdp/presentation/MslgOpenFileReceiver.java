@@ -5,16 +5,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import com.xiaomi.mslgrdp.multwindow.MultiWindowManager;
+import com.xiaomi.mslgrdp.utils.Utils;
 
-/* loaded from: classes5.dex */
+/* loaded from: classes6.dex */
 public class MslgOpenFileReceiver extends BroadcastReceiver {
-    @Override
+    @Override // android.content.BroadcastReceiver
     public void onReceive(Context context, Intent intent) {
-        Log.v("MslgOpenFileReceiver ", "onReceive -- " + intent.getAction());
         if (intent.getAction().equals("com.xiaomi.action.mslgopenextenfile.Broadcast")) {
-            String fileurl = intent.getStringExtra("MiRdpFileUrl");
-            if (!MultiWindowManager.getSessionManager().getSessions().isEmpty()) {
-                SessionActivity.sendPath(true, fileurl, context, MultiWindowManager.getSessionManager().getSessions().get(0));
+            String fileUrl = intent.getStringExtra("MiRdpFileUrl");
+            String openApp = intent.getStringExtra("StarMslgApp");
+            Log.v("MslgOpenFileReceiver ", " onReceive -- " + openApp);
+            if (MultiWindowManager.getSessionManager().getCurrentSession() != null) {
+                Utils.sendPath(true, fileUrl, context, openApp);
             }
         }
     }

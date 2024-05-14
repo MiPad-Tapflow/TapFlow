@@ -5,7 +5,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import java.util.Locale;
 
-/* loaded from: classes5.dex */
 public class BookmarkBase implements Parcelable, Cloneable {
     public static final Parcelable.Creator<BookmarkBase> CREATOR = new Parcelable.Creator<BookmarkBase>() { 
         @Override

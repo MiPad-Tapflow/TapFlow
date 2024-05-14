@@ -2,11 +2,9 @@ package com.xiaomi.mslgrdp.utils;
 
 import android.content.Context;
 import android.view.KeyEvent;
-
 import cn.ljlVink.Tapflow.R;
 import kotlin.text.Typography;
 
-/* loaded from: classes5.dex */
 public class KeyboardMapper {
     private static final int EXTKEY_KBCURSOR = 4354;
     private static final int EXTKEY_KBFUNCTIONKEYS = 4352;
@@ -17,6 +15,7 @@ public class KeyboardMapper {
     public static final int KEYSTATE_LOCKED = 2;
     public static final int KEYSTATE_OFF = 3;
     public static final int KEYSTATE_ON = 1;
+    public static final int KEY_A_TO_U = 300;
     private static final int KEY_FLAG_TOGGLE = 1073741824;
     private static final int KEY_FLAG_UNICODE = Integer.MIN_VALUE;
     static final int VK_ABNT_C1 = 193;
@@ -278,6 +277,33 @@ public class KeyboardMapper {
         iArr[4] = 27;
         iArr[93] = 296;
         iArr[92] = 294;
+        iArr[131] = 112;
+        iArr[132] = 113;
+        iArr[133] = 114;
+        iArr[134] = 115;
+        iArr[135] = 116;
+        iArr[136] = 117;
+        iArr[137] = 118;
+        iArr[138] = 119;
+        iArr[139] = 120;
+        iArr[140] = 121;
+        iArr[141] = 122;
+        iArr[142] = 123;
+        iArr[77] = 50;
+        iArr[75] = VK_OEM_7;
+        iArr[73] = VK_OEM_5;
+        iArr[55] = VK_OEM_COMMA;
+        iArr[70] = VK_OEM_PLUS;
+        iArr[68] = VK_OEM_3;
+        iArr[71] = VK_OEM_4;
+        iArr[72] = VK_OEM_6;
+        iArr[69] = VK_OEM_MINUS;
+        iArr[56] = VK_OEM_PERIOD;
+        iArr[81] = VK_OEM_PLUS;
+        iArr[18] = 51;
+        iArr[74] = VK_OEM_1;
+        iArr[76] = VK_OEM_2;
+        iArr[17] = 56;
         int[] iArr2 = new int[256];
         keymapExt = iArr2;
         iArr2[context.getResources().getInteger(R.integer.keycode_F1)] = 112;
@@ -365,11 +391,56 @@ public class KeyboardMapper {
                 boolean modifierActive = isModifierPressed();
                 int vkcode = getVirtualKeyCode(event.getKeyCode());
                 if ((Integer.MIN_VALUE & vkcode) != 0) {
-                    this.listener.processUnicodeKey(Integer.MAX_VALUE & vkcode);
+                    char c = (char) event.getUnicodeChar();
+                    int vkcode2 = asciiToVirtualKey(c);
+                    if (event.isShiftPressed()) {
+                        this.listener.processVirtualKey(160, true);
+                        send_delay(10);
+                        this.listener.processVirtualKey(vkcode2, true);
+                        send_delay(10);
+                        this.listener.processVirtualKey(vkcode2, false);
+                        send_delay(10);
+                        this.listener.processVirtualKey(160, false);
+                    } else if (event.isCtrlPressed()) {
+                        this.listener.processVirtualKey(VK_LCONTROL, true);
+                        send_delay(10);
+                        this.listener.processVirtualKey(vkcode2, true);
+                        send_delay(10);
+                        this.listener.processVirtualKey(vkcode2, false);
+                        send_delay(10);
+                        this.listener.processVirtualKey(VK_LCONTROL, false);
+                    } else {
+                        this.listener.processVirtualKey(vkcode2, true);
+                        send_delay(10);
+                        this.listener.processVirtualKey(vkcode2, false);
+                    }
                 } else if (vkcode > 0 && (event.getMetaState() & 4103) == 0) {
+                    char c2 = (char) event.getUnicodeChar();
+                    if (Character.isUpperCase(c2)) {
+                        this.listener.processVirtualKey(160, true);
+                        send_delay(10);
+                        this.listener.processVirtualKey(vkcode, true);
+                        send_delay(10);
+                        this.listener.processVirtualKey(vkcode, false);
+                        send_delay(10);
+                        this.listener.processVirtualKey(160, false);
+                        return true;
+                    }
                     this.listener.processVirtualKey(vkcode, true);
                     send_delay(10);
                     this.listener.processVirtualKey(vkcode, false);
+                } else if (event.isCtrlPressed() && event.isShiftPressed()) {
+                    this.listener.processVirtualKey(VK_LCONTROL, true);
+                    send_delay(10);
+                    this.listener.processVirtualKey(160, true);
+                    send_delay(10);
+                    this.listener.processVirtualKey(vkcode, true);
+                    send_delay(10);
+                    this.listener.processVirtualKey(vkcode, false);
+                    send_delay(10);
+                    this.listener.processVirtualKey(160, false);
+                    send_delay(10);
+                    this.listener.processVirtualKey(VK_LCONTROL, false);
                 } else if (event.isCtrlPressed() && vkcode != 0) {
                     this.listener.processVirtualKey(VK_LCONTROL, true);
                     send_delay(10);
@@ -394,9 +465,10 @@ public class KeyboardMapper {
                     this.listener.processVirtualKey(vkcode, false);
                     send_delay(10);
                     this.listener.processVirtualKey(VK_LMENU, false);
-                } else if (event.getUnicodeChar() == 0) {
-                    return false;
                 } else {
+                    if (event.getUnicodeChar() == 0) {
+                        return false;
+                    }
                     this.listener.processUnicodeKey(event.getUnicodeChar());
                 }
                 if (modifierActive) {
@@ -407,10 +479,10 @@ public class KeyboardMapper {
                 return false;
             case 2:
                 if (event.getKeyCode() == 0) {
-                    this.listener.processVirtualKey(47, true);
+                    this.listener.processVirtualKey(KEY_A_TO_U, true);
                     String str = event.getCharacters();
                     this.listener.sendStringTo(str);
-                    this.listener.processVirtualKey(47, false);
+                    this.listener.processVirtualKey(KEY_A_TO_U, false);
                 }
                 return true;
             default:
@@ -425,9 +497,12 @@ public class KeyboardMapper {
         }
         if ((1073741824 & extCode) != 0) {
             processToggleButton((-1073741825) & extCode);
-        } else if (extCode == EXTKEY_KBFUNCTIONKEYS || extCode == EXTKEY_KBNUMPAD || extCode == EXTKEY_KBCURSOR) {
+            return;
+        }
+        if (extCode == EXTKEY_KBFUNCTIONKEYS || extCode == EXTKEY_KBNUMPAD || extCode == EXTKEY_KBCURSOR) {
             switchKeyboard(extCode);
-        } else {
+            return;
+        }
             if ((Integer.MIN_VALUE & extCode) != 0) {
                 this.listener.processUnicodeKey(Integer.MAX_VALUE & extCode);
             } else {
@@ -435,7 +510,6 @@ public class KeyboardMapper {
                 this.listener.processVirtualKey(extCode, false);
             }
             resetModifierKeysAfterInput(false);
-        }
     }
 
     public void sendAltF4() {
@@ -593,26 +667,28 @@ public class KeyboardMapper {
             this.lastModifierKeyCode = keycode;
             this.lastModifierTime = now;
             return false;
-        } else if (this.lastModifierTime + 800 > now) {
+        }
+        if (this.lastModifierTime + 800 > now) {
             this.lastModifierTime = 0L;
             return true;
-        } else {
-            this.lastModifierTime = now;
-            return false;
         }
+        this.lastModifierTime = now;
+        return false;
     }
 
     public static int asciiToVirtualKey(char c) {
         if (c >= 'A' && c <= 'Z') {
             int keyCode = (c - 'A') + 65;
             return keyCode;
-        } else if (c >= 'a' && c <= 'z') {
+        }
+        if (c >= 'a' && c <= 'z') {
             int keyCode2 = (c - 'a') + 65;
             return keyCode2;
-        } else if (c >= '0' && c <= '9') {
+        }
+        if (c >= '0' && c <= '9') {
             int keyCode3 = (c - '0') + 48;
             return keyCode3;
-        } else {
+        }
             switch (c) {
                 case ' ':
                     return 32;
@@ -671,7 +747,6 @@ public class KeyboardMapper {
                     return VK_OEM_3;
                 default:
                     return 0;
-            }
         }
     }
 

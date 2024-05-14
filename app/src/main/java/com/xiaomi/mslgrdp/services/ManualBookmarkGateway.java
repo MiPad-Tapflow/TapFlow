@@ -8,7 +8,6 @@ import com.xiaomi.mslgrdp.domain.BookmarkBase;
 import com.xiaomi.mslgrdp.domain.ManualBookmark;
 import java.util.ArrayList;
 
-/* loaded from: classes5.dex */
 public class ManualBookmarkGateway extends BookmarkBaseGateway {
     public ManualBookmarkGateway(SQLiteOpenHelper bookmarkDB) {
         super(bookmarkDB);

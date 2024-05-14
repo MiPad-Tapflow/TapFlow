@@ -23,7 +23,11 @@
     <string name="start_mslg">启动mslg(测试)</string>
     <string name="start_prop">手动修改prop为启动</string>
 
+    <string name="caj_app_name">CAJ Viewer</string>
+
+
     <string name="refuse_perssion">Hello</string>
+    <string name="exit_app_again">press again to exit.</string>
     <string name="cancek">No，Thanks</string>
     <string name="exit_app">Press again to exit the APP</string>
     <string name="dig_message">In order to browse and save local documents normally, please open the settings and allow APP to obtain permissions</string>

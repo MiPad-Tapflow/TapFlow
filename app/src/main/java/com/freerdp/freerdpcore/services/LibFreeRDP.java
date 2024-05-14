@@ -1,30 +1,42 @@
 package com.freerdp.freerdpcore.services;
 
+import android.app.Application;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.RemoteException;
 import android.text.TextUtils;
 import android.util.Log;
 import androidx.collection.LongSparseArray;
-import com.xiaomi.mslgrdp.application.GlobalApp;
-import com.xiaomi.mslgrdp.application.SessionState;
-import com.xiaomi.mslgrdp.domain.BookmarkBase;
-import com.xiaomi.mslgrdp.domain.ManualBookmark;
+import com.xiaomi.mslgrdp.multwindow.IServer;
 import com.xiaomi.mslgrdp.multwindow.MultiWindowManager;
+import com.xiaomi.mslgrdp.multwindow.SessionState;
+import com.xiaomi.mslgrdp.utils.Constances;
+import com.xiaomi.mslgrdp.utils.MslgLogger;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/* loaded from: classes5.dex */
+/* loaded from: classes6.dex */
 public class LibFreeRDP {
+    public static final int RDP_APP_TYPE_CAJVIEWER = 3;
+    public static final int RDP_APP_TYPE_WPSOFFICE = 1;
     private static final String TAG = "LibFreeRDP";
+    public static final int WINDOW_CLOSE_EVENT = 61536;
+    public static final int WINDOW_MAXIMIZE_EVENT = 61488;
+    public static final int WINDOW_MINIMIZE_EVENT = 61472;
+    public static final int WINDOW_RESTORE_EVENT = 61728;
     private static EventListener listener;
     private static boolean mHasH264;
     private static final LongSparseArray<Boolean> mInstanceState = new LongSparseArray<>();
+    private static int mWpsStartID = -1;
+    public static volatile int mActivateWindowId = 0;
+    private static boolean mWpsStart = false;
 
-
+    /* loaded from: classes6.dex */
     public interface EventListener {
         void OnConnectionFailure(long j);
 
@@ -37,9 +49,11 @@ public class LibFreeRDP {
         void OnPreConnect(long j);
     }
 
-
+    /* loaded from: classes6.dex */
     public interface UIEventListener {
         boolean OnAuthenticate(StringBuilder sb, StringBuilder sb2, StringBuilder sb3);
+
+        void OnDeleteOptimg(int i);
 
         boolean OnGatewayAuthenticate(StringBuilder sb, StringBuilder sb2, StringBuilder sb3);
 
@@ -47,9 +61,9 @@ public class LibFreeRDP {
 
         void OnGraphicsUpdate(int i, int i2, int i3, int i4);
 
-        void OnGraphicsUpdateMultiWindow(long j, int i, int i2, int i3, int i4, int i5, boolean z, boolean z2);
+        void OnGraphicsUpdateMultiWindow(long j, int i, int i2, int i3, int i4, int i5, int i6, int i7, int i8, int i9, int i10, String str, int i11, boolean z, boolean z2, int i12, boolean z3, boolean z4);
 
-        void OnMinimizeRequested(boolean z);
+        boolean OnMinimizeRequested(int i, boolean z);
 
         void OnOpenwpsRequested(boolean z);
 
@@ -59,11 +73,15 @@ public class LibFreeRDP {
 
         void OnSettingsChanged(int i, int i2, int i3);
 
-        void OnUpdatePointerIcon(int i, int i2, int i3, int i4);
+        void OnUpdatePointerIcon(long j, int i, int i2, int i3, int i4);
 
         int OnVerifiyCertificate(String str, String str2, String str3, String str4, boolean z);
 
         int OnVerifyChangedCertificate(String str, String str2, String str3, String str4, String str5, String str6, String str7);
+
+        void onWindowClosed(long j, int i, int i2);
+
+        void onWindowResize(long j, int i, int i2);
     }
 
     private static native boolean freerdp_connect(long j);
@@ -92,6 +110,8 @@ public class LibFreeRDP {
 
     private static native boolean freerdp_parse_arguments(long j, String[] strArr);
 
+    private static native boolean freerdp_send_app_destory(long j, int i);
+
     private static native boolean freerdp_send_clipboard_data(long j, String str);
 
     private static native boolean freerdp_send_cursor_event(long j, int i, int i2, int i3);
@@ -100,33 +120,37 @@ public class LibFreeRDP {
 
     private static native boolean freerdp_send_unicodekey_event(long j, int i, boolean z);
 
-    private static native boolean freerdp_update_graphics(long j, Bitmap bitmap, int i);
+    private static native boolean freerdp_send_window_event(long j, int i, int i2);
+
+    private static native boolean freerdp_send_window_focus_event(long j, int i, boolean z);
 
     private static native boolean freerdp_update_pointer_icon(long j, Bitmap bitmap);
 
     static {
         mHasH264 = false;
         try {
-            System.loadLibrary("freerdp-android");
-            String version = freerdp_get_jni_version();
-            Pattern pattern = Pattern.compile("^(\\d+)\\.(\\d+)\\.(\\d+).*");
-            Matcher matcher = pattern.matcher(version);
-            if (!matcher.matches() || matcher.groupCount() < 3) {
-                throw new RuntimeException("APK broken: native library version " + version + " does not meet requirements!");
+            if (Application.getProcessName().contains(Constances.RDP_PROCESS_NAME)) {
+                System.loadLibrary("freerdp-android");
+                String version = freerdp_get_jni_version();
+                Pattern pattern = Pattern.compile("^(\\d+)\\.(\\d+)\\.(\\d+).*");
+                Matcher matcher = pattern.matcher(version);
+                if (!matcher.matches() || matcher.groupCount() < 3) {
+                    throw new RuntimeException("APK broken: native library version " + version + " does not meet requirements!");
+                }
+                int major = Integer.parseInt((String) Objects.requireNonNull(matcher.group(1)));
+                int minor = Integer.parseInt((String) Objects.requireNonNull(matcher.group(2)));
+                int patch = Integer.parseInt((String) Objects.requireNonNull(matcher.group(3)));
+                if (major > 2) {
+                    mHasH264 = freerdp_has_h264();
+                } else if (minor > 5) {
+                    mHasH264 = freerdp_has_h264();
+                } else if (minor == 5 && patch >= 1) {
+                    mHasH264 = freerdp_has_h264();
+                } else {
+                    throw new RuntimeException("APK broken: native library version " + version + " does not meet requirements!");
+                }
+                Log.i(TAG, "Successfully loaded native library. H264 is " + (mHasH264 ? "supported" : "not available"));
             }
-            int major = Integer.parseInt((String) Objects.requireNonNull(matcher.group(1)));
-            int minor = Integer.parseInt((String) Objects.requireNonNull(matcher.group(2)));
-            int patch = Integer.parseInt((String) Objects.requireNonNull(matcher.group(3)));
-            if (major > 2) {
-                mHasH264 = freerdp_has_h264();
-            } else if (minor > 5) {
-                mHasH264 = freerdp_has_h264();
-            } else if (minor == 5 && patch >= 1) {
-                mHasH264 = freerdp_has_h264();
-            } else {
-                throw new RuntimeException("APK broken: native library version " + version + " does not meet requirements!");
-            }
-            Log.i(TAG, "Successfully loaded native library. H264 is " + (mHasH264 ? "supported" : "not available"));
         } catch (UnsatisfiedLinkError e) {
             Log.e(TAG, "Failed to load library: " + e.toString());
             throw e;
@@ -134,11 +158,14 @@ public class LibFreeRDP {
     }
 
     private static boolean tryLoad(String[] libraries) {
+        if (!Application.getProcessName().contains(Constances.RDP_PROCESS_NAME)) {
+            return false;
+        }
         boolean success = false;
         String LD_PATH = System.getProperty("java.library.path");
         for (String lib : libraries) {
             try {
-                Log.v(TAG, "Trying to load library " + lib + " from LD_PATH: " + LD_PATH);
+                MslgLogger.LOGD(TAG, "Trying to load library " + lib + " from LD_PATH: " + LD_PATH, false);
                 System.loadLibrary(lib);
                 success = true;
             } catch (UnsatisfiedLinkError e) {
@@ -165,28 +192,23 @@ public class LibFreeRDP {
         return freerdp_new(context);
     }
 
-    public static void freeInstance(long inst)
-    {
-        synchronized (mInstanceState)
-        {
-            if (mInstanceState.get(inst, false))
-            {
+    public static void freeInstance(long inst){
+        synchronized (mInstanceState){
+            if (mInstanceState.get(inst, false)) {
                 freerdp_disconnect(inst);
             }
-            while (mInstanceState.get(inst, false))
-            {
-                try
-                {
+            while (mInstanceState.get(inst, false)) {
+                try {
                     mInstanceState.wait();
                 }
-                catch (InterruptedException e)
-                {
+                catch (InterruptedException e) {
                     throw new RuntimeException();
                 }
             }
         }
         freerdp_free(inst);
     }
+
     public static boolean connect(long inst) {
         LongSparseArray<Boolean> longSparseArray = mInstanceState;
         synchronized (longSparseArray) {
@@ -200,20 +222,20 @@ public class LibFreeRDP {
     public static boolean disconnect(long inst) {
         LongSparseArray<Boolean> longSparseArray = mInstanceState;
         synchronized (longSparseArray) {
-            if (longSparseArray.get(inst, false).booleanValue()) {
-                return freerdp_disconnect(inst);
+            if (!longSparseArray.get(inst, false).booleanValue()) {
+                return true;
             }
-            return true;
+            return freerdp_disconnect(inst);
         }
     }
 
     public static boolean cancelConnection(long inst) {
         LongSparseArray<Boolean> longSparseArray = mInstanceState;
         synchronized (longSparseArray) {
-            if (longSparseArray.get(inst, false).booleanValue()) {
-                return freerdp_disconnect(inst);
+            if (!longSparseArray.get(inst, false).booleanValue()) {
+                return true;
             }
-            return true;
+            return freerdp_disconnect(inst);
         }
     }
 
@@ -237,119 +259,36 @@ public class LibFreeRDP {
         return null;
     }
 
-    public static boolean setConnectionInfo(Context context, long inst, BookmarkBase bookmark) {
-        BookmarkBase.ScreenSettings screenSettings = bookmark.getActiveScreenSettings();
-        BookmarkBase.AdvancedSettings advanced = bookmark.getAdvancedSettings();
-        BookmarkBase.DebugSettings debug = bookmark.getDebugSettings();
+    public static boolean setConnectionInfo(long inst) {
         ArrayList<String> args = new ArrayList<>();
         args.add(TAG);
         args.add("/gdi:sw");
-        if (!" ".isEmpty()) {
-            args.add("/client-hostname: ");
-        }
-        if (bookmark.getType() != 1) {
-            return false;
-        }
-        int port = ((ManualBookmark) bookmark.get()).getPort();
-        String hostname = ((ManualBookmark) bookmark.get()).getHostname();
-        args.add("/v:" + hostname);
-        args.add("/port:" + String.valueOf(port));
-        String arg = bookmark.getUsername();
-        if (!arg.isEmpty()) {
-            args.add("/u:" + arg);
-        }
-        String arg2 = bookmark.getDomain();
-        if (!arg2.isEmpty()) {
-            args.add("/d:" + arg2);
-        }
-        String arg3 = bookmark.getPassword();
-        if (!arg3.isEmpty()) {
-            args.add("/p:" + arg3);
-        }
-        args.add(String.format("/size:%dx%d", Integer.valueOf(screenSettings.getWidth()), Integer.valueOf(screenSettings.getHeight())));
-        args.add("/bpp:" + String.valueOf(screenSettings.getColors()));
-        if (advanced.getConsoleMode()) {
-            args.add("/admin");
-        }
-        switch (advanced.getSecurity()) {
-            case 1:
-                args.add("/sec-rdp");
-                break;
-            case 2:
-                args.add("/sec-tls");
-                break;
-            case 3:
-                args.add("/sec-nla");
-                break;
-        }
-        if (!"".isEmpty()) {
-            args.add("/cert-name:");
-        }
-        BookmarkBase.PerformanceFlags flags = bookmark.getActivePerformanceFlags();
-        if (flags.getRemoteFX()) {
-            args.add("/rfx");
-        }
-        if (flags.getGfx()) {
-            args.add("/gfx");
-        }
-        if (flags.getH264() && mHasH264) {
-            args.add("/gfx:AVC444");
-        }
-        args.add(addFlag("wallpaper", flags.getWallpaper()));
-        args.add(addFlag("window-drag", flags.getFullWindowDrag()));
-        args.add(addFlag("menu-anims", flags.getMenuAnimations()));
-        args.add(addFlag("themes", flags.getTheming()));
-        args.add(addFlag("fonts", flags.getFontSmoothing()));
-        args.add(addFlag("aero", flags.getDesktopComposition()));
+        args.add("/client-hostname: ");
+        args.add("/v:/dev/msl/rdp/rdp_socket");
+        args.add("/port:" + String.valueOf(3389));
+        args.add(String.format("/size:%sx%s", Integer.valueOf(Constances.SCREEN_WIDTH), Integer.valueOf(Constances.SCREEN_HEIGHT)));
+        args.add("/bpp:32");
+        args.add("/rfx");
+        args.add("/gfx");
+        args.add(addFlag("wallpaper", false));
+        args.add(addFlag("window-drag", false));
+        args.add(addFlag("menu-anims", false));
+        args.add(addFlag("themes", false));
+        args.add(addFlag("fonts", false));
+        args.add(addFlag("aero", false));
         args.add(addFlag("glyph-cache", false));
-        if (!advanced.getRemoteProgram().isEmpty()) {
-            int space = TextUtils.indexOf((CharSequence) advanced.getRemoteProgram(), ' ');
-            if (space <= 0) {
-                args.add("/shell:" + advanced.getRemoteProgram());
-            } else {
-                String app = TextUtils.substring(advanced.getRemoteProgram(), 0, space);
-                String arguments = TextUtils.substring(advanced.getRemoteProgram(), space + 1, advanced.getRemoteProgram().length());
-                args.add("/shell:" + app);
-                args.add("/app-cmd:" + changeToUbuntuPath(arguments));
-            }
-        }
-        if (!advanced.getWorkDir().isEmpty()) {
-            args.add("/shell-dir:" + advanced.getWorkDir());
-        }
-        args.add(addFlag("async-channels", debug.getAsyncChannel()));
-        args.add(addFlag("async-input", debug.getAsyncInput()));
-        args.add(addFlag("async-update", debug.getAsyncUpdate()));
-        if (advanced.getRedirectSDCard()) {
-            String path = Environment.getExternalStorageDirectory().getPath();
-            args.add("/drive:sdcard," + path);
-        }
+        args.add(addFlag("async-channels", false));
+        args.add(addFlag("async-input", false));
+        args.add(addFlag("async-update", false));
         args.add("/clipboard");
-        if (bookmark.getType() == 1 && ((ManualBookmark) bookmark.get()).getEnableGatewaySettings()) {
-            ManualBookmark.GatewaySettings gateway = ((ManualBookmark) bookmark.get()).getGatewaySettings();
-            args.add(String.format("/g:%s:%d", gateway.getHostname(), Integer.valueOf(gateway.getPort())));
-            String arg4 = gateway.getUsername();
-            if (!arg4.isEmpty()) {
-                args.add("/gu:" + arg4);
-            }
-            String arg5 = gateway.getDomain();
-            if (!arg5.isEmpty()) {
-                args.add("/gd:" + arg5);
-            }
-            String arg6 = gateway.getPassword();
-            if (!arg6.isEmpty()) {
-                args.add("/gp:" + arg6);
-            }
-        }
-        args.add("/audio-mode:" + String.valueOf(advanced.getRedirectSound()));
-        if (advanced.getRedirectSound() == 0) {
-            args.add("/sound");
-        }
-        if (advanced.getRedirectMicrophone()) {
-            args.add("/microphone");
-        }
+        args.add("/audio-mode:0");
+        args.add("/sound");
         args.add("/cert-ignore");
-        args.add("/log-level:" + debug.getDebugLevel());
+        args.add("/log-level:DEBUG");
         String[] arrayArgs = (String[]) args.toArray(new String[args.size()]);
+        for (String item : arrayArgs) {
+            MslgLogger.LOGD("arrayArgs", item, false);
+        }
         return freerdp_parse_arguments(inst, arrayArgs);
     }
 
@@ -388,25 +327,68 @@ public class LibFreeRDP {
     }
 
     public static boolean updateGraphics(long inst, Bitmap bitmap, int winId) {
-        return freerdp_update_graphics(inst, bitmap, winId);
+        return false;
     }
 
     public static boolean updatePointerIcon(long inst, Bitmap bitmap) {
         return freerdp_update_pointer_icon(inst, bitmap);
     }
 
+    public static boolean sendKillappEvent(long inst, int appType) {
+        if (appType == 1) {
+            mWpsStartID = -1;
+            mWpsStart = false;
+        }
+        return freerdp_send_app_destory(inst, appType);
+    }
+
     public static boolean sendCursorEvent(long inst, int x, int y, int flags) {
-        Log.v("MslDragLayout", "sendCursorEvent x = " + x + " , y = " + y);
-        return freerdp_send_cursor_event(inst, x, y, flags);
+        if (Application.getProcessName().contains(Constances.RDP_PROCESS_NAME)) {
+            MslgLogger.LOGD(MslgLogger.TAG_EVENT, "sendCursorEvent x = " + x + " , y = " + y, false);
+            return freerdp_send_cursor_event(inst, x, y, flags);
+        }
+        IServer iSession = MultiWindowManager.getManager().getServiceToken();
+        if (iSession != null) {
+            try {
+                return iSession.sendCursorEvent(inst, x, y, flags);
+            } catch (RemoteException e) {
+                MslgLogger.LOGD(MslgLogger.TAG_EVENT, "RemoteException sendCursorEvent ", true);
+            }
+        }
+        return false;
     }
 
     public static boolean sendKeyEvent(long inst, int keycode, boolean down) {
-        Log.v("MslDragLayout", "sendKeyEvent keycode = " + keycode);
-        return freerdp_send_key_event(inst, keycode, down);
+        if (Application.getProcessName().contains(Constances.RDP_PROCESS_NAME)) {
+            return freerdp_send_key_event(inst, keycode, down);
+        }
+        IServer iSession = MultiWindowManager.getManager().getServiceToken();
+        if (iSession != null) {
+            try {
+                return iSession.sendKeyEvent(inst, keycode, down);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+                MslgLogger.LOGD(MslgLogger.TAG_EVENT, "RemoteException sendKeyEvent ", true);
+                return false;
+            }
+        }
+        return false;
     }
 
     public static boolean sendUnicodeKeyEvent(long inst, int keycode, boolean down) {
-        return freerdp_send_unicodekey_event(inst, keycode, down);
+        if (Application.getProcessName().contains(Constances.RDP_PROCESS_NAME)) {
+            return freerdp_send_unicodekey_event(inst, keycode, down);
+        }
+        IServer iSession = MultiWindowManager.getManager().getServiceToken();
+        if (iSession != null) {
+            try {
+                return iSession.sendUnicodeKeyEvent(inst, keycode, down);
+            } catch (RemoteException e) {
+                MslgLogger.LOGD(MslgLogger.TAG_EVENT, "RemoteException sendUnicodeKeyEvent ", true);
+                return false;
+            }
+        }
+        return false;
     }
 
     public static boolean sendClipboardData(long inst, String data) {
@@ -415,6 +397,46 @@ public class LibFreeRDP {
 
     public static void openRemoteApp(long inst, String remoteApp, String cmdLine) {
         freerdp_open_linux_app(inst, remoteApp, changeToUbuntuPath(cmdLine));
+    }
+
+    public static void sendWindowEvent(long inst, int windId, int cmdId) {
+        MslgLogger.LOGD(MultiWindowManager.TAG, "sendWindowEvent windId = " + windId + " cmdid = " + cmdId, false);
+        if (Application.getProcessName().contains(Constances.RDP_PROCESS_NAME)) {
+            freerdp_send_window_event(inst, windId, cmdId);
+            return;
+        }
+        IServer iSession = MultiWindowManager.getManager().getServiceToken();
+        if (iSession != null) {
+            try {
+                iSession.sendWindowEvent(inst, windId, cmdId);
+            } catch (RemoteException e) {
+                MslgLogger.LOGD(MslgLogger.TAG_EVENT, "RemoteException sendWindowEvent", true);
+            }
+        }
+    }
+
+    public static void sendWindowFocusEvent(long inst, int windId, boolean focus) {
+        if (Application.getProcessName().contains(Constances.RDP_PROCESS_NAME)) {
+            synchronized (LibFreeRDP.class) {
+                if (windId != mActivateWindowId) {
+                    freerdp_send_window_focus_event(inst, windId, focus);
+                }
+            }
+            return;
+        }
+        IServer iSession = MultiWindowManager.getManager().getServiceToken();
+        if (iSession != null) {
+            try {
+                synchronized (LibFreeRDP.class) {
+                    if (windId != mActivateWindowId) {
+                        mActivateWindowId = windId;
+                    }
+                }
+                iSession.sendWindowFocusEvent(inst, windId, focus, MultiWindowManager.getManager().getAppType());
+            } catch (RemoteException e) {
+                MslgLogger.LOGD(MultiWindowManager.TAG, "RemoteException sendWindowEvent", true);
+            }
+        }
     }
 
     private static void OnConnectionSuccess(long inst) {
@@ -468,150 +490,262 @@ public class LibFreeRDP {
     }
 
     private static void OnSettingsChanged(long inst, int width, int height, int bpp) {
-        UIEventListener uiEventListener;
-        SessionState s = GlobalApp.getSession(inst);
-        if (s != null && (uiEventListener = s.getUIEventListener()) != null) {
-            uiEventListener.OnSettingsChanged(width, height, bpp);
-        }
-    }
-
-    private static boolean OnAuthenticate(long inst, StringBuilder username, StringBuilder domain, StringBuilder password) {
-        UIEventListener uiEventListener;
-        SessionState s = GlobalApp.getSession(inst);
-        if (s == null || (uiEventListener = s.getUIEventListener()) == null) {
-            return false;
-        }
-        return uiEventListener.OnAuthenticate(username, domain, password);
-    }
-
-    private static boolean OnGatewayAuthenticate(long inst, StringBuilder username, StringBuilder domain, StringBuilder password) {
-        UIEventListener uiEventListener;
-        SessionState s = GlobalApp.getSession(inst);
-        if (s == null || (uiEventListener = s.getUIEventListener()) == null) {
-            return false;
-        }
-        return uiEventListener.OnGatewayAuthenticate(username, domain, password);
-    }
-
-    private static int OnVerifyCertificate(long inst, String commonName, String subject, String issuer, String fingerprint, boolean hostMismatch) {
-        UIEventListener uiEventListener;
-        SessionState s = GlobalApp.getSession(inst);
-        if (s == null || (uiEventListener = s.getUIEventListener()) == null) {
-            return 0;
-        }
-        return uiEventListener.OnVerifiyCertificate(commonName, subject, issuer, fingerprint, hostMismatch);
-    }
-
-    private static int OnVerifyChangedCertificate(long inst, String commonName, String subject, String issuer, String fingerprint, String oldSubject, String oldIssuer, String oldFingerprint) {
-        UIEventListener uiEventListener;
-        SessionState s = GlobalApp.getSession(inst);
-        if (s == null || (uiEventListener = s.getUIEventListener()) == null) {
-            return 0;
-        }
-        return uiEventListener.OnVerifyChangedCertificate(commonName, subject, issuer, fingerprint, oldSubject, oldIssuer, oldFingerprint);
-    }
-
-    private static void OnGraphicsUpdate(long inst, int x, int y, int width, int height) {
-        UIEventListener uiEventListener;
-        SessionState s = GlobalApp.getSession(inst);
-        if (s != null && (uiEventListener = s.getUIEventListener()) != null) {
-            uiEventListener.OnGraphicsUpdate(x, y, width, height);
-        }
-    }
-
-    private static void OnGraphicsUpdateMultiWindow(long inst, int windowId, int x, int y, int width, int height, boolean isPopWindow, boolean isAlpha) {
-        SessionState s = GlobalApp.getSession(inst);
+        SessionState s = MultiWindowManager.getSessionManager().getCurrentSession();
         if (s == null) {
             return;
         }
-        Log.v(MultiWindowManager.TAG, "OnGraphicsUpdateMultiWindow windowId = " + windowId);
-        UIEventListener uiEventListener = s.getUIEventListener();
-        synchronized (MultiWindowManager.lock) {
-            if (windowId == 1 || windowId == 2) {
-                if (uiEventListener != null) {
-                    uiEventListener.OnGraphicsUpdateMultiWindow(inst, windowId, x, y, width, height, isPopWindow, isAlpha);
-                }
-            } else {
-                MultiWindowManager.getManager().process(inst, windowId, x, y, width, height, isPopWindow, isAlpha);
+        Set<UIEventListener> uiEventListeners = s.getUIEventListeners();
+        for (UIEventListener uiEventListener : uiEventListeners) {
+            if (uiEventListener != null) {
+                uiEventListener.OnSettingsChanged(width, height, bpp);
             }
         }
     }
 
-    private static void onWindowClosed(long inst, final int windowId) {
-        SessionState s = GlobalApp.getSession(inst);
+    private static boolean OnAuthenticate(long inst, StringBuilder username, StringBuilder domain, StringBuilder password) {
+        SessionState s = MultiWindowManager.getSessionManager().getCurrentSession();
+        if (s == null) {
+            return false;
+        }
+        Set<UIEventListener> uiEventListeners = s.getUIEventListeners();
+        for (UIEventListener uiEventListener : uiEventListeners) {
+            if (uiEventListener != null) {
+                uiEventListener.OnAuthenticate(username, domain, password);
+            }
+        }
+        return false;
+    }
+
+    private static boolean OnGatewayAuthenticate(long inst, StringBuilder username, StringBuilder domain, StringBuilder password) {
+        SessionState s = MultiWindowManager.getSessionManager().getCurrentSession();
+        if (s == null) {
+            return false;
+        }
+        Set<UIEventListener> uiEventListeners = s.getUIEventListeners();
+        for (UIEventListener uiEventListener : uiEventListeners) {
+            if (uiEventListener != null) {
+                uiEventListener.OnGatewayAuthenticate(username, domain, password);
+            }
+        }
+        return false;
+    }
+
+    private static int OnVerifyCertificate(long inst, String commonName, String subject, String issuer, String fingerprint, boolean hostMismatch) {
+        SessionState s = MultiWindowManager.getSessionManager().getCurrentSession();
+        if (s == null) {
+            return 0;
+        }
+        Set<UIEventListener> uiEventListeners = s.getUIEventListeners();
+        for (UIEventListener uiEventListener : uiEventListeners) {
+            if (uiEventListener != null) {
+                uiEventListener.OnVerifiyCertificate(commonName, subject, issuer, fingerprint, hostMismatch);
+            }
+        }
+        return 0;
+    }
+
+    private static int OnVerifyChangedCertificate(long inst, String commonName, String subject, String issuer, String fingerprint, String oldSubject, String oldIssuer, String oldFingerprint) {
+        SessionState s = MultiWindowManager.getSessionManager().getCurrentSession();
+        if (s == null) {
+            return 0;
+        }
+        Set<UIEventListener> uiEventListeners = s.getUIEventListeners();
+        for (UIEventListener uiEventListener : uiEventListeners) {
+            if (uiEventListener != null) {
+                uiEventListener.OnVerifyChangedCertificate(commonName, subject, issuer, fingerprint, oldSubject, oldIssuer, oldFingerprint);
+            }
+        }
+        return 0;
+    }
+
+    private static void OnGraphicsUpdate(long inst, int x, int y, int width, int height) {
+        SessionState s = MultiWindowManager.getSessionManager().getCurrentSession();
         if (s == null) {
             return;
         }
-        MultiWindowManager.getManager().runOnUiThread(new Runnable() { 
-            @Override
+        Set<UIEventListener> uiEventListeners = s.getUIEventListeners();
+        for (UIEventListener uiEventListener : uiEventListeners) {
+            if (uiEventListener != null) {
+                uiEventListener.OnGraphicsUpdate(x, y, width, height);
+            }
+        }
+    }
+
+    public static void OnGraphicsUpdateMultiWindow(long inst, int windowId, int x, int y, int b_width, int b_height, int left, int top, int dirty_w, int dirty_h, int stride, String file_name, int size, int appType, boolean isPopWindow, boolean isAlpha, boolean isModal, boolean isMaximized) {
+        MslgLogger.LOGD(MultiWindowManager.TAG, "OnGraphicsUpdateMultiWindow windowId = " + windowId + " isModal = " + isModal + " isMaximized = " + isMaximized, false);
+        SessionState s = MultiWindowManager.getSessionManager().getCurrentSession();
+        if (appType == 1) {
+            if (b_width != 1354 || b_height != 954 || size != 5169152) {
+                if (b_width == 1350 && b_height == 950 && size == 5132288) {
+                    return;
+                }
+            } else {
+                return;
+            }
+        }
+        if (s != null && Application.getProcessName().contains(Constances.RDP_PROCESS_NAME)) {
+            Set<UIEventListener> uiEventListeners = s.getUIEventListeners();
+            for (UIEventListener uiEventListener : uiEventListeners) {
+                if (uiEventListener != null) {
+                    uiEventListener.OnGraphicsUpdateMultiWindow(inst, windowId, x, y, b_width, b_height, left, top, dirty_w, dirty_h, stride, file_name, size, isPopWindow, isAlpha, appType, isModal, isMaximized);
+                }
+            }
+        }
+    }
+
+    public static void onWindowClosed(long inst, final int windowId, int appType) {
+        SessionState s = MultiWindowManager.getSessionManager().getCurrentSession();
+        if (s == null) {
+            return;
+        }
+        if (Application.getProcessName().contains(Constances.RDP_PROCESS_NAME)) {
+            Set<UIEventListener> uiEventListeners = s.getUIEventListeners();
+            for (UIEventListener uiEventListener : uiEventListeners) {
+                if (uiEventListener != null) {
+                    uiEventListener.onWindowClosed(inst, windowId, appType);
+                }
+            }
+            return;
+        }
+        MultiWindowManager.getManager().runOnUiThread(new Runnable() { // from class: com.freerdp.freerdpcore.services.LibFreeRDP.1
+            @Override // java.lang.Runnable
             public void run() {
-                Log.v(MultiWindowManager.TAG, "onWindowClosed windowId = " + windowId);
+                MslgLogger.LOGD(MultiWindowManager.TAG, "onWindowClosed windowId = " + windowId, false);
                 MultiWindowManager.getManager().closeWindow(windowId);
             }
         });
     }
 
+    public static void onWindowResize(long inst, int windowId, int appType) {
+        SessionState s = MultiWindowManager.getSessionManager().getCurrentSession();
+        if (s != null && Application.getProcessName().contains(Constances.RDP_PROCESS_NAME)) {
+            Set<UIEventListener> uiEventListeners = s.getUIEventListeners();
+            for (UIEventListener uiEventListener : uiEventListeners) {
+                if (uiEventListener != null) {
+                    uiEventListener.onWindowResize(inst, windowId, appType);
+                }
+            }
+        }
+    }
+
+    private static void onActivateWindowUpdated(long inst, int windowId) {
+        synchronized (LibFreeRDP.class) {
+            MslgLogger.LOGD(MslgLogger.TAG_ACTIVITY, "Ubuntu window " + windowId + " becomes to focused.", false);
+            mActivateWindowId = windowId;
+        }
+    }
+
     private static void OnGraphicsResize(long inst, int width, int height, int bpp) {
-        UIEventListener uiEventListener;
-        SessionState s = GlobalApp.getSession(inst);
-        if (s != null && (uiEventListener = s.getUIEventListener()) != null) {
-            uiEventListener.OnGraphicsResize(width, height, bpp);
+        SessionState s = MultiWindowManager.getSessionManager().getCurrentSession();
+        if (s == null) {
+            return;
+        }
+        Set<UIEventListener> uiEventListeners = s.getUIEventListeners();
+        for (UIEventListener uiEventListener : uiEventListeners) {
+            if (uiEventListener != null) {
+                uiEventListener.OnGraphicsResize(width, height, bpp);
+            }
         }
     }
 
     private static void OnRemoteClipboardChanged(long inst, String data) {
-        UIEventListener uiEventListener;
-        SessionState s = GlobalApp.getSession(inst);
-        if (s != null && (uiEventListener = s.getUIEventListener()) != null) {
-            uiEventListener.OnRemoteClipboardChanged(data);
+        SessionState s = MultiWindowManager.getSessionManager().getCurrentSession();
+        if (s == null) {
+            return;
+        }
+        Set<UIEventListener> uiEventListeners = s.getUIEventListeners();
+        for (UIEventListener uiEventListener : uiEventListeners) {
+            if (uiEventListener != null) {
+                uiEventListener.OnRemoteClipboardChanged(data);
+            }
         }
     }
 
     private static void OnRailChannelReady(long inst, boolean ready) {
-        Log.v(TAG, "RailChannelReady.");
-        SessionState s = GlobalApp.getSession(inst);
+        MslgLogger.LOGD(TAG, "RailChannelReady.", false);
+        SessionState s = MultiWindowManager.getSessionManager().getCurrentSession();
         if (s == null) {
             return;
         }
         s.setRailChannelStatus(ready);
-        UIEventListener uiEventListener = s.getUIEventListener();
-        if (uiEventListener != null) {
-            uiEventListener.OnRailChannelReady(ready);
+        Set<UIEventListener> uiEventListeners = s.getUIEventListeners();
+        for (UIEventListener uiEventListener : uiEventListeners) {
+            if (uiEventListener != null) {
+                uiEventListener.OnRailChannelReady(ready);
+            }
         }
     }
 
-    private static void OnMinimizeRequested(long inst, boolean minimized) {
-        UIEventListener uiEventListener;
+    public static void OnMinimizeRequested(long inst, int appType, boolean minimized) {
         if (minimized) {
-            Log.v(TAG, "OnMinimizedRequested.");
-            SessionState s = GlobalApp.getSession(inst);
-            if (s != null && (uiEventListener = s.getUIEventListener()) != null) {
-                uiEventListener.OnMinimizeRequested(true);
+            MslgLogger.LOGD(TAG, "OnMinimizedRequested.appType " + appType, false);
+            SessionState s = MultiWindowManager.getSessionManager().getCurrentSession();
+            if (s == null) {
+                return;
+            }
+            synchronized (LibFreeRDP.class) {
+                Set<UIEventListener> uiEventListeners = s.getUIEventListeners();
+                for (UIEventListener uiEventListener : uiEventListeners) {
+                    if (uiEventListener != null) {
+                        boolean handle = uiEventListener.OnMinimizeRequested(appType, true);
+                        if (handle) {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public static void OnDeleteOptimg(long inst, int appType) {
+        Log.v(TAG, "OnDeleteOptimg.appType " + appType);
+        SessionState s = MultiWindowManager.getSessionManager().getCurrentSession();
+        if (s == null) {
+            return;
+        }
+        Set<UIEventListener> uiEventListeners = s.getUIEventListeners();
+        for (UIEventListener uiEventListener : uiEventListeners) {
+            if (uiEventListener != null) {
+                uiEventListener.OnDeleteOptimg(appType);
             }
         }
     }
 
     private static void OnOpenwpsRequested(long inst, boolean openwps) {
-        UIEventListener uiEventListener;
         if (openwps) {
-            Log.v(TAG, "OnOpenwpsRequested.");
-            SessionState s = GlobalApp.getSession(inst);
-            if (s != null && (uiEventListener = s.getUIEventListener()) != null) {
-                uiEventListener.OnOpenwpsRequested(true);
+            MslgLogger.LOGD(TAG, "OnOpenwpsRequested.", false);
+            SessionState s = MultiWindowManager.getSessionManager().getCurrentSession();
+            if (s == null) {
+                return;
+            }
+            Set<UIEventListener> uiEventListeners = s.getUIEventListeners();
+            for (UIEventListener uiEventListener : uiEventListeners) {
+                if (uiEventListener != null) {
+                    uiEventListener.OnOpenwpsRequested(true);
+                }
             }
         }
     }
 
     private static void OnUpdatePointerIcon(long inst, int width, int height, int hotSpotX, int hotSpotY) {
-        Log.v(TAG, "OnUpdatePointerIcon. width=" + width + ", height=" + height + ", hotSpotX=" + hotSpotX + ", hotSpotY=" + hotSpotY);
-        SessionState s = GlobalApp.getSession(inst);
+        MslgLogger.LOGD(TAG, "OnUpdatePointerIcon. width=" + width + ", height=" + height + ", hotSpotX=" + hotSpotX + ", hotSpotY=" + hotSpotY + " inst =" + inst, false);
+        SessionState s = MultiWindowManager.getSessionManager().getCurrentSession();
         if (s == null) {
             return;
         }
-        UIEventListener uiEventListener = s.getUIEventListener();
-        MultiWindowManager.getManager().OnUpdateMousePointer(inst, width, height, hotSpotX, hotSpotY);
-        if (uiEventListener != null) {
-            uiEventListener.OnUpdatePointerIcon(width, height, hotSpotX, hotSpotY);
+        if (Application.getProcessName().contains(Constances.RDP_PROCESS_NAME)) {
+            Set<UIEventListener> uiEventListeners = s.getUIEventListeners();
+            for (UIEventListener uiEventListener : uiEventListeners) {
+                if (uiEventListener != null) {
+                    uiEventListener.OnUpdatePointerIcon(inst, width, height, hotSpotX, hotSpotY);
+                }
+            }
+            return;
+        }
+        synchronized (MultiWindowManager.lock) {
+            Bitmap bitmap_pointer = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+            updatePointerIcon(inst, bitmap_pointer);
+            MultiWindowManager.getManager().OnUpdateMousePointer(inst, width, height, hotSpotX, hotSpotY, bitmap_pointer);
         }
     }
 

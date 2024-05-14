@@ -1,19 +1,28 @@
 package com.freerdp.freerdpcore.services;
 
-import android.content.Context;
-import android.content.Intent;
+import android.app.Application;
 import android.util.Log;
+import com.xiaomi.mslgrdp.multwindow.MultiWindowManager;
+import com.xiaomi.mslgrdp.utils.Constances;
 
-/* loaded from: classes5.dex */
+/* loaded from: classes6.dex */
 public final class LinuxInputMethod {
     public static final String ACTION_EVENT_KEYBOARD = "com.mirdp.inpuetevent.keyboard";
     private static final int NEED_WAIT_TIME = 85;
     private static final String TAG = "LinuxInputMethod";
     private static volatile LinuxInputMethod linuxInputMethod;
-    private static Context mContext;
     public static boolean mInputActivate = false;
     private long mLastSentTime;
     private long mPtr = nativeInit();
+
+    /* loaded from: classes6.dex */
+    public interface IMActivateListener {
+        void imActivate(int i);
+
+        void imCursorRect(int i, int i2, int i3, int i4, int i5);
+
+        void imDeactivate(int i);
+    }
 
     private static native void nativeDestroy(long j);
 
@@ -32,7 +41,6 @@ public final class LinuxInputMethod {
     }
 
     public boolean sendStringToLinux(String data) {
-        Log.v(TAG,"send string:"+data);
         boolean send_string_to_linux;
         if (this.mPtr != 0) {
             long now = System.currentTimeMillis();
@@ -56,36 +64,71 @@ public final class LinuxInputMethod {
         return false;
     }
 
-    public static void inputMethodDeactivate() {
-        Log.i(TAG, "inputMethodDeactivate");
+    public static void inputMethodDeactivate(final int appType) {
+        Log.i(TAG, "inputMethodDeactivate" + appType);
         mInputActivate = false;
-        Intent intent = new Intent(ACTION_EVENT_KEYBOARD);
-        intent.putExtra("InputActivate", false);
-        mContext.sendBroadcast(intent, "com.ljlvink.mslgrdp.brocast_mirdp");
+        if (Application.getProcessName().contains(Constances.RDP_PROCESS_NAME)) {
+            if (MultiWindowManager.getManager().getImActivateListener() != null) {
+                MultiWindowManager.getManager().getImActivateListener().imDeactivate(appType);
+                return;
+            }
+            return;
+        }
+        MultiWindowManager.getManager().getMainHandler().post(new Runnable() { // from class: com.freerdp.freerdpcore.services.LinuxInputMethod.1
+            @Override // java.lang.Runnable
+            public void run() {
+                if (MultiWindowManager.getManager().getImActivateListener() != null) {
+                    MultiWindowManager.getManager().getImActivateListener().imDeactivate(appType);
+                }
+            }
+        });
     }
 
-    public static void inputMethodActivate() {
-        Log.i(TAG, "inputMethodActivate");
+    public static void inputMethodActivate(final int appType) {
+        Log.i(TAG, "inputMethodActivate" + appType);
         mInputActivate = true;
-        Intent intent = new Intent(ACTION_EVENT_KEYBOARD);
-        intent.putExtra("InputActivate", true);
-        mContext.sendBroadcast(intent, "com.ljlvink.mslgrdp.brocast_mirdp");
+        if (Application.getProcessName().contains(Constances.RDP_PROCESS_NAME)) {
+            if (MultiWindowManager.getManager().getImActivateListener() != null) {
+                MultiWindowManager.getManager().getImActivateListener().imActivate(appType);
+                return;
+            }
+            return;
+        }
+        MultiWindowManager.getManager().getMainHandler().post(new Runnable() { // from class: com.freerdp.freerdpcore.services.LinuxInputMethod.2
+            @Override // java.lang.Runnable
+            public void run() {
+                if (MultiWindowManager.getManager().getImActivateListener() != null) {
+                    MultiWindowManager.getManager().getImActivateListener().imActivate(appType);
+                }
+            }
+        });
     }
 
-    public static LinuxInputMethod getInstance(Context context) {
+    public static void inputMethodCursorRect(final int appType, final int left, final int top, final int width, final int height) {
+        Log.i(TAG, "inputMethodCursorRect  appType " + appType + " left : " + left + " top : " + top + " width : " + width + " height : " + height);
+        MultiWindowManager.getManager().getMainHandler().post(new Runnable() { // from class: com.freerdp.freerdpcore.services.LinuxInputMethod.3
+            @Override // java.lang.Runnable
+            public void run() {
+                if (MultiWindowManager.getManager().getImActivateListener() != null) {
+                    MultiWindowManager.getManager().getImActivateListener().imCursorRect(appType, left, top, width, height);
+                }
+            }
+        });
+    }
+
+    public static LinuxInputMethod getInstance() {
         if (linuxInputMethod == null) {
             synchronized (LinuxInputMethod.class) {
                 if (linuxInputMethod == null) {
-                    linuxInputMethod = new LinuxInputMethod(context);
+                    linuxInputMethod = new LinuxInputMethod();
                 }
             }
         }
         return linuxInputMethod;
     }
 
-    private LinuxInputMethod(Context context) {
+    private LinuxInputMethod() {
         this.mLastSentTime = 0L;
-        mContext = context;
         this.mLastSentTime = 0L;
     }
 

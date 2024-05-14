@@ -7,7 +7,6 @@ import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.ViewConfiguration;
 
-/* loaded from: classes5.dex */
 public class GestureDetector {
     private static final int DOUBLE_TAP_SLOP = 100;
     private static final int DOUBLE_TAP_TIMEOUT = 200;
@@ -32,6 +31,7 @@ public class GestureDetector {
     private final OnGestureListener mListener;
     private int mLongpressTimeout;
     private MotionEvent mPreviousUpEvent;
+    private int mSlopSquare;
     private boolean mStillDown;
     private int mTouchSlopSquare;
 
@@ -200,31 +200,24 @@ public class GestureDetector {
                 if (this.mIsDoubleTapping) {
                     return false | this.mDoubleTapListener.onDoubleTapEvent(ev);
                 }
+                if (ev.getSource() == 4098) {
+                    this.mSlopSquare = 9;
+                } else {
+                    this.mSlopSquare = this.mTouchSlopSquare;
+                }
+                if ((scrollX * scrollX) + (scrollY * scrollY) <= this.mSlopSquare) {
+                    return false;
+                }
                 if (this.mAlwaysInTapRegion) {
-                    int deltaX = (int) (x - this.mCurrentDownEvent.getX());
-                    int deltaY = (int) (y - this.mCurrentDownEvent.getY());
-                    int distance = (deltaX * deltaX) + (deltaY * deltaY);
-                    if (distance > this.mTouchSlopSquare) {
-                        this.mLastMotionX = x;
-                        this.mLastMotionY = y;
                         this.mAlwaysInTapRegion = false;
                         this.mHandler.removeMessages(3);
                         this.mHandler.removeMessages(1);
                         this.mHandler.removeMessages(2);
                     }
-                    if (distance <= this.mLargeTouchSlopSquare) {
-                        return false;
-                    }
-                    this.mAlwaysInBiggerTapRegion = false;
-                    return false;
-                } else if (Math.abs(scrollX) < 1.0f && Math.abs(scrollY) < 1.0f) {
-                    return false;
-                } else {
                     boolean handled2 = this.mListener.onScroll(this.mCurrentDownEvent, ev, scrollX, scrollY);
                     this.mLastMotionX = x;
                     this.mLastMotionY = y;
                     return handled2;
-                }
             case 3:
                 cancel();
                 return false;
@@ -261,12 +254,12 @@ public class GestureDetector {
     }
 
     private boolean isConsideredDoubleTap(MotionEvent firstDown, MotionEvent firstUp, MotionEvent secondDown) {
-        if (this.mAlwaysInBiggerTapRegion && secondDown.getEventTime() - firstUp.getEventTime() <= 200) {
+        if (!this.mAlwaysInBiggerTapRegion || secondDown.getEventTime() - firstUp.getEventTime() > 200) {
+            return false;
+        }
             int deltaX = ((int) firstDown.getX()) - ((int) secondDown.getX());
             int deltaY = ((int) firstDown.getY()) - ((int) secondDown.getY());
             return (deltaX * deltaX) + (deltaY * deltaY) < this.mDoubleTapSlopSquare;
-        }
-        return false;
     }
 
     public void dispatchLongPress() {

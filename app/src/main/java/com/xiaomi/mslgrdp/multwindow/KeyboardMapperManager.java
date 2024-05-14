@@ -1,18 +1,15 @@
 package com.xiaomi.mslgrdp.multwindow;
 
-import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.EditText;
 import com.freerdp.freerdpcore.services.LibFreeRDP;
-import com.freerdp.freerdpcore.services.LinuxInputMethod;
-import com.xiaomi.mslgrdp.application.SessionState;
+import com.xiaomi.mslgrdp.application.GlobalApp;
 import com.xiaomi.mslgrdp.multwindow.imp.KeyProcessingListenerAdapter;
 import com.xiaomi.mslgrdp.utils.KeyboardMapper;
-import java.lang.ref.WeakReference;
 
-/* loaded from: classes5.dex */
+/* loaded from: classes6.dex */
 public class KeyboardMapperManager {
     private static final int FIRST_CHARACTER_IN_ASCII = 32;
     private static final int LAST_CHARACTER_IN_ASCII = 126;
@@ -21,11 +18,10 @@ public class KeyboardMapperManager {
     private EditTextWatcher mEditWatcher;
     private int inputCount = 0;
     private KeyboardProcessListener keyboardProcessListener = new KeyboardProcessListener();
-    private WeakReference<Context> contextWeakReference = null;
     private String TAG = "KeyboardMapperManager";
     private KeyboardMapper keyboardMapper = null;
 
-    static /* synthetic */ int access$308(KeyboardMapperManager x0) {
+    static /* synthetic */ int access$208(KeyboardMapperManager x0) {
         int i = x0.inputCount;
         x0.inputCount = i + 1;
         return i;
@@ -50,59 +46,57 @@ public class KeyboardMapperManager {
         this.mEditText = editText;
     }
 
-    public KeyboardMapper init(Context context) {
+    public KeyboardMapper init() {
         KeyboardMapper keyboardMapper = new KeyboardMapper();
         this.keyboardMapper = keyboardMapper;
-        keyboardMapper.init(context);
+        keyboardMapper.init(GlobalApp.getApplication());
         this.keyboardMapper.reset(this.keyboardProcessListener);
-        this.contextWeakReference = new WeakReference<>(context);
         this.mEditWatcher = new EditTextWatcher();
         return this.keyboardMapper;
     }
 
-
-    class KeyboardProcessListener extends KeyProcessingListenerAdapter {
+    /* JADX INFO: Access modifiers changed from: package-private */
+    /* loaded from: classes6.dex */
+    public class KeyboardProcessListener extends KeyProcessingListenerAdapter {
         KeyboardProcessListener() {
         }
 
-        @Override
+        @Override // com.xiaomi.mslgrdp.multwindow.imp.KeyProcessingListenerAdapter, com.xiaomi.mslgrdp.utils.KeyboardMapper.KeyProcessingListener
         public void processVirtualKey(int virtualKeyCode, boolean down) {
-            if (MultiWindowManager.getSessionManager().getSessions().isEmpty()) {
+            if (MultiWindowManager.getSessionManager().getCurrentSession() == null) {
                 return;
             }
-            SessionState session = MultiWindowManager.getSessionManager().getSessions().get(0);
+            SessionState session = MultiWindowManager.getSessionManager().getCurrentSession();
             LibFreeRDP.sendKeyEvent(session.getInstance(), virtualKeyCode, down);
         }
 
-        @Override
+        @Override // com.xiaomi.mslgrdp.multwindow.imp.KeyProcessingListenerAdapter, com.xiaomi.mslgrdp.utils.KeyboardMapper.KeyProcessingListener
         public void processUnicodeKey(int unicodeKey) {
-            if (MultiWindowManager.getSessionManager().getSessions().isEmpty()) {
+            if (MultiWindowManager.getSessionManager().getCurrentSession() == null) {
                 return;
             }
-            SessionState session = MultiWindowManager.getSessionManager().getSessions().get(0);
+            SessionState session = MultiWindowManager.getSessionManager().getCurrentSession();
             LibFreeRDP.sendUnicodeKeyEvent(session.getInstance(), unicodeKey, true);
             LibFreeRDP.sendUnicodeKeyEvent(session.getInstance(), unicodeKey, false);
         }
 
-        @Override
+        @Override // com.xiaomi.mslgrdp.multwindow.imp.KeyProcessingListenerAdapter, com.xiaomi.mslgrdp.utils.KeyboardMapper.KeyProcessingListener
         public void sendStringTo(String data) {
-            if (KeyboardMapperManager.this.contextWeakReference != null && KeyboardMapperManager.this.contextWeakReference.get() != null) {
-                LinuxInputMethod.getInstance((Context) KeyboardMapperManager.this.contextWeakReference.get()).sendStringToLinux(data);
-            }
+            MultiWindowManager.getManager().sendString(data);
         }
     }
 
-
-
+    /* JADX INFO: Access modifiers changed from: package-private */
+    /* loaded from: classes6.dex */
     public class EditTextWatcher implements TextWatcher {
         EditTextWatcher() {
         }
 
-        @Override
+        @Override // android.text.TextWatcher
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         }
 
-        @Override
+        @Override // android.text.TextWatcher
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             int end = start + count;
             try {
@@ -113,9 +107,9 @@ public class KeyboardMapperManager {
                 }
                 CharSequence str = s.subSequence(start + before, end);
                 if (count != 1 || ' ' > str.charAt(0) || str.charAt(0) > '~') {
-                    KeyboardMapperManager.this.keyboardProcessListener.processVirtualKey(47, true);
+                    KeyboardMapperManager.this.keyboardProcessListener.processVirtualKey(KeyboardMapper.KEY_A_TO_U, true);
                     KeyboardMapperManager.this.keyboardProcessListener.sendStringTo(str.toString());
-                    KeyboardMapperManager.this.keyboardProcessListener.processVirtualKey(47, false);
+                    KeyboardMapperManager.this.keyboardProcessListener.processVirtualKey(KeyboardMapper.KEY_A_TO_U, false);
                     return;
                 }
                 int vk_code = KeyboardMapper.asciiToVirtualKey(str.charAt(0));
@@ -136,7 +130,7 @@ public class KeyboardMapperManager {
             }
         }
 
-        @Override
+        @Override // android.text.TextWatcher
         public void afterTextChanged(Editable s) {
             if (KeyboardMapperManager.this.inputCount > 20) {
                 if (KeyboardMapperManager.this.mEditText != null) {
@@ -147,7 +141,7 @@ public class KeyboardMapperManager {
                 KeyboardMapperManager.this.inputCount = 0;
                 return;
             }
-            KeyboardMapperManager.access$308(KeyboardMapperManager.this);
+            KeyboardMapperManager.access$208(KeyboardMapperManager.this);
         }
     }
 }

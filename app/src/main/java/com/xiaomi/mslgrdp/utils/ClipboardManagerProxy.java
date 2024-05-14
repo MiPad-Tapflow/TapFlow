@@ -3,11 +3,9 @@ package com.xiaomi.mslgrdp.utils;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.os.Build;
 import android.util.Log;
 import java.nio.charset.StandardCharsets;
 
-/* loaded from: classes5.dex */
 public abstract class ClipboardManagerProxy {
     private static final int MAX_STRING_SIZE = 819200;
     private static final String TAG = "ClipboardManagerProxy";
@@ -24,9 +22,6 @@ public abstract class ClipboardManagerProxy {
     public abstract boolean setClipboardData(String str);
 
     public static ClipboardManagerProxy getClipboardManager(Context ctx) {
-        if (Build.VERSION.SDK_INT < 11) {
-            return new PreHCClipboardManager(ctx);
-        }
         return new HCClipboardManager(ctx);
     }
 

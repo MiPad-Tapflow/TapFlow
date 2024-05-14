@@ -3,9 +3,7 @@ package com.xiaomi.mslgrdp.utils;
 import android.content.Context;
 import android.os.Handler;
 import android.view.MotionEvent;
-import android.view.ScaleGestureDetector;
 
-/* loaded from: classes5.dex */
 public class DoubleGestureDetector {
     private static final long DOUBLE_TOUCH_TIMEOUT = 100;
     private static final int MODE_PINCH_ZOOM = 1;
@@ -25,7 +23,6 @@ public class DoubleGestureDetector {
     private MotionEvent mPreviousPointerUpEvent;
     private MotionEvent mPreviousUpEvent;
     private int mScrollDetectionScore;
-    private ScaleGestureDetector scaleGestureDetector;
 
 
     public interface OnDoubleGestureListener {
@@ -57,10 +54,6 @@ public class DoubleGestureDetector {
         this.mPointerDistanceSquare = (int) ((distPixelsX * distPixelsX) + (distPixelsY * distPixelsY));
     }
 
-    public void setScaleGestureDetector(ScaleGestureDetector scaleGestureDetector) {
-        this.scaleGestureDetector = scaleGestureDetector;
-    }
-
     public boolean onTouchEvent(MotionEvent ev) {
         boolean handled = false;
         int action = ev.getAction();
@@ -86,11 +79,8 @@ public class DoubleGestureDetector {
                 } else if (!this.mCancelDetection && this.mDoubleInProgress) {
                     boolean hasTapEvent = this.mHandler.hasMessages(1);
                     MotionEvent currentUpEvent = MotionEvent.obtain(ev);
-                    int i = this.mCurrentMode;
-                    if (i == 0 && hasTapEvent) {
+                    if (this.mCurrentMode == 0 && hasTapEvent) {
                         handled = this.mListener.onDoubleTouchSingleTap(this.mCurrentDoubleDownEvent);
-                    } else if (i == 1) {
-                        handled = this.scaleGestureDetector.onTouchEvent(ev);
                     }
                     MotionEvent motionEvent2 = this.mPreviousUpEvent;
                     if (motionEvent2 != null) {
@@ -105,28 +95,20 @@ public class DoubleGestureDetector {
                 if (!this.mCancelDetection && this.mDoubleInProgress && ev.getPointerCount() == 2) {
                     if (this.mCurrentMode == 0) {
                         if (pointerDistanceChanged(this.mCurrentDoubleDownEvent, ev)) {
-                            boolean handled2 = false | this.scaleGestureDetector.onTouchEvent(this.mCurrentDownEvent);
                             MotionEvent e = MotionEvent.obtain(ev);
                             e.setAction(this.mCurrentDoubleDownEvent.getAction());
-                            handled = handled2 | this.scaleGestureDetector.onTouchEvent(e);
+                            e.recycle();
                             this.mCurrentMode = 1;
                             break;
                         } else {
-                            int i2 = this.mScrollDetectionScore + 1;
-                            this.mScrollDetectionScore = i2;
-                            if (i2 >= 20) {
+                            int i = this.mScrollDetectionScore + 1;
+                            this.mScrollDetectionScore = i;
+                            if (i >= 20) {
                                 this.mCurrentMode = 2;
                             }
                         }
                     }
                     switch (this.mCurrentMode) {
-                        case 1:
-                            ScaleGestureDetector scaleGestureDetector = this.scaleGestureDetector;
-                            if (scaleGestureDetector != null) {
-                                handled = false | scaleGestureDetector.onTouchEvent(ev);
-                                break;
-                            }
-                            break;
                         case 2:
                             handled = this.mListener.onDoubleTouchScroll(this.mCurrentDownEvent, ev);
                             break;
@@ -186,7 +168,6 @@ public class DoubleGestureDetector {
         int distYSquare = (deltaY2 - deltaY1) * (deltaY2 - deltaY1);
         return distXSquare + distYSquare > this.mPointerDistanceSquare;
     }
-
 
     public class GestureHandler extends Handler {
         GestureHandler() {
