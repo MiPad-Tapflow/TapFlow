@@ -1,11 +1,11 @@
 <resources>
     <string name="app_name">Tapflow</string>
-    <string name="android_ver">Android 版本</string>
-    <string name="prog_ver">程序版本</string>
-    <string name="module_ver">模块版本</string>
+    <string name="device_info">设备信息</string>
+    <string name="prog_ver">版本信息</string>
     <string name="device_model">机型</string>
     <string name="rootfs_ver">rootfs版本</string>
     <string name="is_mounted_rootfs">mslg是否启动</string>
+    <string name="debug_info">/usr分区挂载信息</string>
     <string name="root_required">需要授权ROOT权限</string>
     <string name="mount_df_opt">/opt分区占用</string>
     <string name="mount_df_usr">/usr分区占用</string>

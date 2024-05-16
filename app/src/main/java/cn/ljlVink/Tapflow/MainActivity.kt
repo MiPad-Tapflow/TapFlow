@@ -102,7 +102,11 @@ class MainActivity : ComponentActivity() {
         }
 
     }
+    override fun onResume(){
+        super.onResume()
+        utils.KillApplication("com.xiaomi.mslgrdp")
 
+    }
     data class Item(
         val name: String,
         val icon: Int
@@ -203,14 +207,13 @@ class MainActivity : ComponentActivity() {
             Button(
                 onClick = {
                     Shell.cmd("setprop sys.mslg.mounted 1").exec()
-                    Toasty.info(context,"手动修改prop(只适用于6max/6max移植包哦)").show()
                 }
             ) {
                 Text(text = stringResource(id = R.string.start_prop))
             }
             Button(
                 onClick = {
-                    val intent = Intent("com.xiaomi.action.mslgrdp.client.cajviewer")
+                    val intent = Intent("com.xiaomi.action.mslgrdp.client")
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     intent.setPackage(packageName)
                     intent.putExtra("StartFromMSLG", true)
@@ -249,34 +252,23 @@ class MainActivity : ComponentActivity() {
                     Text(text = label, style = MaterialTheme.typography.bodyLarge)
                     Text(text = content, style = MaterialTheme.typography.bodyMedium)
                 }
-                InfoCardItem(stringResource(R.string.android_ver), "Android "+android.os.Build.VERSION.RELEASE+" API("+android.os.Build.VERSION.SDK_INT+") "+android.os.Build.VERSION.INCREMENTAL)
+                InfoCardItem(stringResource(R.string.device_info),
+                    "Android "+android.os.Build.VERSION.RELEASE+" API("+android.os.Build.VERSION.SDK_INT+") "+android.os.Build.VERSION.INCREMENTAL+" "+
+                            android.os.Build.MANUFACTURER +" "+android.os.Build.MODEL+" ("+android.os.Build.PRODUCT+")"+
+                            " SELinux "+utils.getEnforcing()
+                            )
                 Spacer(Modifier.height(16.dp))
                 InfoCardItem(
                     stringResource(R.string.prog_ver),
-                    utils.getAppVersionInfoWithSpace(context)
+                    "app: "+utils.getAppVersionInfoWithSpace(context)+" losetup.sh-go: "+utils.GetModuleVersion()
                 )
-                Spacer(Modifier.height(16.dp))
-                InfoCardItem(
-                    stringResource(R.string.module_ver),
-                    utils.GetModuleVersion()
-                )
-                Spacer(Modifier.height(16.dp))
-                InfoCardItem(stringResource(R.string.device_model),android.os.Build.MANUFACTURER +" "+android.os.Build.MODEL+"("+android.os.Build.PRODUCT+")")
                 Spacer(Modifier.height(16.dp))
                 InfoCardItem(stringResource(R.string.rootfs_ver),utils.getprop("ro.vendor.mslg.rootfs.version"))
                 Spacer(Modifier.height(16.dp))
                 val isStarted=if (utils.getprop("sys.mslg.mounted").equals("1")) "已经启动" else "未启动"
                 InfoCardItem(stringResource(R.string.is_mounted_rootfs),isStarted)
                 Spacer(Modifier.height(16.dp))
-                val enforce=utils.getEnforcing()
-                val isInenforce:String
-                if(enforce.equals("Enforcing")){
-                    isInenforce= stringResource(id = R.string.selinux_enforcing)
-                }else{
-                    isInenforce= stringResource(id = R.string.selinux_permissive)
-                }
-                InfoCardItem(stringResource(R.string.selinux_stat),isInenforce)
-                Spacer(Modifier.height(16.dp))
+                InfoCardItem(stringResource(R.string.debug_info),utils.GetDebugInfo())
 
             }
         }

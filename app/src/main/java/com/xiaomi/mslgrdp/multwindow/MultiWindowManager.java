@@ -44,6 +44,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.LogManager;
 
 /* loaded from: classes6.dex */
 public class MultiWindowManager implements Module, ClipboardManagerProxy.OnClipboardChangedListener {
@@ -356,6 +357,7 @@ public class MultiWindowManager implements Module, ClipboardManagerProxy.OnClipb
     public boolean sendPath(String url, String app) {
         this.mFileUrl = url;
         this.mOpenApp = app;
+        MslgLogger.LOGD("mslg",mFileUrl+" "+mOpenApp,true);
         Message msg = this.mainHandler.obtainMessage(Constances.MSG_SEND_PATH);
         this.mainHandler.sendMessage(msg);
         return true;

@@ -11,6 +11,16 @@ import com.topjohnwu.superuser.Shell
 import es.dmoral.toasty.Toasty
 
 class utils {
+    fun KillApplication(app:String){
+        Shell.cmd("am force-stop "+app).exec()
+    }
+    fun GetDebugInfo():String{
+        val lowerdir=Shell.cmd("getprop sys.tapflow.usr.lowerdir").exec().getOut()[0]
+        val workdir=Shell.cmd("getprop sys.tapflow.usr.workdir").exec().getOut()[0]
+        val upperdir=Shell.cmd("getprop sys.tapflow.usr.upperdir").exec().getOut()[0]
+        val result = "lowerdir="+lowerdir+";upperdir="+upperdir+";workdir="+workdir
+        return result
+    }
     fun grantpermission(ctx:Context){
         if(!XXPermissions.isGranted(ctx, Permission.MANAGE_EXTERNAL_STORAGE)){
             XXPermissions.with(ctx)
@@ -46,7 +56,7 @@ class utils {
         return if(code==0){
             result.out[0]
         }else{
-            "未安装"
+            "Not installed"
         }
     }
     fun getState(): Int {

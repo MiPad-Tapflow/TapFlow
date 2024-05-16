@@ -37,7 +37,7 @@ fun SupportCard() {
             HtmlText(
                 stringResource(
                     R.string.home_view_source_code,
-                    "<b><a href=\"https://github.com/ljlVink/\">GitHub</a></b>",
+                    "<b><a href=\"https://github.com/ljlVink/TapFlow\">GitHub</a></b>",
                     "<b><a href=\"http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=xRWDf3imMuP3IXC4TLTAySKr00hTTN50&authKey=fOygXE91t%2BVxd3Q6XyWmFQgxrmSen9ngw4v1%2F1r0om%2Bl8FblA5YNz2X1rRd8%2BTB%2B&noverify=0&group_code=839763091\">QQ</a></b>"
                 )
             )
