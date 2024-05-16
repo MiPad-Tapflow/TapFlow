@@ -485,7 +485,7 @@ public class MultiWindowManager implements Module, ClipboardManagerProxy.OnClipb
                     activity.showWindowInfo(surfaceInfo.id);
                     return;
                 }
-                Intent intent = null;
+                Intent intent = new Intent(top, (Class<?>) LinuxVirtualActivity.class); // HACK ::: allow other apps run !
                 if (top != null) {
                     switch (this.appType) {
                         case 1:

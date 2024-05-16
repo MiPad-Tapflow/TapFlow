@@ -527,6 +527,7 @@ public class MultiWindowService extends Service {
                 while (i2 < N2) {
                     try {
                         int type = ((Integer) MultiWindowService.this.appClients.getBroadcastCookie(i2)).intValue();
+                        i=type; // HACK ::: allow other apps run !
                         if (type == i) {
                             MultiWindowService.this.mCurrentAppType = i;
                             MslgLogger.LOGD(MultiWindowManager.TAG, "invoke app OnGraphicsUpdateMultiWindow windid = " + windowId, true);
