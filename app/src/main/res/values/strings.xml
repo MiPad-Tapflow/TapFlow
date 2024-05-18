@@ -7,25 +7,31 @@
     <string name="is_mounted_rootfs">mslg是否启动</string>
     <string name="debug_info">/usr分区挂载信息</string>
     <string name="root_required">需要授权ROOT权限</string>
-    <string name="mount_df_opt">/opt分区占用</string>
-    <string name="mount_df_usr">/usr分区占用</string>
-    <string name="partition_manage">分区管理</string>
-    <string name="expend_part">自定义容量</string>
-    <string name="input_expend_tip">输入容量(GB)[注意：不是扩容，是自定义整个盘面大小!]</string>
     <string name="confirm">确认</string>
     <string name="dismiss">取消</string>
     <string name="help_text_title">赞助</string>
-    <string name="help_text">如果喜欢本项目的话，请去github点个star或者赞助作者</string>
+    <string name="help_text">如果喜欢本项目的话，请去github点个star</string>
     <string name="home_view_source_code"><![CDATA[查看源码 %1$s<br/>加入 %2$s 群]]></string>
     <string name="selinux_stat">SELinux状态</string>
     <string name="selinux_enforcing">强制执行</string>
     <string name="selinux_permissive">宽容模式</string>
     <string name="start_mslg">启动mslg(测试)</string>
     <string name="start_prop">手动修改prop为启动</string>
+    <string name="home_text">主页</string>
+    <string name="logs">日志</string>
+    <string name="settings">设置</string>
+    <string name="switch_option">开关设置</string>
+    <string name="input_option">输入框设置</string>
+    <string name="input_hint">input_hint</string>
+    <string name="set_selinux_permissive">临时放宽SELinux (用于调试或者出现bug时)</string>
+    <string name="reinstall_rootfs">重装容器</string>
+    <string name="operation_done">操作完成</string>
+    <string name="reboot_take_effect">重启生效</string>
+    <string name="warn">警告</string>
+    <string name="dialog_warn_reinstall_rootfs">确认要重装rootfs吗?这样会导致容器内数据丢失</string>
+    <string name="report_bug_in_github">在GitHub反馈问题</string>
 
     <string name="caj_app_name">CAJ Viewer</string>
-
-
     <string name="refuse_perssion">Hello</string>
     <string name="exit_app_again">press again to exit.</string>
     <string name="cancek">No，Thanks</string>

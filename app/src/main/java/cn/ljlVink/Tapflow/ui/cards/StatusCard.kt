@@ -1,4 +1,4 @@
-package cn.ljlVink.Tapflow.cards
+package cn.ljlVink.Tapflow.ui.cards
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -20,7 +20,7 @@ import cn.ljlVink.Tapflow.MainActivity
 @Preview
 @Composable
 fun StatusCard(){
-    val state= MainActivity.utils.getState()
+    val state= MainActivity.utils.GetState()
     ElevatedCard(
         colors = CardDefaults.elevatedCardColors(containerColor = run {
             when(state){

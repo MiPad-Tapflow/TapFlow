@@ -2,8 +2,6 @@ package cn.ljlVink.Tapflow.util
 
 import android.content.Context
 import android.content.pm.PackageManager
-import android.util.Log
-import cn.ljlVink.Tapflow.FileSystemInfo
 import com.hjq.permissions.OnPermissionCallback
 import com.hjq.permissions.Permission
 import com.hjq.permissions.XXPermissions
@@ -14,6 +12,21 @@ class utils {
     fun KillApplication(app:String){
         Shell.cmd("am force-stop "+app).exec()
     }
+    fun GetMslgVersion():String{
+        return getprop("ro.vendor.mslg.rootfs.version")
+    }
+    fun SetSELinuxPermissive(){
+        Shell.cmd("setenforce 0").exec()
+    }
+    fun SetReinstallRootfs(){
+        Shell.cmd("touch /data/adb/modules/losetup_go/reinstall").exec()
+    }
+    fun SetMountMslg(){
+        SetProp("sys.mslg.mounted","1")
+    }
+    fun GetIsMountedMslg():Boolean{
+        return getprop("sys.mslg.mounted") =="1"
+    }
     fun GetDebugInfo():String{
         val lowerdir=Shell.cmd("getprop sys.tapflow.usr.lowerdir").exec().getOut()[0]
         val workdir=Shell.cmd("getprop sys.tapflow.usr.workdir").exec().getOut()[0]
@@ -21,7 +34,7 @@ class utils {
         val result = "lowerdir="+lowerdir+";upperdir="+upperdir+";workdir="+workdir
         return result
     }
-    fun grantpermission(ctx:Context){
+    fun Grantpermission(ctx:Context){
         if(!XXPermissions.isGranted(ctx, Permission.MANAGE_EXTERNAL_STORAGE)){
             XXPermissions.with(ctx)
                 .permission(Permission.MANAGE_EXTERNAL_STORAGE)
@@ -59,7 +72,7 @@ class utils {
             "Not installed"
         }
     }
-    fun getState(): Int {
+    fun GetState(): Int {
         val result = Shell.cmd("cat /dev/Tapflow/current").exec()
         val code = result.getCode()
         if (code == 0) {
@@ -73,7 +86,7 @@ class utils {
         return 3
     }
 
-    fun getEnforcing():String{
+    fun GetEnforcing():String{
         val result = Shell.cmd("getenforce").exec()
         val code = result.getCode()
         if (code == 0) {
@@ -99,10 +112,14 @@ class utils {
             }
         }
         return "ERROR"
-
     }
 
-    fun getAppVersionInfoWithSpace(context: Context): String {
+    fun SetProp(prop: String,value:String):Boolean{
+        val result = Shell.cmd("setprop "+prop+" "+value).exec()
+        return result.code == 0
+    }
+
+    fun GetAppVersionInfoWithSpace(context: Context): String {
         var versionName = ""
         var versionCode = ""
         try {

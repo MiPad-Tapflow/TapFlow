@@ -10,7 +10,6 @@
         <item name="android:windowLightStatusBar">true</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:windowSplashScreenAnimationDuration">1000</item>
     </style>
     <style name="AppThemeWel" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@color/transparent</item>

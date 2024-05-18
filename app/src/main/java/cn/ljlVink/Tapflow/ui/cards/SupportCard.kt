@@ -1,4 +1,4 @@
-package cn.ljlVink.Tapflow.cards
+package cn.ljlVink.Tapflow.ui.cards
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
