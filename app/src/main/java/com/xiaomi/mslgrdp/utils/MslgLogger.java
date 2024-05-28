@@ -12,10 +12,10 @@ public class MslgLogger {
     private static final boolean isDebug = true;
 
     public static void LOGE(String tag, String content, boolean force) {
-        Log.e(tag, content);
+        if(force)Log.e(tag, content);
     }
 
     public static void LOGD(String tag, String content, boolean force) {
-        Log.d(tag, content);
+        if(force)Log.d(tag, content);
     }
 }
