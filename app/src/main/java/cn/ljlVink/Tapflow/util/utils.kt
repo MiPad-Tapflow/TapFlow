@@ -9,7 +9,14 @@ import com.topjohnwu.superuser.Shell
 import es.dmoral.toasty.Toasty
 
 class utils {
-    fun KillApplication(app:String){
+    fun Start_miui_dkt(Start: Boolean){
+        Shell.cmd("settings put system miui_dkt_mode "+if (Start) "1" else "0").exec()
+    }
+
+    fun Kill_Linux_proc(app: String){
+        Shell.cmd("killall  "+app).exec()
+    }
+    fun Kill_Android_Application(app:String){
         Shell.cmd("am force-stop "+app).exec()
     }
     fun GetMslgVersion():String{

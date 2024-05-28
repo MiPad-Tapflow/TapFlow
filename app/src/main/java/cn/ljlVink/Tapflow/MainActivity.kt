@@ -1,5 +1,7 @@
 package cn.ljlVink.Tapflow
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -74,7 +76,34 @@ class MainActivity : ComponentActivity() {
                     }
                 }
                 ShowMountMslgDialog()
+                ShowCriticalErrorDialog()
             }
+
+        }
+    }
+    @Composable
+    fun ShowCriticalErrorDialog(){
+        var showDialog by remember { mutableStateOf(false) }
+
+        LaunchedEffect(Unit) {
+            if (!utils.getprop("vendor.mslg.mslgusrimg").equals("null")){
+                showDialog = true
+            }
+        }
+
+        CustomAlertDialog(
+            showDialog = showDialog,
+            title = "Error",
+            text = "检测到losetup.sh_go有致命错误发生，原因:vendor.mslg.mslgusrimg!=null,这是一个bug，请联系开发者解决问题",
+            confirmButtonText = "确认",
+            onConfirm = {
+                val githubUrl = "https://github.com/MiPad-Tapflow/Tapflow/issues/new/"
+                val uri = Uri.parse(githubUrl)
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+                startActivity(intent)
+            },
+            dismissButtonText = "返回"
+        ) {
 
         }
 
@@ -96,9 +125,8 @@ class MainActivity : ComponentActivity() {
             onConfirm = {
                 utils.SetMountMslg()
                 showDialog = false
-            },
-            onDismiss = { showDialog = false }
-        )
+            }
+        ) { showDialog = false }
     }
     @OptIn(ExperimentalMaterial3Api::class)
     fun checkPermission():Boolean{
@@ -117,7 +145,7 @@ class MainActivity : ComponentActivity() {
     }
     override fun onResume(){
         super.onResume()
-        utils.KillApplication("com.xiaomi.mslgrdp")
+        utils.Kill_Android_Application("com.xiaomi.mslgrdp")
     }
     @Composable
     private fun BuildNav(navController: NavHostController){

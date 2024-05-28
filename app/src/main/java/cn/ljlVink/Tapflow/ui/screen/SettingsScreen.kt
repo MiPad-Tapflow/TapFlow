@@ -55,9 +55,8 @@ fun SettingsScreen() {
                     snackbarHostState.showSnackbar(rebootTakeEffect)
                 }
                 showWarnDialog = false
-            },
-            onDismiss = { showWarnDialog = false }
-        )
+            }
+        ) { showWarnDialog = false }
     }
 
     Scaffold (
