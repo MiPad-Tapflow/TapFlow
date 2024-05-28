@@ -96,10 +96,6 @@ public class LinuxVirtualActivity extends BaseActivity implements SessionView.Se
         if (getIntent() != null && getIntent().getAction() != null) {
             if (!MultiWindowManager.getManager().isFromMslg()) {
                 MultiWindowManager.getManager().setFromMslg(true);
-            } else {
-                finish();
-                MslgLogger.LOGD(MslgLogger.TAG_ACTIVITY, "onCreate finish--", false);
-                return;
             }
         }
         initView();
