@@ -699,7 +699,7 @@ public class LibFreeRDP {
 
     public static void OnDeleteOptimg(long inst, int appType) {
         Log.v(TAG, "OnDeleteOptimg.appType " + appType);
-        SessionState s = MultiWindowManager.getSessionManager().getCurrentSession();
+        /*SessionState s = MultiWindowManager.getSessionManager().getCurrentSession();
         if (s == null) {
             return;
         }
@@ -708,7 +708,8 @@ public class LibFreeRDP {
             if (uiEventListener != null) {
                 uiEventListener.OnDeleteOptimg(appType);
             }
-        }
+        }*/
+        //HACK:DISABLE
     }
 
     private static void OnOpenwpsRequested(long inst, boolean openwps) {
