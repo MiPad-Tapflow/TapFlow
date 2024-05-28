@@ -129,7 +129,7 @@ public class LibFreeRDP {
     static {
         mHasH264 = false;
         try {
-            if (Application.getProcessName().contains(Constances.RDP_PROCESS_NAME)) {
+           // if (Application.getProcessName().contains(Constances.RDP_PROCESS_NAME)) {
                 System.loadLibrary("freerdp-android");
                 String version = freerdp_get_jni_version();
                 Pattern pattern = Pattern.compile("^(\\d+)\\.(\\d+)\\.(\\d+).*");
@@ -150,7 +150,7 @@ public class LibFreeRDP {
                     throw new RuntimeException("APK broken: native library version " + version + " does not meet requirements!");
                 }
                 Log.i(TAG, "Successfully loaded native library. H264 is " + (mHasH264 ? "supported" : "not available"));
-            }
+          //  }
         } catch (UnsatisfiedLinkError e) {
             Log.e(TAG, "Failed to load library: " + e.toString());
             throw e;
@@ -158,9 +158,6 @@ public class LibFreeRDP {
     }
 
     private static boolean tryLoad(String[] libraries) {
-        if (!Application.getProcessName().contains(Constances.RDP_PROCESS_NAME)) {
-            return false;
-        }
         boolean success = false;
         String LD_PATH = System.getProperty("java.library.path");
         for (String lib : libraries) {
