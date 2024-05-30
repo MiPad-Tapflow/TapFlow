@@ -13,7 +13,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import cn.ljlVink.Tapflow.MainActivity
 import cn.ljlVink.Tapflow.R
-import cn.ljlVink.Tapflow.ui.TitleBar
+import cn.ljlVink.Tapflow.ui.tools.TitleBar
 
 @Composable
 fun Logscreen(){

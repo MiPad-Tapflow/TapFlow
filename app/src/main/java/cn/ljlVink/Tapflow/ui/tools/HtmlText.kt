@@ -1,4 +1,4 @@
-package cn.ljlVink.Tapflow.ui;
+package cn.ljlVink.Tapflow.ui.tools;
 
 import android.text.method.LinkMovementMethod
 import android.widget.TextView

@@ -13,7 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import cn.ljlVink.Tapflow.R
-import cn.ljlVink.Tapflow.ui.HtmlText
+import cn.ljlVink.Tapflow.ui.tools.HtmlText
 
 @Preview
 @Composable

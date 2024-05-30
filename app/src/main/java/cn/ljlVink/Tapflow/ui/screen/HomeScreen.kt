@@ -10,11 +10,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import cn.ljlVink.Tapflow.R
 import cn.ljlVink.Tapflow.ui.cards.StatusCard
 import cn.ljlVink.Tapflow.ui.cards.SupportCard
-import cn.ljlVink.Tapflow.ui.TitleBar
+import cn.ljlVink.Tapflow.ui.tools.TitleBar
 import cn.ljlVink.Tapflow.ui.cards.InfoCard
 import cn.ljlVink.Tapflow.ui.cards.StartCard_dbg
 

@@ -25,7 +25,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import cn.ljlVink.Tapflow.ui.TitleBar
+import cn.ljlVink.Tapflow.ui.tools.TitleBar
 import cn.ljlVink.Tapflow.ui.screen.ErrorScreen
 import cn.ljlVink.Tapflow.ui.screen.BottomBarItem
 import cn.ljlVink.Tapflow.ui.screen.HomeScreen

@@ -28,7 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import cn.ljlVink.Tapflow.MainActivity
 import cn.ljlVink.Tapflow.R
-import cn.ljlVink.Tapflow.ui.TitleBar
+import cn.ljlVink.Tapflow.ui.tools.TitleBar
 import cn.ljlVink.Tapflow.ui.tools.CustomAlertDialog
 import cn.ljlVink.Tapflow.ui.tools.IconButtonWithText
 import kotlinx.coroutines.launch
