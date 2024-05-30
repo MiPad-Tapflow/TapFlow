@@ -7,7 +7,6 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.BroadcastReceiver;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.ComponentName;
@@ -15,7 +14,6 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
@@ -31,11 +29,8 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.WindowManager;
 import android.view.WindowMetrics;
-import androidx.core.view.accessibility.AccessibilityEventCompat;
 import com.freerdp.freerdpcore.services.LibFreeRDP;
 import com.freerdp.freerdpcore.services.LinuxInputMethod;
-import com.xiaomi.mslgrdp.multwindow.IServer;
-import com.xiaomi.mslgrdp.multwindow.SessionManager;
 import com.xiaomi.mslgrdp.multwindow.imp.FreerdpUIEventListenerAdapter;
 import com.xiaomi.mslgrdp.presentation.CajViewerActivity;
 import com.xiaomi.mslgrdp.presentation.LinuxVirtualActivity;
@@ -56,7 +51,6 @@ public class MultiWindowService extends Service {
     private static final String NOTIFICATION_NAME = "MultiWindowService";
     private static final String Wps_Image_File_Name = "kingsoft";
     private static List<File> mFolders = Utils.traverseFolder(Environment.getExternalStorageDirectory());
-    private LibFreeRDPBroadcastReceiver libFreeRDPBroadcastReceiver;
     private String mFileUrl;
     private NotificationManager mNotificationManager;
     private String mOpenApp;
@@ -144,14 +138,6 @@ public class MultiWindowService extends Service {
     @Override // android.app.Service
     public void onCreate() {
         super.onCreate();
-        this.libFreeRDPBroadcastReceiver = new LibFreeRDPBroadcastReceiver();
-        IntentFilter filter = new IntentFilter();
-        filter.addAction("android.intent.action.PACKAGE_ADDED");
-        filter.addAction("android.intent.action.PACKAGE_REMOVED");
-        filter.addAction("android.intent.action.PACKAGE_REPLACED");
-        filter.addAction("android.intent.action.PACKAGE_DATA_CLEARED");
-        filter.addDataScheme("package");
-        registerReceiver(this.libFreeRDPBroadcastReceiver, filter, Context.RECEIVER_EXPORTED);
         this.mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         this.mHandlerThread.start();
         this.mHandler = new RdpServiceHandler(this.mHandlerThread.getLooper());
@@ -346,82 +332,7 @@ public class MultiWindowService extends Service {
         }
     }
 
-    /* loaded from: classes6.dex */
-    private class LibFreeRDPBroadcastReceiver extends BroadcastReceiver {
-        private LibFreeRDPBroadcastReceiver() {
-        }
 
-        @Override // android.content.BroadcastReceiver
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            Uri uri = intent.getData();
-            if (uri == null) {
-                return;
-            }
-            String pkgName = uri.getSchemeSpecificPart();
-            if (action.equals("android.intent.action.PACKAGE_REMOVED")) {
-                MslgLogger.LOGD(MultiWindowService.NOTIFICATION_NAME, "ACTION_PACKAGE_REMOVED   = " + pkgName, false);
-                if (pkgName.equals("com.xiaomi.wpslauncher") && MultiWindowService.this.wpsimg.exists()) {
-                    SessionState state = MultiWindowService.this.sessionManager.getCurrentSession();
-                    if (state != null) {
-                        LibFreeRDP.sendKillappEvent(state.getInstance(), 1);
-                        MultiWindowService multiWindowService = MultiWindowService.this;
-                        multiWindowService.appFinishandExit(multiWindowService.sessionManager.getCurrentSession().getInstance(), 1);
-                    }
-                    if (MultiWindowService.this.mHandler != null) {
-                        Message msg = MultiWindowService.this.mHandler.obtainMessage(103);
-                        msg.obj = 1;
-                        MultiWindowService.this.mHandler.sendMessageDelayed(msg, 2000L);
-                    }
-                }
-                if (pkgName.equals("com.xiaomi.cajlauncher") && MultiWindowService.this.cajimg.exists()) {
-                    SessionState state2 = MultiWindowService.this.sessionManager.getCurrentSession();
-                    if (state2 != null) {
-                        LibFreeRDP.sendKillappEvent(state2.getInstance(), 3);
-                        MultiWindowService multiWindowService2 = MultiWindowService.this;
-                        multiWindowService2.appFinishandExit(multiWindowService2.sessionManager.getCurrentSession().getInstance(), 3);
-                    }
-                    if (MultiWindowService.this.mHandler != null) {
-                        Message msg2 = MultiWindowService.this.mHandler.obtainMessage(103);
-                        msg2.obj = 3;
-                        MultiWindowService.this.mHandler.sendMessageDelayed(msg2, 2000L);
-                        return;
-                    }
-                    return;
-                }
-                return;
-            }
-            if (action.equals("android.intent.action.PACKAGE_DATA_CLEARED")) {
-                MslgLogger.LOGD(MultiWindowService.NOTIFICATION_NAME, "ACTION_PACKAGE_DATA_CLEARED = " + pkgName, false);
-                if (pkgName.equals("com.xiaomi.wpslauncher") && MultiWindowService.this.wpsimg.exists()) {
-                    SessionState state3 = MultiWindowService.this.sessionManager.getCurrentSession();
-                    if (state3 != null) {
-                        LibFreeRDP.sendKillappEvent(state3.getInstance(), 1);
-                        MultiWindowService multiWindowService3 = MultiWindowService.this;
-                        multiWindowService3.appFinishandExit(multiWindowService3.sessionManager.getCurrentSession().getInstance(), 1);
-                    }
-                    if (MultiWindowService.this.mHandler != null) {
-                        Message msg3 = MultiWindowService.this.mHandler.obtainMessage(105);
-                        msg3.obj = 1;
-                        MultiWindowService.this.mHandler.sendMessageDelayed(msg3, 2000L);
-                    }
-                }
-                if (pkgName.equals("com.xiaomi.cajlauncher") && MultiWindowService.this.cajimg.exists()) {
-                    SessionState state4 = MultiWindowService.this.sessionManager.getCurrentSession();
-                    if (state4 != null) {
-                        LibFreeRDP.sendKillappEvent(state4.getInstance(), 3);
-                        MultiWindowService multiWindowService4 = MultiWindowService.this;
-                        multiWindowService4.appFinishandExit(multiWindowService4.sessionManager.getCurrentSession().getInstance(), 3);
-                    }
-                    if (MultiWindowService.this.mHandler != null) {
-                        Message msg4 = MultiWindowService.this.mHandler.obtainMessage(105);
-                        msg4.obj = 3;
-                        MultiWindowService.this.mHandler.sendMessageDelayed(msg4, 2000L);
-                    }
-                }
-            }
-        }
-    }
 
     public boolean appFinishandExit(long inst, int appType) {
         synchronized (this.lock) {
@@ -920,11 +831,6 @@ public class MultiWindowService extends Service {
         this.isSend = false;
         this.isRailReady = false;
         LinuxInputMethod.getInstance().dispose();
-        LibFreeRDPBroadcastReceiver libFreeRDPBroadcastReceiver = this.libFreeRDPBroadcastReceiver;
-        if (libFreeRDPBroadcastReceiver != null) {
-            unregisterReceiver(libFreeRDPBroadcastReceiver);
-            this.libFreeRDPBroadcastReceiver = null;
-        }
         if (this.isStartFileObserver) {
             stopFileObserver();
         }
